@@ -1,10 +1,10 @@
 'use client';
 
-import { QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { PropsWithChildren, useLayoutEffect, useState } from 'react';
+import { PropsWithChildren } from 'react';
 import { Reshaped, ToastProvider } from 'reshaped';
-import { makeQueryClient } from '@/libs';
+import '@/styles/theme.scss';
 
 const COLOR_MODE_STORAGE_KEY = 'rs-color-mode';
 
@@ -19,10 +19,10 @@ if (typeof window !== 'undefined') {
 }
 
 const Providers = ({ children }: PropsWithChildren) => {
-  const [queryClient] = useState(() => makeQueryClient());
+  const queryClient = useQueryClient();
 
   return (
-    <Reshaped theme={institution}>
+    <Reshaped theme="legacy">
       <ToastProvider>
         <QueryClientProvider client={queryClient}>
           {children}

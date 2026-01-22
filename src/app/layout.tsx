@@ -22,7 +22,6 @@ const tablerIcons = localFont({
   preload: true,
 });
 
-
 const RootLayout = ({
   children,
 }: Readonly<{
@@ -35,11 +34,7 @@ const RootLayout = ({
       suppressHydrationWarning
     >
       <body className={inter.className}>
-       
-        <Providers>
-          {children}
-          
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
