@@ -1,64 +1,29 @@
-'use client';
-
 import { useState, useEffect, useCallback } from 'react';
-
-const STORAGE_KEY = 'shell-preferences';
-const MIN_SIDEBAR_WIDTH = 200;
-const MAX_SIDEBAR_WIDTH = 400;
-const DEFAULT_SIDEBAR_WIDTH = 280;
-const MOBILE_BREAKPOINT = 768;
-
-interface ShellPreferences {
-  sidebarWidth: number;
-  sidebarVisible: boolean;
-  headerVisible: boolean;
-}
-
-// Helper function to load preferences from localStorage
-const loadPreferences = (): ShellPreferences => {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      return JSON.parse(stored);
-    }
-  } catch (e) {
-    console.error('Failed to parse shell preferences:', e);
-  }
-  return {
-    sidebarWidth: DEFAULT_SIDEBAR_WIDTH,
-    sidebarVisible: true,
-    headerVisible: true,
-  };
-};
+import { MOBILE_BREAKPOINT, STORAGE_KEY } from './constants';
+import { ShellPreferences } from './types';
+import { loadPreferences } from './utils';
 
 export const useShellState = () => {
-  // Initialize state with lazy initializer functions to avoid cascading renders
-  // Load preferences once and use for all initial states
   const initialPrefs = loadPreferences();
-  const [sidebarWidth, setSidebarWidth] = useState(initialPrefs.sidebarWidth);
   const [sidebarVisible, setSidebarVisible] = useState(
     initialPrefs.sidebarVisible,
   );
   const [headerVisible, setHeaderVisible] = useState(
     initialPrefs.headerVisible,
   );
-  const [isResizing, setIsResizing] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [previousSidebarVisible, setPreviousSidebarVisible] = useState(true);
   const [previousHeaderVisible, setPreviousHeaderVisible] = useState(true);
 
-  // Save preferences to localStorage
   useEffect(() => {
     const prefs: ShellPreferences = {
-      sidebarWidth,
       sidebarVisible,
       headerVisible,
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
-  }, [sidebarWidth, sidebarVisible, headerVisible]);
+  }, [sidebarVisible, headerVisible]);
 
-  // Detect mobile breakpoint
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
@@ -79,35 +44,18 @@ export const useShellState = () => {
 
   const toggleFullscreen = useCallback(() => {
     if (!isFullscreen) {
-      // Entering fullscreen - save current state and hide both
       setPreviousSidebarVisible(sidebarVisible);
       setPreviousHeaderVisible(headerVisible);
       setSidebarVisible(false);
       setHeaderVisible(false);
       setIsFullscreen(true);
     } else {
-      // Exiting fullscreen - always show sidebar, restore header state
       setSidebarVisible(true);
       setHeaderVisible(true);
       setIsFullscreen(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFullscreen, sidebarVisible, headerVisible, previousHeaderVisible]);
-
-  const startResize = useCallback(() => {
-    setIsResizing(true);
-  }, []);
-
-  const stopResize = useCallback(() => {
-    setIsResizing(false);
-  }, []);
-
-  const resize = useCallback((clientX: number) => {
-    const newWidth = Math.min(
-      Math.max(clientX, MIN_SIDEBAR_WIDTH),
-      MAX_SIDEBAR_WIDTH,
-    );
-    setSidebarWidth(newWidth);
-  }, []);
 
   const enterFullScreen = useCallback(() => {
     setPreviousSidebarVisible(sidebarVisible);
@@ -123,18 +71,24 @@ export const useShellState = () => {
     setIsFullscreen(false);
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && (!sidebarVisible || !headerVisible)) {
+        toggleFullscreen();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [sidebarVisible, headerVisible, toggleFullscreen]);
+
   return {
-    sidebarWidth,
     sidebarVisible,
     headerVisible,
-    isResizing,
     isMobile,
     toggleSidebar,
     toggleHeader,
     toggleFullscreen,
-    startResize,
-    stopResize,
-    resize,
     enterFullScreen,
     exitFullScreen,
   };

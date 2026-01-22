@@ -1,32 +1,20 @@
-'use client';
-
 import clsx from 'clsx';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { View, Text, Button } from 'reshaped';
-import { Icon, IconProps } from '../icon';
-import styles from './style.module.scss';
+import { View, Text, Button, useTheme } from 'reshaped';
+import { Icon } from '@/components/icon';
+import { NAV_ITEMS } from './constants';
+import styles from './styles.module.scss';
+import { SidebarProps } from './types';
 
-const navItems: { label: string; href: string; icon: IconProps['name'] }[] = [
-  { label: 'Dashboard', href: '/', icon: 'layout-dashboard' },
-  { label: 'Campaigns', href: '/campaigns', icon: 'telescope' },
-  { label: 'Integrations', href: '/integrations', icon: 'plug' },
-  { label: 'Settings', href: '/settings', icon: 'settings' },
-];
-
-interface SidebarProps {
-  isVisible: boolean;
-  width: number;
-  onToggle: () => void;
-  isMobile: boolean;
-}
-
-const Sidebar = ({ isVisible, width, onToggle, isMobile }: SidebarProps) => {
+export const Sidebar = ({ isVisible, onToggle, isMobile }: SidebarProps) => {
   const pathname = usePathname();
+  const { colorMode } = useTheme();
 
   if (!isVisible) return;
 
-  const sidebarContent = (
+  return (
     <View
       as="aside"
       direction="column"
@@ -34,16 +22,17 @@ const Sidebar = ({ isVisible, width, onToggle, isMobile }: SidebarProps) => {
       gap={6}
       className={clsx(styles.sidebar, isMobile ? styles.sidebarMobile : '')}
     >
-      <View
-        direction="row"
-        align="center"
-        justify="space-between"
-        paddingInline={2}
-        paddingBlock={4}
-      >
-        <Text variant="featured-3" weight="bold" color="primary">
-          Legacy Insight
-        </Text>
+      <View gap={2} direction="row">
+        <View className={styles.logoContainer}>
+          <Image
+            src={`/logo-${colorMode}.svg`}
+            alt="Legacy Insight"
+            width={240}
+            height={40}
+            className={styles.logo}
+          />
+        </View>
+
         {isMobile && (
           <Button
             variant="ghost"
@@ -53,9 +42,8 @@ const Sidebar = ({ isVisible, width, onToggle, isMobile }: SidebarProps) => {
           />
         )}
       </View>
-
       <View direction="column" gap={1} grow>
-        {navItems.map((item) => {
+        {NAV_ITEMS.map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link
@@ -94,16 +82,4 @@ const Sidebar = ({ isVisible, width, onToggle, isMobile }: SidebarProps) => {
       </View>
     </View>
   );
-
-  if (isMobile) {
-    return sidebarContent;
-  }
-
-  return (
-    <div style={{ '--sidebar-width': `${width}px` } as React.CSSProperties}>
-      {sidebarContent}
-    </div>
-  );
 };
-
-export default Sidebar;

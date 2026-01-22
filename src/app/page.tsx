@@ -3,12 +3,9 @@ import { View, Text } from 'reshaped';
 const HomePage = () => {
   return (
     <View gap={4}>
-      <Text variant="featured-2" weight="bold">
-        Dashboard
-      </Text>
+      <Text variant="title-6">Dashboard</Text>
       <Text variant="body-2" color="neutral-faded">
-        Welcome to your Legacy Insight dashboard. Here you can find an overview
-        of your campaigns and integrations.
+        Gestão de campanhas do Instagram, Facebook e outras ferramentas da Meta
       </Text>
     </View>
   );

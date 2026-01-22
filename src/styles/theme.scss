@@ -1,11 +1,11 @@
-[data-rs-theme*=' legacy '],
+[data-rs-theme*='legacy'],
 [data-rs-theme='legacy'] {
   --rs-color-brand: #828fc4;
   --rs-color-on-background-primary: oklch(1 0 0);
   --rs-color-on-brand: oklch(1 0 0);
 }
 
-[data-rs-theme*=' legacy '][data-rs-color-mode='light'],
+[data-rs-theme*='legacy'][data-rs-color-mode='light'],
 [data-rs-theme='legacy'][data-rs-color-mode='light'] {
   --rs-color-background-primary: #828fc4;
   --rs-color-background-primary-faded: #eceef6;
@@ -25,7 +25,7 @@
   --rs-color-text-secondary: #9da8d4;
 }
 
-[data-rs-theme*=' legacy '][data-rs-color-mode='dark'],
+[data-rs-theme*='legacy'][data-rs-color-mode='dark'],
 [data-rs-theme='legacy'][data-rs-color-mode='dark'] {
   --rs-color-background-primary: #7581b0;
   --rs-color-background-primary-faded: #1a1d27;

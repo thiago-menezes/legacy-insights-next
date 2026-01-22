@@ -1,4 +1,5 @@
-import { Inter } from 'next/font/google';
+import clsx from 'clsx';
+import { Zalando_Sans_Expanded } from 'next/font/google';
 import localFont from 'next/font/local';
 import 'reshaped/bundle.css';
 import './icon/tabler-300.css';
@@ -6,8 +7,18 @@ import '@/styles/global.scss';
 import { Shell } from '@/components/shell';
 import Providers from './providers';
 
-const inter = Inter({
+const montserrat = Zalando_Sans_Expanded({
   subsets: ['latin'],
+  variable: '--font-primary',
+  display: 'swap',
+  preload: true,
+});
+
+const zalando = Zalando_Sans_Expanded({
+  subsets: ['latin'],
+  variable: '--font-secondary',
+  display: 'swap',
+  preload: true,
 });
 
 const tablerIcons = localFont({
@@ -30,7 +41,7 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="pt-BR" className={tablerIcons.variable}>
-      <body className={inter.className}>
+      <body className={clsx(montserrat.className, zalando.className)}>
         <Providers>
           <Shell>{children}</Shell>
         </Providers>

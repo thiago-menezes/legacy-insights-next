@@ -15,19 +15,29 @@ You are an AI assistant working on the **Legacy Insight** project. This project 
 ## Naming & Structure Conventions
 
 - **Folders & Files**: ALWAYS use lowercase with hyphens (kebab-case). No camelCase.
-  - Correct: `user-profile/`, `header.tsx`, `style.module.scss`.
-  - Incorrect: `UserProfile/`, `Header.tsx`, `styles.module.scss`.
+  - Correct: `user-profile/`, `header.tsx`, `styles.module.scss`.
+  - Incorrect: `UserProfile/`, `Header.tsx`, `style.module.scss`.
 - **Component Structure**:
-  - **Single File Pattern**: If the component is small and only needs one file, use `component-name.tsx`.
-  - **Folder Pattern**: If the component needs more files (styles, hooks, etc.), create a folder `component-name/` with an `index.tsx`.
+  - **Single File Pattern**: Small/Pure components use `component-name.tsx`.
+  - **Folder Pattern**: Orchestrator or complex components use `component-name/` folder.
 - **Folder Contents**:
-  - `index.tsx`: Main component file.
-  - `style.module.scss`: Component-specific styles (always singular `style`).
-  - `hook.ts`: Component logic/hooks.
-  - `type.ts`: interface definitions (using `interface`).
-  - `utils.ts`: Helper functions.
-  - `constants.ts`: For configuration, numbers, etc. **NOT for UI text content**.
+  - `index.tsx`: Main component / Orchestrator.
+  - `styles.module.scss`: Component-specific styles (plural `styles`).
+  - `hooks.ts`: Component logic/state (plural `hooks`).
+  - `types.ts`: interface definitions.
+  - `utils.ts`: Pure helper functions / persistence.
+  - `constants.ts`: Configuration and internal values.
   - `spec.tsx`: Component tests.
+
+## The Peak Component Pattern (HFSA Peak)
+
+The `src/components/shell` is the reference for complex architectural organization:
+
+1.  **State Orchestration**: The `index.tsx` is a pure orchestrator. It consumes a single custom hook (`hooks.ts`) and distributes props to specialized sub-components.
+2.  **Logic Separation**: 100% of state, effects, and event handlers live in `hooks.ts`. The component remains a visual-only template.
+3.  **Persistence & Helpers**: Any logic related to browser APIs (localStorage) or data transformation lives in `utils.ts`, keeping the hooks focused on React state.
+4.  **Sub-Componentization**: Large parts (Sidebar, Header) are extracted into their own sub-folders using the same pattern, ensuring a recursive and scalable structure.
+5.  **Strict Typing**: All components use `interface` for props and shared types in `types.ts`.
 
 - **Shared Components**: Located in `src/components`.
 - **Feature Components**: Located in `src/features/[feature-name]`.

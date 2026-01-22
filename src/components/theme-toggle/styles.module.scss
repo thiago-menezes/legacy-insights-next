@@ -1,0 +1,55 @@
+$highlight-color: #9810fa;
+
+.toggle {
+  position: relative;
+  width: 68px;
+  height: 32px;
+  background-color: var(--rs-color-background-faded);
+  border: 1px solid var(--rs-color-border-neutral-faded);
+  border-radius: 999px;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background-color var(--rs-duration-fast) var(--rs-easing-standard);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+
+  &:hover {
+    filter: brightness(0.98);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--rs-color-foreground-neutral);
+  }
+}
+
+.iconWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  z-index: 1;
+  pointer-events: none;
+  color: var(--rs-color-neutral-faded);
+}
+
+.iconActive {
+  color: var(--rs-color-white);
+}
+
+.thumb {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background-color: $highlight-color;
+  border-radius: 999px;
+  z-index: 0;
+}
+
+.thumbDark {
+  right: 4px;
+}

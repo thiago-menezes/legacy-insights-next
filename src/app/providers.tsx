@@ -4,7 +4,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { PropsWithChildren, useLayoutEffect, useState } from 'react';
 import { Reshaped, ToastProvider } from 'reshaped';
-import 'reshaped/themes/slate/theme.css';
 
 const Providers = ({ children }: PropsWithChildren) => {
   const [queryClient] = useState(() => new QueryClient());
@@ -21,7 +20,7 @@ const Providers = ({ children }: PropsWithChildren) => {
   if (delayToRender) return <></>;
 
   return (
-    <Reshaped theme="slate" defaultColorMode="dark">
+    <Reshaped theme="legacy" defaultColorMode="dark">
       <ToastProvider>
         <QueryClientProvider client={queryClient}>
           {children}
