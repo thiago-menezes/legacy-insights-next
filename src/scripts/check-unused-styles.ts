@@ -1,5 +1,7 @@
+/* eslint-disable no-console */
 import { readFileSync, readdirSync } from 'node:fs';
 import { resolve, join, relative, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { parse } from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/typescript-estree';
 
@@ -10,6 +12,9 @@ type CssModuleInfo = {
   usedClasses: Set<string>;
   referenced: boolean;
 };
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const projectRoot = resolve(__dirname, '..');
 const sourceDir = join(projectRoot, '.');

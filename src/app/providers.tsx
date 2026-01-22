@@ -26,9 +26,9 @@ const Providers = ({ children }: PropsWithChildren) => {
       <ToastProvider>
         <QueryClientProvider client={queryClient}>
           {children}
-          {process.env.NODE_ENV === 'development' ? (
+          {process.env.NODE_ENV === 'development' && (
             <ReactQueryDevtools initialIsOpen={false} />
-          ) : null}
+          )}
         </QueryClientProvider>
       </ToastProvider>
     </Reshaped>

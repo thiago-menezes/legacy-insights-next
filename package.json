@@ -1,5 +1,6 @@
 {
   "name": "boilerplate-do-thi",
+  "type": "module",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -55,8 +56,8 @@
     "@types/node": "^25.0.10",
     "@types/react": "^19.2.9",
     "@types/react-dom": "^19.2.3",
-    "@typescript-eslint/eslint-plugin": "^8.48.0",
-    "@typescript-eslint/parser": "^8.48.0",
+    "@typescript-eslint/eslint-plugin": "^8.53.1",
+    "@typescript-eslint/parser": "^8.53.1",
     "baseline-browser-mapping": "^2.9.17",
     "concurrently": "^9.2.1",
     "conventional-changelog-conventionalcommits": "^9.1.0",
@@ -70,6 +71,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "globals": "^17.0.0",
     "husky": "^9.1.7",
+    "happy-dom": "^20.3.4",
     "jsdom": "^27.4.0",
     "json-server": "^1.0.0-beta.4",
     "postcss": "^8.5.6",
@@ -78,8 +80,17 @@
     "semantic-release": "^25.0.2",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.48.0",
-    "vitest": "^4.0.17"
+    "typescript-eslint": "^8.53.1",
+    "vitest": "^4.0.17",
+    "@stoplight/prism-cli": "^5.14.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@vitejs/plugin-react": "^5.1.2",
+    "@vitest/browser": "4.0.17",
+    "@vitest/coverage-v8": "^4.0.17",
+    "@vitest/ui": "4.0.17",
+    "autoprefixer": "^10.4.23",
+    "playwright": "^1.57.0",
+    "vite": "^7.3.1"
   },
   "overrides": {
     "@tinyhttp/res": "2.2.6"
