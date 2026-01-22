@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import 'reshaped/bundle.css';
 import './icon/tabler-300.css';
 import '@/styles/global.scss';
+import { Shell } from '@/components/shell';
 import Providers from './providers';
 
 const inter = Inter({
@@ -30,7 +31,9 @@ const RootLayout = ({
   return (
     <html lang="pt-BR" className={tablerIcons.variable}>
       <body className={inter.className}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Shell>{children}</Shell>
+        </Providers>
       </body>
     </html>
   );

@@ -1,0 +1,112 @@
+$mobile: 768px;
+$tablet: 1024px;
+
+.shell {
+  overflow: hidden;
+  background-color: var(--rs-color-background-primary-faded);
+  position: relative;
+}
+
+.sidebar {
+  border-inline-end: 1px solid var(--rs-color-border-neutral-faded);
+  flex-shrink: 0;
+  height: 100vh;
+  background-color: var(--rs-color-background-neutral-faded);
+  transition:
+    width 0.3s ease,
+    transform 0.3s ease;
+  position: relative;
+  z-index: 100;
+  width: var(--sidebar-width, 280px);
+
+  @media (max-width: $mobile) {
+    &.sidebarMobile {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 280px !important;
+      z-index: 1000;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+    }
+  }
+}
+
+.resizeHandle {
+  width: 4px;
+  height: 100vh;
+  background-color: transparent;
+  cursor: col-resize;
+  position: relative;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--rs-color-border-primary);
+  }
+
+  &:active {
+    background-color: var(--rs-color-border-primary);
+  }
+
+  @media (max-width: $mobile) {
+    display: none;
+  }
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.mainWrapper {
+  overflow: hidden;
+  height: 100vh;
+  flex: 1;
+}
+
+.header {
+  border-block-end: 1px solid var(--rs-color-border-neutral-faded);
+  background-color: var(--rs-color-background-neutral-faded);
+  z-index: 10;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.headerCollapsed {
+  display: flex;
+  justify-content: center;
+  padding: 8px;
+  background-color: var(--rs-color-background-neutral-faded);
+  border-block-end: 1px solid var(--rs-color-border-neutral-faded);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: var(--rs-color-background-primary-faded);
+  }
+}
+
+.content {
+  overflow-y: auto;
+  background-color: transparent;
+  transition: padding 0.3s ease;
+}
+
+.navButton {
+  justify-content: flex-start !important;
+}
