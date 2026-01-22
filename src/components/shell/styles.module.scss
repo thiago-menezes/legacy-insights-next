@@ -38,3 +38,7 @@ $tablet: 1024px;
   background-color: transparent;
   transition: padding 0.3s ease;
 }
+
+.mainContainer {
+  background-color: var(--rs-color-background-elevation-base);
+}

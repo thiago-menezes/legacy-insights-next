@@ -2,15 +2,25 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import { View, Text, Button, useTheme } from 'reshaped';
 import { Icon } from '@/components/icon';
-import { NAV_ITEMS } from './constants';
+import { NAVIGATION_SECTIONS } from './constants';
 import styles from './styles.module.scss';
 import { SidebarProps } from './types';
 
 export const Sidebar = ({ isVisible, onToggle, isMobile }: SidebarProps) => {
   const pathname = usePathname();
   const { colorMode } = useTheme();
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+
+  const toggleExpand = (itemLabel: string) => {
+    setExpandedItems((prev) =>
+      prev.includes(itemLabel)
+        ? prev.filter((label) => label !== itemLabel)
+        : [...prev, itemLabel],
+    );
+  };
 
   if (!isVisible) return;
 
@@ -42,29 +52,104 @@ export const Sidebar = ({ isVisible, onToggle, isMobile }: SidebarProps) => {
           />
         )}
       </View>
-      <View direction="column" gap={1} grow>
-        {NAV_ITEMS.map((item) => {
-          const isActive = pathname === item.href;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              style={{ textDecoration: 'none', width: '100%' }}
-              onClick={isMobile ? onToggle : undefined}
-            >
-              <Button
-                variant={isActive ? 'faded' : 'ghost'}
-                color={isActive ? 'primary' : 'neutral'}
-                fullWidth
-                as="div"
-                icon={<Icon name={item.icon} />}
-                className={styles.navButton}
-              >
-                <Text variant="body-2">{item.label}</Text>
-              </Button>
-            </Link>
-          );
-        })}
+
+      <View direction="column" gap={6} grow>
+        {NAVIGATION_SECTIONS.map((section) => (
+          <View key={section.title} direction="column" gap={1}>
+            {section.title && (
+              <View paddingInline={2} paddingBlock={1}>
+                <Text variant="caption-1" color="neutral">
+                  {section.title}
+                </Text>
+              </View>
+            )}
+            {section.items.map((item) => {
+              const isActive = pathname === item.href;
+              const isExpanded = expandedItems.includes(item.label);
+              const hasActiveSubItem =
+                item.subItems?.some((subItem) => pathname === subItem.href) ||
+                false;
+
+              return (
+                <View key={item.href} direction="column" gap={1}>
+                  {item.expandable && item.subItems ? (
+                    <>
+                      <Button
+                        variant={
+                          isActive || hasActiveSubItem ? 'faded' : 'ghost'
+                        }
+                        color={
+                          isActive || hasActiveSubItem ? 'primary' : 'neutral'
+                        }
+                        as="div"
+                        icon={<Icon name={item.icon} />}
+                        endIcon={
+                          <Icon
+                            className={styles.navButtonIcon}
+                            name={isExpanded ? 'chevron-down' : 'chevron-right'}
+                          />
+                        }
+                        className={styles.navButton}
+                        onClick={() => toggleExpand(item.label)}
+                      >
+                        <span className={styles.buttonContent}>
+                          {item.label}
+                        </span>
+                      </Button>
+                      {isExpanded && (
+                        <View direction="column" gap={1} paddingStart={8}>
+                          {item.subItems.map((subItem) => {
+                            const isSubItemActive = pathname === subItem.href;
+                            return (
+                              <Link
+                                key={subItem.href}
+                                href={subItem.href}
+                                style={{
+                                  textDecoration: 'none',
+                                  width: '100%',
+                                }}
+                                onClick={isMobile ? onToggle : undefined}
+                              >
+                                <Button
+                                  variant={isSubItemActive ? 'faded' : 'ghost'}
+                                  color={
+                                    isSubItemActive ? 'primary' : 'neutral'
+                                  }
+                                  fullWidth
+                                  as="div"
+                                  className={styles.navButton}
+                                >
+                                  <Text variant="body-2">{subItem.label}</Text>
+                                </Button>
+                              </Link>
+                            );
+                          })}
+                        </View>
+                      )}
+                    </>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      style={{ textDecoration: 'none', width: '100%' }}
+                      onClick={isMobile ? onToggle : undefined}
+                    >
+                      <Button
+                        variant={isActive ? 'faded' : 'ghost'}
+                        color={isActive ? 'primary' : 'neutral'}
+                        fullWidth
+                        as="div"
+                        icon={<Icon name={item.icon} />}
+                        className={styles.navButton}
+                      >
+                        <Text variant="body-2">{item.label}</Text>
+                      </Button>
+                    </Link>
+                  )}
+                </View>
+              );
+            })}
+          </View>
+        ))}
       </View>
 
       <View paddingInline={2}>

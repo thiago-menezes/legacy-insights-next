@@ -50,6 +50,7 @@ export const Shell = ({ children }: PropsWithChildren) => {
             height="100%"
             padding={6}
             shadow="raised"
+            className={styles.mainContainer}
           >
             {children}
           </View>

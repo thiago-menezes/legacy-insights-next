@@ -1,12 +1,30 @@
-import { IconProps } from '@/components/icon';
+import { NavSection } from './types';
 
-export const NAV_ITEMS: {
-  label: string;
-  href: string;
-  icon: IconProps['name'];
-}[] = [
-  { label: 'Dashboard', href: '/', icon: 'layout-dashboard' },
-  { label: 'Campaigns', href: '/campaigns', icon: 'telescope' },
-  { label: 'Integrations', href: '/integrations', icon: 'plug' },
-  { label: 'Settings', href: '/settings', icon: 'settings' },
+export const NAVIGATION_SECTIONS: NavSection[] = [
+  {
+    title: 'Menu',
+    items: [
+      { label: 'Dashboard', href: '/', icon: 'chart-pie' },
+      {
+        label: 'Campanhas',
+        href: '/campanhas',
+        icon: 'chart-line',
+        expandable: true,
+        subItems: [
+          { label: 'Meta', href: '/campanhas/meta' },
+          { label: 'Google', href: '/campanhas/google' },
+          { label: 'WhatsApp', href: '/campanhas/whatsapp' },
+        ],
+      },
+      { label: 'Integrações', href: '/integracoes', icon: 'arrows-exchange' },
+    ],
+  },
+  {
+    title: 'Gestão',
+    items: [
+      { label: 'Financeiro', href: '/financeiro', icon: 'credit-card' },
+      { label: 'Relatórios', href: '/relatorios', icon: 'file-text' },
+      { label: 'Workspaces', href: '/workspaces', icon: 'file-text' },
+    ],
+  },
 ];

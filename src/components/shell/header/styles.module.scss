@@ -1,6 +1,6 @@
 .header {
   border-block-end: 1px solid var(--rs-color-border-neutral-faded);
-  background-color: var(--rs-color-background-neutral-faded);
+  background-color: var(--rs-color-background-elevation-base);
   z-index: 10;
   height: 64px;
   transition:
@@ -28,7 +28,7 @@
 
 .shortcutBadge {
   padding: 4px 6px;
-  background-color: var(--rs-color-background-neutral-faded);
+  background-color: var(--rs-color-background-elevation-base);
   border-radius: 4px;
   border: 1px solid var(--rs-color-border-neutral-faded);
 }
@@ -45,13 +45,13 @@
   height: 6px;
   background-color: #b42318;
   border-radius: 50%;
-  border: 1px solid var(--rs-color-background-neutral-faded);
+  border: 1px solid var(--rs-color-background-elevation-base);
 }
 
 .headerCollapsed {
   display: flex;
   justify-content: center;
-  background-color: var(--rs-color-background-neutral-faded);
+  background-color: var(--rs-color-background-elevation-base);
   border-block-end: 1px solid var(--rs-color-border-neutral-faded);
   transition: all 0.3s ease;
   position: fixed;

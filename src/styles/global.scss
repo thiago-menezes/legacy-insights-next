@@ -1,9 +1,7 @@
 @use './tokens';
 
 body {
-  background-color: rgb(
-    from var(--rs-color-background-primary-faded) r g b / 0.3
-  );
+  background-color: var(--rs-color-background-neutral-faded) !important;
   overflow-x: hidden;
 }
 
