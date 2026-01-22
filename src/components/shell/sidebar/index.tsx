@@ -57,7 +57,11 @@ export const Sidebar = ({ isVisible, onToggle, isMobile }: SidebarProps) => {
         {NAVIGATION_SECTIONS.map((section) => (
           <View key={section.title} direction="column" gap={1}>
             {section.title && (
-              <View paddingInline={2} paddingBlock={1}>
+              <View
+                key={`title-${section.title}`}
+                paddingInline={2}
+                paddingBlock={1}
+              >
                 <Text variant="caption-1" color="neutral">
                   {section.title}
                 </Text>
@@ -70,82 +74,77 @@ export const Sidebar = ({ isVisible, onToggle, isMobile }: SidebarProps) => {
                 item.subItems?.some((subItem) => pathname === subItem.href) ||
                 false;
 
-              return (
-                <View key={item.href} direction="column" gap={1}>
-                  {item.expandable && item.subItems ? (
-                    <>
-                      <Button
-                        variant={
-                          isActive || hasActiveSubItem ? 'faded' : 'ghost'
-                        }
-                        color={
-                          isActive || hasActiveSubItem ? 'primary' : 'neutral'
-                        }
-                        as="div"
-                        icon={<Icon name={item.icon} />}
-                        endIcon={
-                          <Icon
-                            className={styles.navButtonIcon}
-                            name={isExpanded ? 'chevron-down' : 'chevron-right'}
-                          />
-                        }
-                        className={styles.navButton}
-                        onClick={() => toggleExpand(item.label)}
-                      >
-                        <span className={styles.buttonContent}>
-                          {item.label}
-                        </span>
-                      </Button>
-                      {isExpanded && (
-                        <View direction="column" gap={1} paddingStart={8}>
-                          {item.subItems.map((subItem) => {
-                            const isSubItemActive = pathname === subItem.href;
-                            return (
-                              <Link
-                                key={subItem.href}
-                                href={subItem.href}
-                                style={{
-                                  textDecoration: 'none',
-                                  width: '100%',
-                                }}
-                                onClick={isMobile ? onToggle : undefined}
-                              >
-                                <Button
-                                  variant={isSubItemActive ? 'faded' : 'ghost'}
-                                  color={
-                                    isSubItemActive ? 'primary' : 'neutral'
-                                  }
-                                  fullWidth
-                                  as="div"
-                                  className={styles.navButton}
-                                >
-                                  <Text variant="body-2">{subItem.label}</Text>
-                                </Button>
-                              </Link>
-                            );
-                          })}
-                        </View>
-                      )}
-                    </>
-                  ) : (
-                    <Link
-                      href={item.href}
-                      style={{ textDecoration: 'none', width: '100%' }}
-                      onClick={isMobile ? onToggle : undefined}
+              if (item.expandable && item.subItems) {
+                return (
+                  <View key={item.href} direction="column" gap={1}>
+                    <Button
+                      variant={isActive || hasActiveSubItem ? 'faded' : 'ghost'}
+                      color={
+                        isActive || hasActiveSubItem ? 'primary' : 'neutral'
+                      }
+                      as="div"
+                      icon={<Icon name={item.icon} />}
+                      endIcon={
+                        <Icon
+                          className={styles.navButtonIcon}
+                          name={isExpanded ? 'chevron-down' : 'chevron-right'}
+                        />
+                      }
+                      className={styles.navButton}
+                      onClick={() => toggleExpand(item.label)}
                     >
-                      <Button
-                        variant={isActive ? 'faded' : 'ghost'}
-                        color={isActive ? 'primary' : 'neutral'}
-                        fullWidth
-                        as="div"
-                        icon={<Icon name={item.icon} />}
-                        className={styles.navButton}
-                      >
-                        <Text variant="body-2">{item.label}</Text>
-                      </Button>
-                    </Link>
-                  )}
-                </View>
+                      <span className={styles.buttonContent}>{item.label}</span>
+                    </Button>
+                    {isExpanded && (
+                      <View direction="column" gap={1} paddingStart={8}>
+                        {item.subItems.map((subItem) => {
+                          const isSubItemActive = pathname === subItem.href;
+                          return (
+                            <Link
+                              key={subItem.href}
+                              href={subItem.href}
+                              style={{
+                                textDecoration: 'none',
+                                width: '100%',
+                              }}
+                              onClick={isMobile ? onToggle : undefined}
+                            >
+                              <Button
+                                variant={isSubItemActive ? 'faded' : 'ghost'}
+                                color={isSubItemActive ? 'primary' : 'neutral'}
+                                fullWidth
+                                as="div"
+                                className={styles.navButton}
+                              >
+                                <Text variant="body-2">{subItem.label}</Text>
+                              </Button>
+                            </Link>
+                          );
+                        })}
+                      </View>
+                    )}
+                  </View>
+                );
+              }
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  style={{ textDecoration: 'none', width: '100%' }}
+                  onClick={isMobile ? onToggle : undefined}
+                >
+                  <Button
+                    variant={isActive ? 'faded' : 'ghost'}
+                    color={isActive ? 'primary' : 'neutral'}
+                    fullWidth
+                    as="div"
+                    icon={<Icon name={item.icon} />}
+                    className={styles.navButton}
+                  >
+                    <Text variant="body-2">{item.label}</Text>
+                  </Button>
+                </Link>
               );
             })}
           </View>

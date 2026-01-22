@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import { View, Text, Button, TextField } from 'reshaped';
 import { Icon } from '../../icon';
 import { ThemeToggle } from '../../theme-toggle';
@@ -74,14 +74,15 @@ export const Header = ({
 
       <View direction="row" align="center" gap={3}>
         {!isMobile && (
-          <>
+          <Fragment>
             <Button
+              key="button-to-enter-fs"
               variant="ghost"
               icon={<Icon name="maximize" />}
               onClick={enterFullScreen}
               aria-label="Exit fullscreen"
             />
-            <div className={styles.searchWrapper}>
+            <div key="search-wrapper" className={styles.searchWrapper}>
               <TextField
                 id="header-search"
                 name="search"
@@ -97,7 +98,7 @@ export const Header = ({
                 className={styles.searchField}
               />
             </div>
-          </>
+          </Fragment>
         )}
 
         <div className={styles.notificationWrapper}>
