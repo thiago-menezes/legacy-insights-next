@@ -28,11 +28,7 @@ const RootLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <html
-      lang="pt-BR"
-      className={tablerIcons.variable}
-      suppressHydrationWarning
-    >
+    <html lang="pt-BR" className={tablerIcons.variable}>
       <body className={inter.className}>
         <Providers>{children}</Providers>
       </body>
