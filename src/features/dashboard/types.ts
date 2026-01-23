@@ -62,7 +62,6 @@ export interface SummaryMetric {
 export interface DashboardData {
   summaryMetrics: SummaryMetric[];
   investmentRevenueData: ChartDataPoint[];
-  captureSaleData: ChartDataPoint[];
   funnelStages: FunnelStage[];
   funnelStagesPrevious: FunnelStage[];
   metaAds: AdItem[];

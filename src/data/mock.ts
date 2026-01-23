@@ -104,7 +104,6 @@ export const googleAds: AdItem[] = [
 export const dashboardMockData: DashboardData = {
   summaryMetrics,
   investmentRevenueData,
-  captureSaleData,
   funnelStages,
   funnelStagesPrevious: [
     {

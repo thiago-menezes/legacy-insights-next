@@ -26,7 +26,6 @@ export const Dashboard = () => {
   const {
     summaryMetrics,
     investmentRevenueData,
-    captureSaleData,
     funnelStages,
     funnelStagesPrevious,
     metaAds,
@@ -53,7 +52,7 @@ export const Dashboard = () => {
         </Button>
       </View>
 
-      <Grid columnGap={4} rowGap={4} columns={{ s: 1, l: 2, xl: 4 }}>
+      <Grid columnGap={4} rowGap={4} columns={{ s: 1, m: 2, xl: 4 }}>
         {summaryMetrics.map((metric) => (
           <MetricCard
             key={metric.title}
@@ -66,7 +65,7 @@ export const Dashboard = () => {
         ))}
       </Grid>
 
-      <Grid columnGap={4} rowGap={4} columns={2}>
+      <Grid columnGap={4} rowGap={4} columns={{ s: 1, l: 2 }}>
         <DashboardChart
           title="Investimento vs Receita"
           data={investmentRevenueData}
@@ -80,12 +79,6 @@ export const Dashboard = () => {
           previousStages={funnelStagesPrevious}
           periodLabel="01 Dez, 2025 - 31 Dez, 2025"
           previousPeriodLabel="01 Nov, 2025 - 30 Nov, 2025"
-        />
-
-        <DashboardChart
-          title="Captação vs Venda"
-          data={captureSaleData}
-          type="capture-sale"
         />
       </Grid>
 

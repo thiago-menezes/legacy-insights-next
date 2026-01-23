@@ -56,7 +56,7 @@ export const FunnelChart = ({
           )}
         </View>
 
-        <View gap={3}>
+        <View gap={2}>
           {stages.map((stage, index) => {
             const percentage = (stage.value / maxValue) * 100;
             const color = stage.color;
@@ -68,7 +68,7 @@ export const FunnelChart = ({
                 : 0;
 
               return (
-                <View key={stage.name} direction="row" align="center" gap={3}>
+                <View key={stage.name} direction="row" align="center" gap={2}>
                   {/* Previous Period (Left) */}
                   <View
                     grow
@@ -96,6 +96,7 @@ export const FunnelChart = ({
                             backgroundColor: color,
                             opacity: 0.5,
                             minWidth: 4,
+                            marginLeft: 8,
                           },
                         }}
                       />
@@ -128,6 +129,7 @@ export const FunnelChart = ({
                             width: `${percentage}%`,
                             backgroundColor: color,
                             minWidth: 4,
+                            marginRight: 8,
                           },
                         }}
                       />
