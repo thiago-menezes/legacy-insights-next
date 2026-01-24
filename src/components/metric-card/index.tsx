@@ -1,7 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
-import { Card, View, Text } from 'reshaped';
+import { Card, View, Text, Badge } from 'reshaped';
 import { Icon } from '@/components/icon';
 import styles from './styles.module.scss';
 import { MetricCardProps } from './types';
@@ -37,17 +36,16 @@ export const MetricCard = ({
           </View>
 
           {percentageChange !== undefined && (
-            <Text
-              variant="caption-1"
+            <Badge
               color={changeColor}
-              className={clsx(
-                styles.percentageText,
-                styles[`percentageText_${changeColor}`],
-              )}
+              variant="faded"
+              icon={
+                <Icon name={isPositive ? 'trending-up' : 'trending-down'} />
+              }
+              rounded
             >
-              <Icon name={isPositive ? 'trending-up' : 'trending-down'} />
               {formatPercentage(percentageChange)}
-            </Text>
+            </Badge>
           )}
         </View>
 

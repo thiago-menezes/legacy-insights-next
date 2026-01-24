@@ -1,0 +1,297 @@
+$mobile: 768px;
+$tablet: 1024px;
+
+.campaigns {
+  width: 100%;
+}
+
+// Header with tabs
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--rs-unit-x4);
+
+  @media (max-width: $mobile) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--rs-unit-x4);
+}
+
+.metaLogo {
+  width: 32px;
+  height: 32px;
+}
+
+// Tabs
+.tabs {
+  display: flex;
+  gap: var(--rs-unit-x1);
+  background-color: var(--rs-color-background-neutral-faded);
+  padding: var(--rs-unit-x1);
+  border-radius: var(--rs-radius-medium);
+}
+
+.tab {
+  padding: var(--rs-unit-x2) var(--rs-unit-x4);
+  border-radius: var(--rs-radius-small);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--rs-color-foreground-neutral-faded);
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--rs-color-foreground-neutral);
+  }
+
+  &.tabActive {
+    background-color: var(--rs-color-background-elevated);
+    color: var(--rs-color-foreground-neutral);
+    box-shadow: var(--rs-shadow-raised);
+  }
+}
+
+// Metrics Grid
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--rs-unit-x4);
+
+  @media (max-width: $tablet) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: $mobile) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Metric Card Styles
+.percentageText {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--rs-unit-x1);
+  padding: var(--rs-unit-x1) var(--rs-unit-x2);
+  border-radius: var(--rs-radius-medium);
+  font-size: 12px;
+}
+
+.percentageText_positive {
+  background-color: var(--rs-color-border-positive-faded);
+}
+
+.percentageText_critical {
+  background-color: var(--rs-color-border-critical-faded);
+}
+
+// Filter Bar
+.filterBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--rs-unit-x3);
+
+  @media (max-width: $mobile) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.filterBarLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--rs-unit-x3);
+  flex-wrap: wrap;
+}
+
+// Table Container
+.tableContainer {
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--rs-radius-medium);
+  border: 1px solid var(--rs-color-border-neutral-faded);
+}
+
+.tableWrapper {
+  width: 100%;
+  height: 450px;
+
+  --ag-font-family: Montserrat, sans-serif;
+  --ag-font-size: 14px;
+  --ag-row-height: 72px;
+  --ag-header-height: 48px;
+  --ag-cell-horizontal-padding: 16px;
+  --ag-borders: none;
+  --ag-row-border-width: 1px;
+}
+
+// Status Badge
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--rs-unit-x1);
+  padding: var(--rs-unit-x1) var(--rs-unit-x2);
+  border-radius: var(--rs-radius-medium);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.statusBadge_active {
+  background-color: var(--rs-color-border-positive-faded);
+  color: var(--rs-color-foreground-positive);
+}
+
+.statusBadge_finished {
+  background-color: var(--rs-color-border-neutral-faded);
+  color: var(--rs-color-foreground-neutral-faded);
+}
+
+.statusBadge_disabled {
+  background-color: var(--rs-color-border-neutral-faded);
+  color: var(--rs-color-foreground-neutral-faded);
+}
+
+// Cell with change indicator
+.cellWithChange {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x1);
+  line-height: 1.3;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.cellValue {
+  font-weight: 500;
+}
+
+.cellChange {
+  display: flex;
+  align-items: center;
+  gap: var(--rs-unit-x1);
+  font-size: 12px;
+}
+
+.cellChange_positive {
+  color: var(--rs-color-foreground-positive);
+}
+
+.cellChange_negative {
+  color: var(--rs-color-foreground-critical);
+}
+
+.cellPrevious {
+  font-size: 12px;
+  color: var(--rs-color-foreground-neutral-faded);
+}
+
+// Campaign name cell
+.campaignName {
+  color: var(--rs-color-foreground-primary);
+  font-weight: 500;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Budget cell
+.budgetCell {
+  display: flex;
+  align-items: center;
+  gap: var(--rs-unit-x2);
+}
+
+.editIcon {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+  color: var(--rs-color-foreground-neutral-faded);
+
+  &:hover {
+    color: var(--rs-color-foreground-neutral);
+  }
+}
+
+.budgetCell:hover .editIcon {
+  opacity: 1;
+}
+
+// Pagination
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--rs-unit-x3) var(--rs-unit-x4);
+  border-top: 1px solid var(--rs-color-border-neutral-faded);
+  background-color: var(--rs-color-background-elevated);
+  flex-wrap: wrap;
+  gap: var(--rs-unit-x3);
+
+  @media (max-width: $mobile) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.paginationInfo {
+  font-size: 14px;
+  color: var(--rs-color-foreground-neutral-faded);
+}
+
+.paginationControls {
+  display: flex;
+  align-items: center;
+  gap: var(--rs-unit-x3);
+}
+
+.pageSize {
+  display: flex;
+  align-items: center;
+  gap: var(--rs-unit-x2);
+  font-size: 14px;
+  color: var(--rs-color-foreground-neutral-faded);
+}
+
+.pageSizeSelect {
+  padding: var(--rs-unit-x1) var(--rs-unit-x2);
+  border: 1px solid var(--rs-color-border-neutral-faded);
+  border-radius: var(--rs-radius-small);
+  background-color: var(--rs-color-background-elevated);
+  color: var(--rs-color-foreground-neutral);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.pageButtons {
+  display: flex;
+  align-items: center;
+  gap: var(--rs-unit-x1);
+}
+
+.pageInfo {
+  font-size: 14px;
+  color: var(--rs-color-foreground-neutral);
+  padding: 0 var(--rs-unit-x2);
+}
+
+// Selection indicator
+.selectionInfo {
+  font-size: 14px;
+  color: var(--rs-color-foreground-neutral-faded);
+}

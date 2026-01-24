@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 import Image from 'next/image';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { View, Text, Button, useTheme } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { NAVIGATION_SECTIONS } from './constants';
+import { SidebarItem } from './item';
 import styles from './styles.module.scss';
 import { SidebarProps } from './types';
 
@@ -82,7 +82,6 @@ export const Sidebar = ({ isVisible, onToggle, isMobile }: SidebarProps) => {
                       color={
                         isActive || hasActiveSubItem ? 'primary' : 'neutral'
                       }
-                      as="div"
                       icon={<Icon name={item.icon} />}
                       endIcon={
                         <Icon
@@ -93,32 +92,22 @@ export const Sidebar = ({ isVisible, onToggle, isMobile }: SidebarProps) => {
                       className={styles.navButton}
                       onClick={() => toggleExpand(item.label)}
                     >
-                      <span className={styles.buttonContent}>{item.label}</span>
+                      {item.label}
                     </Button>
+
                     {isExpanded && (
                       <View direction="column" gap={1} paddingStart={8}>
                         {item.subItems.map((subItem) => {
                           const isSubItemActive = pathname === subItem.href;
                           return (
-                            <Link
+                            <SidebarItem
                               key={subItem.href}
                               href={subItem.href}
-                              style={{
-                                textDecoration: 'none',
-                                width: '100%',
-                              }}
-                              onClick={isMobile ? onToggle : undefined}
-                            >
-                              <Button
-                                variant={isSubItemActive ? 'faded' : 'ghost'}
-                                color={isSubItemActive ? 'primary' : 'neutral'}
-                                fullWidth
-                                as="div"
-                                className={styles.navButton}
-                              >
-                                <Text variant="body-2">{subItem.label}</Text>
-                              </Button>
-                            </Link>
+                              label={subItem.label}
+                              isActive={isSubItemActive}
+                              isMobile={isMobile}
+                              onToggle={onToggle}
+                            />
                           );
                         })}
                       </View>
@@ -128,23 +117,15 @@ export const Sidebar = ({ isVisible, onToggle, isMobile }: SidebarProps) => {
               }
 
               return (
-                <Link
+                <SidebarItem
                   key={item.href}
                   href={item.href}
-                  style={{ textDecoration: 'none', width: '100%' }}
-                  onClick={isMobile ? onToggle : undefined}
-                >
-                  <Button
-                    variant={isActive ? 'faded' : 'ghost'}
-                    color={isActive ? 'primary' : 'neutral'}
-                    fullWidth
-                    as="div"
-                    icon={<Icon name={item.icon} />}
-                    className={styles.navButton}
-                  >
-                    <Text variant="body-2">{item.label}</Text>
-                  </Button>
-                </Link>
+                  label={item.label}
+                  icon={item.icon}
+                  isActive={isActive}
+                  isMobile={isMobile}
+                  onToggle={onToggle}
+                />
               );
             })}
           </View>

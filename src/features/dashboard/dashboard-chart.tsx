@@ -97,6 +97,17 @@ export const DashboardChart = ({
               data={data}
               margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
             >
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: 'var(--rs-color-background-elevated)',
+                  border: '1px solid var(--rs-color-border-neutral-faded)',
+                  borderRadius: '8px',
+                  boxShadow: 'var(--rs-shadow-overlay)',
+                  zIndex: 99999,
+                }}
+                labelStyle={{ color: 'var(--rs-color-foreground-neutral)' }}
+                formatter={(value) => [formatCurrency(value as number), '']}
+              />
               <defs>
                 <linearGradient
                   id={`gradient-${primaryKey}`}
@@ -136,6 +147,7 @@ export const DashboardChart = ({
                 stroke="var(--rs-color-border-neutral-faded)"
                 vertical={false}
               />
+
               <XAxis
                 dataKey="name"
                 axisLine={false}
@@ -154,16 +166,7 @@ export const DashboardChart = ({
                 }}
                 tickFormatter={(value) => `${value / 1000}k`}
               />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: 'var(--rs-color-background-elevated)',
-                  border: '1px solid var(--rs-color-border-neutral-faded)',
-                  borderRadius: '8px',
-                  boxShadow: 'var(--rs-shadow-overlay)',
-                }}
-                labelStyle={{ color: 'var(--rs-color-foreground-neutral)' }}
-                formatter={(value) => [formatCurrency(value as number), '']}
-              />
+
               <Area
                 type="monotone"
                 dataKey={primaryKey}

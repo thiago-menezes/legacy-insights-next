@@ -2,11 +2,11 @@
 
 import { View, Button, Grid } from 'reshaped';
 import { Icon } from '@/components/icon';
+import { MetricCard } from '@/components/metric-card';
 import { PageTitle } from '@/components/page-title';
 import { DashboardChart } from './dashboard-chart';
 import { FunnelChart } from './funnel-chart';
 import { useDashboardData } from './hooks';
-import { MetricCard } from './metric-card';
 import { DashboardSkeleton } from './skeleton';
 import styles from './styles.module.scss';
 
@@ -31,14 +31,19 @@ export const Dashboard = () => {
         description="Gestão de campanhas do Instagram, Facebook e Google Ads"
       />
 
-      <View direction="row" gap={4} className={styles.filterBar}>
-        <Button variant="outline" icon={<Icon name="calendar" />}>
-          01 Dez, 2025 - 31 Dez, 2025
-        </Button>
-        <Button variant="outline" icon={<Icon name="adjustments-horizontal" />}>
-          Filtros
-        </Button>
-        <View grow />
+      <View direction="row" gap={4} justify="space-between">
+        <View direction="row" gap={4}>
+          <Button variant="outline" icon={<Icon name="calendar" />}>
+            01 Dez, 2025 - 31 Dez, 2025
+          </Button>
+          <Button
+            variant="outline"
+            icon={<Icon name="adjustments-horizontal" />}
+          >
+            Filtros
+          </Button>
+        </View>
+
         <Button variant="outline" endIcon={<Icon name="chevron-down" />}>
           Lançamentos
         </Button>

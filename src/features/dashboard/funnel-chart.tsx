@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, View, Text, Button } from 'reshaped';
+import { Card, View, Text, Button, Tooltip } from 'reshaped';
 import { Icon } from '@/components/icon';
 import styles from './styles.module.scss';
 import { FunnelChartProps } from './types';
@@ -68,36 +68,50 @@ export const FunnelChart = ({
 
               return (
                 <View key={stage.name} direction="row" align="center" gap={2}>
-                  {/* Previous Period (Left) */}
                   <View
                     grow
                     direction="row"
                     align="center"
                     justify="end"
                     gap={2}
-                    attributes={{ style: { flexBasis: 0 } }}
                   >
                     <View
                       grow
                       attributes={{
-                        style: { display: 'flex', justifyContent: 'flex-end' },
+                        style: {
+                          display: 'flex',
+                          justifyContent: 'flex-end',
+                          alignItems: 'center',
+                        },
                       }}
                     >
                       <Text variant="body-3" color="neutral-faded">
-                        {stage.name}
+                        {prevStage.name}
                       </Text>
-                      <View
-                        className={styles.funnelBar}
-                        height="24px"
-                        attributes={{
-                          style: {
-                            width: `${prevPercentage}%`,
-                            backgroundColor: color,
-                            minWidth: 4,
-                            marginLeft: 8,
-                          },
-                        }}
-                      />
+                      <Tooltip
+                        text={
+                          <View>
+                            <Text variant="body-3">{prevStage.name}</Text>
+                            <Text variant="body-3">{prevStage.value}</Text>
+                          </View>
+                        }
+                      >
+                        {(atributtes) => (
+                          <View
+                            className={styles.funnelBar}
+                            height="40px"
+                            attributes={{
+                              ...atributtes,
+                              style: {
+                                width: `${prevPercentage}%`,
+                                backgroundColor: color,
+                                minWidth: 4,
+                                marginLeft: 8,
+                              },
+                            }}
+                          ></View>
+                        )}
+                      </Tooltip>
                     </View>
                   </View>
 
@@ -115,21 +129,34 @@ export const FunnelChart = ({
                         style: {
                           display: 'flex',
                           justifyContent: 'flex-start',
+                          alignItems: 'center',
                         },
                       }}
                     >
-                      <View
-                        className={styles.funnelBar}
-                        height="24px"
-                        attributes={{
-                          style: {
-                            width: `${percentage}%`,
-                            backgroundColor: color,
-                            minWidth: 4,
-                            marginRight: 8,
-                          },
-                        }}
-                      />
+                      <Tooltip
+                        text={
+                          <View>
+                            <Text variant="body-3">{stage.name}</Text>
+                            <Text variant="body-3">{stage.value}</Text>
+                          </View>
+                        }
+                      >
+                        {(atributtes) => (
+                          <View
+                            className={styles.funnelBar}
+                            height="40px"
+                            attributes={{
+                              ...atributtes,
+                              style: {
+                                width: `${percentage}%`,
+                                backgroundColor: color,
+                                minWidth: 4,
+                                marginRight: 8,
+                              },
+                            }}
+                          />
+                        )}
+                      </Tooltip>
 
                       <Text variant="body-3" color="neutral-faded">
                         {stage.name}
