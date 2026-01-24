@@ -8,10 +8,12 @@ import { NAVIGATION_SECTIONS } from './constants';
 import { SidebarItem } from './item';
 import styles from './styles.module.scss';
 import { SidebarProps } from './types';
+import { WorkspaceSelector } from './workspace-selector';
 
 export const Sidebar = ({ isVisible, onToggle, isMobile }: SidebarProps) => {
   const pathname = usePathname();
   const { colorMode } = useTheme();
+
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
   const toggleExpand = (itemLabel: string) => {
@@ -41,6 +43,12 @@ export const Sidebar = ({ isVisible, onToggle, isMobile }: SidebarProps) => {
             height={40}
             className={styles.logo}
           />
+        </View>
+      </View>
+
+      <View gap={2} direction="row" align="center">
+        <View grow>
+          <WorkspaceSelector />
         </View>
 
         {isMobile && (

@@ -1,0 +1,111 @@
+.container {
+  width: 100%;
+}
+
+.trigger {
+  width: 100%;
+  background: var(--rs-color-background-base);
+  border: 1px solid var(--rs-color-border-neutral-faded);
+  border-radius: var(--rs-radius-medium);
+  padding: var(--rs-unit-x3);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+  outline: none;
+
+  &:hover {
+    border-color: var(--rs-color-border-neutral);
+    background-color: var(--rs-color-background-neutral-faded);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--rs-color-border-primary);
+  }
+}
+
+.orgIcon {
+  color: var(--rs-color-foreground-neutral);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info {
+  line-height: normal;
+  text-align: left;
+  flex: 1;
+  overflow: hidden;
+}
+
+.dropdown {
+  display: flex;
+  flex-direction: column;
+  padding-block: var(--rs-unit-x2);
+  /* Max height is handled by Popover or within the list if needed */
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.orgGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.orgHeader {
+  background: transparent;
+  border: none;
+  width: 100%;
+  padding: var(--rs-unit-x3);
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s;
+  outline: none;
+
+  &:hover {
+    background-color: var(--rs-color-background-neutral-faded);
+  }
+}
+
+.orgHeaderActive {
+  background-color: var(--rs-color-background-neutral-faded);
+}
+
+.workspaceList {
+  display: flex;
+  flex-direction: column;
+}
+
+.workspaceItem {
+  display: flex;
+  text-align: left;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+// Emulating the purple selection from image
+.workspaceItemSelected {
+  color: var(--rs-color-foreground-primary);
+  font-weight: var(--rs-font-weight-bold);
+}
+
+.divider {
+  height: 1px;
+  background-color: var(--rs-color-border-neutral-faded);
+  margin: var(--rs-unit-x2) 0;
+  width: 100%;
+}
+
+.addItem {
+  background: transparent;
+  border: none;
+  width: 100%;
+  padding: var(--rs-unit-x3);
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s;
+  outline: none;
+
+  &:hover {
+    background-color: var(--rs-color-background-neutral-faded);
+  }
+}
