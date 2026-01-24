@@ -28,7 +28,7 @@ export const SidebarItem = ({
         fullWidth
         className={styles.navButton}
       >
-        <Icon name={icon} />
+        {icon && <Icon name={icon} />}
         {label}
       </Button>
     </Link>
