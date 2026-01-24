@@ -27,7 +27,6 @@ export interface DashboardChartProps {
 export interface FunnelStage {
   name: string;
   value: number;
-  color?: string;
 }
 
 export interface FunnelChartProps {

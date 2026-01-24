@@ -1,26 +1,20 @@
 'use client';
 
-import { View, Text, Button, Grid } from 'reshaped';
+import { View, Button, Grid } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { PageTitle } from '@/components/page-title';
-import { AdList } from './ad-list';
 import { DashboardChart } from './dashboard-chart';
 import { FunnelChart } from './funnel-chart';
 import { useDashboardData } from './hooks';
 import { MetricCard } from './metric-card';
+import { DashboardSkeleton } from './skeleton';
 import styles from './styles.module.scss';
 
 export const Dashboard = () => {
   const { data, isLoading } = useDashboardData();
 
   if (isLoading || !data) {
-    return (
-      <View align="center" justify="center" padding={8}>
-        <Text variant="body-2" color="neutral-faded">
-          Carregando...
-        </Text>
-      </View>
-    );
+    return <DashboardSkeleton />;
   }
 
   const {
@@ -28,8 +22,6 @@ export const Dashboard = () => {
     investmentRevenueData,
     funnelStages,
     funnelStagesPrevious,
-    metaAds,
-    googleAds,
   } = data;
 
   return (
@@ -82,7 +74,8 @@ export const Dashboard = () => {
         />
       </Grid>
 
-      <View gap={4}>
+      {/* TODO: add platform section after creating details page */}
+      {/* <View gap={4}>
         <Text variant="featured-2" weight="medium">
           Visão por Plataforma
         </Text>
@@ -98,19 +91,7 @@ export const Dashboard = () => {
             />
           </View>
         </View>
-      </View>
+      </View> */}
     </View>
   );
 };
-
-export type {
-  MetricCardProps,
-  ChartDataPoint,
-  DashboardChartProps,
-  FunnelStage,
-  FunnelChartProps,
-  AdItem,
-  AdListProps,
-  SummaryMetric,
-  DashboardData,
-} from './types';

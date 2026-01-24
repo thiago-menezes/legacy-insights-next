@@ -4,7 +4,7 @@ import { Card, View, Text, Button } from 'reshaped';
 import { Icon } from '@/components/icon';
 import styles from './styles.module.scss';
 import { FunnelChartProps } from './types';
-import { formatNumber } from './utils';
+import { formatNumber, getBarColor } from './utils';
 
 export const FunnelChart = ({
   title,
@@ -15,7 +15,6 @@ export const FunnelChart = ({
 }: FunnelChartProps) => {
   const isComparison = !!previousStages && previousStages.length > 0;
 
-  // Calculate global max value for correct scaling
   const currentMax = Math.max(...stages.map((s) => s.value));
   const previousMax = isComparison
     ? Math.max(...(previousStages?.map((s) => s.value) || []))
@@ -59,7 +58,7 @@ export const FunnelChart = ({
         <View gap={2}>
           {stages.map((stage, index) => {
             const percentage = (stage.value / maxValue) * 100;
-            const color = stage.color;
+            const color = getBarColor(index);
 
             if (isComparison && previousStages) {
               const prevStage = previousStages[index];
@@ -94,7 +93,6 @@ export const FunnelChart = ({
                           style: {
                             width: `${prevPercentage}%`,
                             backgroundColor: color,
-                            opacity: 0.5,
                             minWidth: 4,
                             marginLeft: 8,
                           },
@@ -103,7 +101,6 @@ export const FunnelChart = ({
                     </View>
                   </View>
 
-                  {/* Current Period (Right) */}
                   <View
                     grow
                     direction="row"

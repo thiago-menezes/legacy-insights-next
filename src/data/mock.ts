@@ -1,14 +1,14 @@
-import type {
-  AdItem,
-  ChartDataPoint,
-  DashboardData,
-  FunnelStage,
-  SummaryMetric,
-} from '@/features/dashboard';
-
 // ============================================================================
 // MOCK DATA - Simula resposta da API
 // ============================================================================
+
+import {
+  AdItem,
+  ChartDataPoint,
+  FunnelStage,
+  SummaryMetric,
+  DashboardData,
+} from '@/features/dashboard/types';
 
 export const summaryMetrics: SummaryMetric[] = [
   {
@@ -75,12 +75,11 @@ export const funnelStages: FunnelStage[] = [
   {
     name: 'Impressões',
     value: 125847,
-    color: '#3739cdff',
   },
-  { name: 'Cliques', value: 45231, color: '#6366f1' },
-  { name: 'Leads', value: 2847, color: '#8b5cf6' },
-  { name: 'Oportunidades', value: 1284, color: '#a855f7' },
-  { name: 'Vendas', value: 584, color: '#22c55e' },
+  { name: 'Cliques', value: 45231 },
+  { name: 'Leads', value: 2847 },
+  { name: 'Oportunidades', value: 1284 },
+  { name: 'Vendas', value: 584 },
 ];
 
 export const metaAds: AdItem[] = [
@@ -109,12 +108,11 @@ export const dashboardMockData: DashboardData = {
     {
       name: 'Impressões',
       value: 115000,
-      color: '#3739cdff',
     },
-    { name: 'Cliques', value: 41000, color: '#6366f1' },
-    { name: 'Leads', value: 2500, color: '#8b5cf6' },
-    { name: 'Oportunidades', value: 1100, color: '#a855f7' },
-    { name: 'Vendas', value: 480, color: '#22c55e' },
+    { name: 'Cliques', value: 41000 },
+    { name: 'Leads', value: 2500 },
+    { name: 'Oportunidades', value: 1100 },
+    { name: 'Vendas', value: 480 },
   ],
   metaAds,
   googleAds,
