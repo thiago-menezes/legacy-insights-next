@@ -124,19 +124,6 @@ $tablet: 1024px;
   border: 1px solid var(--rs-color-border-neutral-faded);
 }
 
-.tableWrapper {
-  width: 100%;
-  height: 450px;
-
-  --ag-font-family: Montserrat, sans-serif;
-  --ag-font-size: 14px;
-  --ag-row-height: 72px;
-  --ag-header-height: 48px;
-  --ag-cell-horizontal-padding: 16px;
-  --ag-borders: none;
-  --ag-row-border-width: 1px;
-}
-
 // Status Badge
 .statusBadge {
   display: inline-flex;
@@ -201,7 +188,7 @@ $tablet: 1024px;
 
 // Campaign name cell
 .campaignName {
-  color: var(--rs-color-background-primary);
+  color: var(--rs-color-foreground-primary);
   font-weight: 500;
   text-decoration: none;
 
