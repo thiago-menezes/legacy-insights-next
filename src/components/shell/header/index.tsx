@@ -1,5 +1,6 @@
 import { Fragment, useEffect } from 'react';
 import { View, Text, Button, TextField } from 'reshaped';
+import { useAuth } from '@/features/auth/context';
 import { Icon } from '../../icon';
 import { ThemeToggle } from '../../theme-toggle';
 import styles from './styles.module.scss';
@@ -13,6 +14,8 @@ export const Header = ({
   isMobile,
   sidebarVisible,
 }: HeaderProps) => {
+  const { user } = useAuth();
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -68,7 +71,7 @@ export const Header = ({
         <div className={styles.separator} />
 
         <Text variant="body-2" color="neutral">
-          Boas vindas, Thales Souza
+          Boas vindas, {user?.username}
         </Text>
       </View>
 

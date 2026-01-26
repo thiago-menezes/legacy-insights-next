@@ -8,6 +8,7 @@ import { NAVIGATION_SECTIONS } from './constants';
 import { SidebarItem } from './item';
 import styles from './styles.module.scss';
 import { SidebarProps } from './types';
+import { UserSelector } from './user-selector';
 import { WorkspaceSelector } from './workspace-selector';
 
 export const Sidebar = ({ isVisible, onToggle, isMobile }: SidebarProps) => {
@@ -146,17 +147,7 @@ export const Sidebar = ({ isVisible, onToggle, isMobile }: SidebarProps) => {
       </View>
 
       <View paddingInline={2}>
-        {!isMobile && (
-          <Button
-            variant="ghost"
-            icon={<Icon name="chevrons-left" />}
-            onClick={onToggle}
-            fullWidth
-            size="small"
-          >
-            <Text variant="body-3">Collapse</Text>
-          </Button>
-        )}
+        <UserSelector />
       </View>
     </View>
   );

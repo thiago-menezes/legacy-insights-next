@@ -55,7 +55,6 @@ const CreateAccountPage = () => {
             onChange={(e) => form.setValue('email', e.value)}
             inputAttributes={{
               type: 'email',
-              autoComplete: 'email',
             }}
           />
         </div>
