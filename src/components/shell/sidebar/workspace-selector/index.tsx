@@ -69,7 +69,7 @@ export const WorkspaceSelector = () => {
                   <DropdownMenu.Item
                     startSlot={<Icon name="plus" size={16} />}
                     onClick={() => {
-                      console.log('Add novo Projeto para', org.name);
+                      // TODO: Implement functionality
                     }}
                   >
                     Add novo Projeto
@@ -83,7 +83,7 @@ export const WorkspaceSelector = () => {
             <DropdownMenu.Item
               startSlot={<Icon name="plus" size={16} />}
               onClick={() => {
-                console.log('Add novo Workspace');
+                // TODO: Implement functionality
               }}
             >
               Add novo Workspace

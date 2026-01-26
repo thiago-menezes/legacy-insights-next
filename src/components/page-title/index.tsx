@@ -5,21 +5,35 @@ export interface PageTitle {
   title: string;
   description?: string;
   icon?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
-export const PageTitle = ({ title, description, icon }: PageTitle) => {
+export const PageTitle = ({
+  title,
+  description,
+  icon,
+  children,
+}: PageTitle) => {
   return (
-    <View gap={1}>
-      <View direction="row" align="center" gap={3}>
-        {icon}
-        <Text variant="title-4" weight="bold" className={styles.title}>
-          {title}
+    <View
+      direction="row"
+      align="center"
+      justify="space-between"
+      className={styles.container}
+    >
+      <View gap={1}>
+        <View direction="row" align="center" gap={3}>
+          {icon}
+          <Text variant="title-4" weight="bold" className={styles.title}>
+            {title}
+          </Text>
+        </View>
+
+        <Text variant="body-2" color="neutral-faded">
+          {description}
         </Text>
       </View>
-
-      <Text variant="body-2" color="neutral-faded">
-        {description}
-      </Text>
+      {children}
     </View>
   );
 };

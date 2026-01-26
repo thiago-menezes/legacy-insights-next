@@ -13,7 +13,6 @@ export const NAVIGATION_SECTIONS: NavSection[] = [
         subItems: [
           { label: 'Meta', href: '/campanhas/meta' },
           { label: 'Google', href: '/campanhas/google' },
-          { label: 'WhatsApp', href: '/campanhas/whatsapp' },
         ],
       },
       { label: 'Integrações', href: '/integracoes', icon: 'arrows-exchange' },
@@ -21,10 +20,6 @@ export const NAVIGATION_SECTIONS: NavSection[] = [
   },
   {
     title: 'Gestão',
-    items: [
-      { label: 'Financeiro', href: '/financeiro', icon: 'credit-card' },
-      { label: 'Relatórios', href: '/relatorios', icon: 'file-text' },
-      { label: 'Workspaces', href: '/workspaces', icon: 'file-text' },
-    ],
+    items: [{ label: 'Workspaces', href: '/workspaces', icon: 'file-text' }],
   },
 ];

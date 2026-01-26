@@ -193,7 +193,7 @@ export const CampaignsTable = ({ data }: CampaignsTableProps) => {
       columnDefs={columnDefs}
       defaultColDef={defaultColDef}
       rowSelection="multiple"
-      onSelectionChanged={(params) => console.log('selected', params)}
+      onSelectionChanged={() => {}}
       domLayout="autoHeight"
       rowHeight={72}
       headerHeight={48}

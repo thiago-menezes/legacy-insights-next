@@ -8,6 +8,7 @@ export const loadPreferences = (): ShellPreferences => {
       return JSON.parse(stored);
     }
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error('Failed to parse shell preferences:', e);
   }
   return {
