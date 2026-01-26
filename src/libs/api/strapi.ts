@@ -108,6 +108,15 @@ export function getStrapiFacebookAuthUrl(): string {
 }
 
 /**
+ * Get full URL for a Strapi media object or path
+ */
+export function getMediaUrl(url: string | null | undefined): string | null {
+  if (!url) return null;
+  if (url.startsWith('http')) return url;
+  return `${STRAPI_URL}${url}`;
+}
+
+/**
  * Extract error message from Strapi error response
  */
 export function getStrapiErrorMessage(error: unknown): string {

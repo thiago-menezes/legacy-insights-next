@@ -10,9 +10,7 @@ export const createApiClient = (addAuthInterceptor: boolean = false) => {
 
   const client = axios.create({
     baseURL,
-    headers: { 'Content-Type': 'application/json' },
     timeout: 50000,
-    withCredentials: true,
   });
 
   client.interceptors.request.use(async (config) => {
@@ -26,9 +24,7 @@ export const createApiClient = (addAuthInterceptor: boolean = false) => {
         }
 
         if (token) {
-          config.headers = config.headers ?? {};
-          (config.headers as Record<string, string>).Authorization =
-            `Bearer ${token}`;
+          config.headers.set('Authorization', `Bearer ${token}`);
         }
       }
 

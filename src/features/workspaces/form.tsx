@@ -4,6 +4,7 @@ import { useForm, useWatch } from 'react-hook-form';
 import { Button, TextField, View, Text, Actionable } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { useAuth } from '@/features/auth/context';
+import { getMediaUrl } from '@/libs/api/strapi';
 import { WorkspaceFormValues } from './types';
 
 /**
@@ -36,7 +37,7 @@ export const WorkspaceForm = ({
   isLoading,
 }: WorkspaceFormProps) => {
   const { user } = useAuth();
-  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [tempLogoPreview, setTempLogoPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { register, handleSubmit, setValue, reset, control } =
@@ -50,6 +51,13 @@ export const WorkspaceForm = ({
         integrations: [],
       },
     });
+
+  // Derived logo preview: uses the temp preview (from file upload) or the initial logo URL
+  const logoPreview =
+    tempLogoPreview ||
+    (initialValues?.logo && typeof initialValues.logo === 'string'
+      ? getMediaUrl(initialValues.logo)
+      : null);
 
   const nameValue = useWatch({
     control,
@@ -75,6 +83,7 @@ export const WorkspaceForm = ({
   useEffect(() => {
     if (initialValues) {
       reset(initialValues as WorkspaceFormValues);
+      setTempLogoPreview(null); // Clear any previous selection when initialValues change
     }
   }, [initialValues, reset]);
 
@@ -84,7 +93,7 @@ export const WorkspaceForm = ({
       setValue('logo', file);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setLogoPreview(reader.result as string);
+        setTempLogoPreview(reader.result as string);
       };
       reader.readAsDataURL(file);
     }

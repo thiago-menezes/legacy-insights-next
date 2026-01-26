@@ -9,10 +9,33 @@ export interface StrapiWorkspace {
   updatedAt: string;
   publishedAt: string | null;
   locale: string | null;
-  logo: unknown | null; // Placeholder for media type
-  owner: unknown | null;
-  members: unknown[] | null;
-  integrations: unknown[] | null;
+  logo: {
+    id: number;
+    url: string;
+    name: string;
+    alternativeText?: string;
+    caption?: string;
+    formats?: Record<string, unknown>;
+  } | null;
+  owner: {
+    id: number;
+    username: string;
+    email: string;
+  } | null;
+  members:
+    | {
+        id: number;
+        username: string;
+        email: string;
+      }[]
+    | null;
+  integrations:
+    | {
+        id: number;
+        name: string;
+        provider: string;
+      }[]
+    | null;
 }
 
 export interface WorkspaceResponse {
@@ -34,7 +57,7 @@ export interface SingleWorkspaceResponse {
 export interface WorkspaceCreateInput {
   name: string;
   slug: string;
-  logo?: File | null;
+  logo?: File | string | null;
   owner?: number | string | null;
   members?: (number | string)[] | null;
   integrations?: (number | string)[] | null;
@@ -52,7 +75,7 @@ export const workspaceService = {
   },
 
   /**
-   * Get a single workspace by ID (or documentId in Strapi v5)
+   * Get a single workspace by documentId (Strapi v5)
    */
   async get(id: string | number): Promise<SingleWorkspaceResponse> {
     const { data } = await apiClient.get<SingleWorkspaceResponse>(
@@ -67,60 +90,84 @@ export const workspaceService = {
   async create(
     payload: WorkspaceCreateInput,
   ): Promise<SingleWorkspaceResponse> {
-    const formData = new FormData();
-    const data = { ...payload };
-    delete data.logo;
+    const data: Record<string, unknown> = { ...payload };
 
-    formData.append('data', JSON.stringify(data));
-
+    // Handle logo upload separately in Strapi 5
     if (payload.logo) {
-      formData.append('files.logo', payload.logo);
+      delete data.logo;
+      const formData = new FormData();
+      formData.append('files', payload.logo);
+
+      const { data: uploadResponse } = await apiClient.post<{ id: number }[]>(
+        '/api/upload',
+        formData,
+      );
+
+      if (uploadResponse && uploadResponse[0]) {
+        data.logo = uploadResponse[0].id;
+      }
     }
 
+    // Clean up optional fields if they are empty/null
+    delete data.owner;
+    if (Array.isArray(data.members) && data.members.length === 0)
+      delete data.members;
+    if (Array.isArray(data.integrations) && data.integrations.length === 0)
+      delete data.integrations;
+
     const { data: responseData } =
-      await apiClient.post<SingleWorkspaceResponse>(
-        '/api/workspaces',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        },
-      );
+      await apiClient.post<SingleWorkspaceResponse>('/api/workspaces', {
+        data,
+      });
     return responseData;
   },
 
   /**
-   * Update an existing workspace
+   * Update an existing workspace by documentId
    */
   async update(
     id: string | number,
     payload: Partial<WorkspaceCreateInput>,
   ): Promise<SingleWorkspaceResponse> {
-    const formData = new FormData();
-    const data = { ...payload };
-    delete data.logo;
+    const data: Record<string, unknown> = { ...payload };
 
-    formData.append('data', JSON.stringify(data));
+    // Handle logo upload separately in Strapi 5
+    if (payload.logo && typeof payload.logo !== 'string') {
+      delete data.logo;
+      const formData = new FormData();
+      formData.append('files', payload.logo);
 
-    if (payload.logo) {
-      formData.append('files.logo', payload.logo);
+      const { data: uploadResponse } = await apiClient.post<{ id: number }[]>(
+        '/api/upload',
+        formData,
+      );
+
+      if (uploadResponse && uploadResponse[0]) {
+        data.logo = uploadResponse[0].id;
+      }
+    }
+
+    // Only include fields that are actually provided
+    if (data.owner === null) delete data.owner;
+    if (Array.isArray(data.members) && data.members.length === 0)
+      delete data.members;
+    if (Array.isArray(data.integrations) && data.integrations.length === 0)
+      delete data.integrations;
+
+    // If logo is a string (URL), we don't want to send it to Strapi as it expects an ID
+    if (typeof data.logo === 'string') {
+      delete data.logo;
     }
 
     const { data: responseData } = await apiClient.put<SingleWorkspaceResponse>(
       `/api/workspaces/${id}`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      },
+      { data },
     );
     return responseData;
   },
 
   /**
-   * Delete a workspace
+   * Delete a workspace by documentId
    */
   async delete(id: string | number): Promise<void> {
     await apiClient.delete(`/api/workspaces/${id}`);

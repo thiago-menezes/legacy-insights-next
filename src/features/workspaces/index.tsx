@@ -43,7 +43,7 @@ export const Workspaces = () => {
   const handleSubmit = async (values: WorkspaceFormValues) => {
     try {
       if (editingWorkspace) {
-        await updateWorkspace(editingWorkspace.id, values);
+        await updateWorkspace(editingWorkspace.documentId, values);
       } else {
         await createWorkspace(values);
       }
@@ -131,6 +131,7 @@ export const Workspaces = () => {
                 ? {
                     name: editingWorkspace.name,
                     slug: editingWorkspace.slug,
+                    logo: editingWorkspace.logo?.url || null,
                   }
                 : undefined
             }

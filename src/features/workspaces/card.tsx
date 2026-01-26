@@ -1,5 +1,7 @@
+import Image from 'next/image';
 import { View, Text, Button } from 'reshaped';
 import { Icon } from '@/components/icon';
+import { getMediaUrl } from '@/libs/api/strapi';
 import { StrapiWorkspace } from '@/libs/api/workspaces';
 import styles from './styles.module.scss';
 
@@ -34,7 +36,23 @@ export const WorkspaceCard = ({
       <View direction="row" align="center" gap={4} justify="space-between">
         <View direction="row" align="center" gap={4}>
           <div className={styles.workspaceIcon}>
-            <Icon name="file-text" size={24} />
+            {workspace.logo ? (
+              <Image
+                src={getMediaUrl(workspace.logo.url) || ''}
+                alt={workspace.logo.alternativeText || workspace.name}
+                width={24}
+                height={24}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  borderRadius: 'inherit',
+                }}
+                unoptimized
+              />
+            ) : (
+              <Icon name="file-text" size={24} />
+            )}
           </div>
           <View>
             <Text variant="body-1" weight="bold">
@@ -56,7 +74,7 @@ export const WorkspaceCard = ({
             variant="ghost"
             color="critical"
             icon={<Icon name="trash" size={18} />}
-            onClick={() => onDelete(workspace.id)}
+            onClick={() => onDelete(workspace.documentId)}
           />
         </View>
       </View>
