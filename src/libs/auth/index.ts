@@ -1,47 +1,64 @@
-import NextAuth, { NextAuthConfig } from 'next-auth';
-import Auth0 from 'next-auth/providers/auth0';
-import { fetchAuth0UserInfo } from '../api/token';
+import NextAuth, { NextAuthConfig, User } from 'next-auth';
+import Credentials from 'next-auth/providers/credentials';
+import { strapiLogin, StrapiAuthResponse } from '../api/strapi';
 import { SessionUser } from '../api/types';
 
 const config: NextAuthConfig = {
   providers: [
-    Auth0({
-      clientId: process.env.AUTH0_ID,
-      clientSecret: process.env.AUTH0_SECRET,
-      issuer: process.env.AUTH0_ISSUER,
-      authorization: {
-        params: { scope: 'openid profile email offline_access' },
+    // Strapi Credentials Provider
+    Credentials({
+      id: 'strapi',
+      name: 'Strapi',
+      credentials: {
+        identifier: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials): Promise<User | null> {
+        if (!credentials?.identifier || !credentials?.password) {
+          return null;
+        }
+
+        try {
+          const response: StrapiAuthResponse = await strapiLogin(
+            credentials.identifier as string,
+            credentials.password as string,
+          );
+
+          if (response.jwt && response.user) {
+            return {
+              id: String(response.user.id),
+              name: response.user.username,
+              email: response.user.email,
+              // Store Strapi JWT in user object for token callback
+              strapiJwt: response.jwt,
+            } as User & { strapiJwt: string };
+          }
+
+          return null;
+        } catch {
+          return null;
+        }
       },
     }),
   ],
+  pages: {
+    signIn: '/login',
+    error: '/login', // Redirect errors to login page
+  },
   session: { strategy: 'jwt', maxAge: 8 * 60 * 60 },
   trustHost: true,
   debug: process.env.NODE_ENV === 'development',
   callbacks: {
-    async jwt({ token, account, trigger }) {
-      if (account?.access_token) {
-        token.accessToken = account.access_token;
-      }
-
-      const needsUserData = !token.user || trigger === 'signIn';
-      const accessToken =
-        account?.access_token || (token.accessToken as string | undefined);
-
-      if (needsUserData && accessToken) {
-        const info = await fetchAuth0UserInfo(accessToken);
-        if (info) {
-          const infoWithNickname = info as typeof info & { nickname?: string };
-          const displayName =
-            infoWithNickname.nickname && info.name?.includes('@')
-              ? infoWithNickname.nickname
-              : info.name;
-
-          token.user = {
-            id: info.sub || (token.sub as string) || '',
-            name: displayName || null,
-            email: info.email || null,
-          };
-        }
+    async jwt({ token, user }) {
+      // Handle Strapi credentials login
+      if (user && 'strapiJwt' in user) {
+        token.accessToken = (user as { strapiJwt: string }).strapiJwt;
+        token.provider = 'strapi';
+        token.user = {
+          id: user.id || '',
+          name: user.name || null,
+          email: user.email || null,
+        };
       }
 
       return token;
@@ -58,6 +75,9 @@ const config: NextAuthConfig = {
       if (token.accessToken) {
         (session as { accessToken?: string }).accessToken =
           token.accessToken as string;
+      }
+      if (token.provider) {
+        (session as { provider?: string }).provider = token.provider as string;
       }
       return session;
     },

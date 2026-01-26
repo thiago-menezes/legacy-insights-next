@@ -1,0 +1,214 @@
+.authLayout {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    var(--rs-color-background-primary) 0%,
+    var(--rs-color-background-primary-faded) 50%,
+    var(--rs-color-background-page) 100%
+  );
+  padding: var(--rs-unit-x4);
+}
+
+.authCard {
+  width: 100%;
+  max-width: 440px;
+  background: var(--rs-color-background-elevation-base);
+  border-radius: var(--rs-radius-large);
+  box-shadow: var(--rs-shadow-overlay);
+  padding: var(--rs-unit-x8);
+
+  @media (max-width: 480px) {
+    padding: var(--rs-unit-x6);
+    margin: var(--rs-unit-x2);
+  }
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rs-unit-x2);
+  margin-bottom: var(--rs-unit-x6);
+}
+
+.logoIcon {
+  width: 40px;
+  height: 40px;
+  background: var(--rs-color-background-primary);
+  border-radius: var(--rs-radius-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoText {
+  font-family: var(--rs-font-family-title);
+  font-size: var(--rs-font-size-featured-2);
+  font-weight: var(--rs-font-weight-bold);
+  color: var(--rs-color-foreground-neutral);
+}
+
+.logoTextAccent {
+  color: var(--rs-color-foreground-primary);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x4);
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x1);
+}
+
+.forgotPassword {
+  text-align: right;
+  margin-top: calc(var(--rs-unit-x1) * -1);
+}
+
+.forgotPasswordLink {
+  color: var(--rs-color-foreground-primary);
+  font-size: var(--rs-font-size-body-3);
+  text-decoration: none;
+  transition: opacity var(--rs-duration-fast) var(--rs-easing-standard);
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.submitButton {
+  margin-top: var(--rs-unit-x2);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: var(--rs-unit-x4);
+  margin: var(--rs-unit-x4) 0;
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background: var(--rs-color-border-neutral-faded);
+}
+
+.dividerText {
+  color: var(--rs-color-foreground-neutral-faded);
+  font-size: var(--rs-font-size-body-3);
+  white-space: nowrap;
+}
+
+.socialButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x3);
+}
+
+.socialButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rs-unit-x2);
+  width: 100%;
+  padding: var(--rs-unit-x3) var(--rs-unit-x4);
+  border: 1px solid var(--rs-color-border-neutral);
+  border-radius: var(--rs-radius-medium);
+  background: var(--rs-color-background-elevation-base);
+  color: var(--rs-color-foreground-neutral);
+  font-size: var(--rs-font-size-body-2);
+  font-weight: var(--rs-font-weight-medium);
+  cursor: pointer;
+  transition: all var(--rs-duration-fast) var(--rs-easing-standard);
+
+  &:hover {
+    background: var(--rs-color-background-neutral-faded);
+    border-color: var(--rs-color-border-neutral);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.socialIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.googleIcon {
+  color: #4285f4;
+}
+
+.facebookIcon {
+  color: #1877f2;
+}
+
+.footer {
+  margin-top: var(--rs-unit-x6);
+  text-align: center;
+}
+
+.footerText {
+  color: var(--rs-color-foreground-neutral-faded);
+  font-size: var(--rs-font-size-body-3);
+}
+
+.footerLink {
+  color: var(--rs-color-foreground-primary);
+  font-weight: var(--rs-font-weight-medium);
+  text-decoration: none;
+  transition: opacity var(--rs-duration-fast) var(--rs-easing-standard);
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--rs-unit-x1);
+  color: var(--rs-color-foreground-neutral-faded);
+  font-size: var(--rs-font-size-body-3);
+  text-decoration: none;
+  margin-bottom: var(--rs-unit-x4);
+  transition: color var(--rs-duration-fast) var(--rs-easing-standard);
+
+  &:hover {
+    color: var(--rs-color-foreground-neutral);
+  }
+}
+
+.successMessage {
+  text-align: center;
+  padding: var(--rs-unit-x4);
+  background: var(--rs-color-background-positive-faded);
+  border-radius: var(--rs-radius-medium);
+  margin-bottom: var(--rs-unit-x4);
+}
+
+.termsCheckbox {
+  margin-top: var(--rs-unit-x2);
+}
+
+.termsText {
+  font-size: var(--rs-font-size-body-3);
+  color: var(--rs-color-foreground-neutral-faded);
+}
+
+.termsLink {
+  color: var(--rs-color-foreground-primary);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
