@@ -1,21 +1,24 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import { View, Text, Loader, Button, Modal, Card, Grid } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { PageTitle } from '@/components/page-title';
 import { ProjectForm } from '@/features/projects/form';
 import { useProjects } from '@/features/projects/hooks';
+import { useSelectedWorkspace } from '@/features/workspaces/context';
 import { useWorkspaces } from '@/features/workspaces/hooks';
 import { ProjectCreateInput } from '@/libs/api/projects';
+import { getMediaUrl } from '@/libs/api/strapi';
 
 const WorkspaceDetailPage = () => {
   const params = useParams();
-  const router = useRouter();
   const slug = params.slug as string;
   const { workspaces, isLoading: isLoadingWorkspaces } = useWorkspaces();
+  const { refreshWorkspaces } = useSelectedWorkspace();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
@@ -40,9 +43,8 @@ const WorkspaceDetailPage = () => {
         ...values,
         workspace: workspace.documentId,
       });
+      await refreshWorkspaces();
       setIsModalOpen(false);
-      // Navigate to the new project
-      router.push(`/integracoes/projetos/${values.slug}`);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error('Failed to create project:', err);
@@ -70,6 +72,21 @@ const WorkspaceDetailPage = () => {
   return (
     <>
       <PageTitle
+        icon={
+          workspace.logo?.url && (
+            <Image
+              src={getMediaUrl(workspace.logo.url) || ''}
+              alt={workspace.logo.alternativeText || workspace.name}
+              width={24}
+              height={24}
+              style={{
+                objectFit: 'cover',
+                borderRadius: 'inherit',
+              }}
+              unoptimized
+            />
+          )
+        }
         title={workspace.name}
         description="Gerencie os projetos deste workspace"
       />

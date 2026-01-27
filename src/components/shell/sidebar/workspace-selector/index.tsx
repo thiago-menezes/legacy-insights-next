@@ -1,3 +1,5 @@
+import Image from 'next/image';
+import Link from 'next/link';
 import { View, Text, DropdownMenu } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { useWorkspaces } from '@/features/workspaces/hooks';
@@ -29,10 +31,13 @@ export const WorkspaceSelector = () => {
               <View direction="row" align="center" gap={3}>
                 <View className={styles.orgIcon}>
                   {currentOrgLogo ? (
-                    <img
+                    <Image
                       src={currentOrgLogo}
-                      alt={selectedOrg?.name}
+                      alt={selectedOrg?.name || 'Logo'}
+                      width={24}
+                      height={24}
                       className={styles.logoImage}
+                      unoptimized
                     />
                   ) : (
                     <Icon name={DEFAULT_ORG_ICON} size={24} />
@@ -61,10 +66,13 @@ export const WorkspaceSelector = () => {
                 <DropdownMenu.SubTrigger
                   startSlot={
                     org.logo?.url ? (
-                      <img
+                      <Image
                         src={getMediaUrl(org.logo.url)!}
                         alt={org.name}
+                        width={20}
+                        height={20}
                         className={styles.menuLogoImage}
+                        unoptimized
                       />
                     ) : (
                       <Icon name={DEFAULT_ORG_ICON} size={20} />
@@ -94,28 +102,24 @@ export const WorkspaceSelector = () => {
                     );
                   })}
 
-                  <DropdownMenu.Item
-                    startSlot={<Icon name="plus" size={16} />}
-                    onClick={() => {
-                      // TODO: Implement functionality
-                    }}
-                  >
-                    Add novo Projeto
-                  </DropdownMenu.Item>
+                  <Link href={`/workspaces/${org.slug || org.documentId}`}>
+                    <DropdownMenu.Item
+                      startSlot={<Icon name="plus" size={16} />}
+                    >
+                      Add novo Projeto
+                    </DropdownMenu.Item>
+                  </Link>
                 </DropdownMenu.Content>
               </DropdownMenu.SubMenu>
             </DropdownMenu.Section>
           ))}
 
           <DropdownMenu.Section>
-            <DropdownMenu.Item
-              startSlot={<Icon name="plus" size={16} />}
-              onClick={() => {
-                // TODO: Implement functionality
-              }}
-            >
-              Add novo Workspace
-            </DropdownMenu.Item>
+            <Link href="/workspaces">
+              <DropdownMenu.Item startSlot={<Icon name="plus" size={16} />}>
+                Add novo Workspace
+              </DropdownMenu.Item>
+            </Link>
           </DropdownMenu.Section>
         </DropdownMenu.Content>
       </DropdownMenu>

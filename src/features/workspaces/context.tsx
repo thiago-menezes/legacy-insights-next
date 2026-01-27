@@ -26,6 +26,7 @@ interface SelectedWorkspaceContextValue {
   isLoading: boolean;
   // Actions
   selectWorkspace: (orgId: string, projectId: string) => void;
+  refreshWorkspaces: () => Promise<void>;
 }
 
 const SelectedWorkspaceContext = createContext<
@@ -39,7 +40,7 @@ interface SelectedWorkspaceProviderProps {
 export const SelectedWorkspaceProvider: React.FC<
   SelectedWorkspaceProviderProps
 > = ({ children }) => {
-  const { workspaces, isLoading } = useWorkspaces();
+  const { workspaces, isLoading, refresh } = useWorkspaces();
   const [selectedOrgId, setSelectedOrgId] = useState<string>('');
   const [selectedProjectId, setSelectedProjectId] = useState<string>('');
 
@@ -93,6 +94,7 @@ export const SelectedWorkspaceProvider: React.FC<
       selectedProject,
       isLoading,
       selectWorkspace,
+      refreshWorkspaces: refresh,
     }),
     [
       selectedOrgId,
@@ -101,6 +103,7 @@ export const SelectedWorkspaceProvider: React.FC<
       selectedProject,
       isLoading,
       selectWorkspace,
+      refresh,
     ],
   );
 

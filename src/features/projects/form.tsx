@@ -27,6 +27,7 @@ export const ProjectForm = ({
       },
     });
 
+  // eslint-disable-next-line react-hooks/incompatible-library -- watch() is needed for controlled input value
   const nameValue = watch('name');
 
   // Auto-generate slug from name

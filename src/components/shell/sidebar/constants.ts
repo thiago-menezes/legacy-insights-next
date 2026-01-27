@@ -24,6 +24,13 @@ export const NAVIGATION_SECTIONS: NavSection[] = [
   },
   {
     title: 'Gestão',
-    items: [{ label: 'Workspaces', href: '/workspaces', icon: 'file-text' }],
+    items: [
+      {
+        label: 'Workspaces',
+        href: '/workspaces',
+        icon: 'file-text',
+        expandable: false,
+      },
+    ],
   },
 ];

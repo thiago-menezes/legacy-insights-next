@@ -6,6 +6,7 @@ import { Icon } from '@/components/icon';
 import { PageTitle } from '@/components/page-title';
 import { StrapiWorkspace } from '@/libs/api/workspaces';
 import { WorkspaceCard } from './card';
+import { useSelectedWorkspace } from './context';
 import { WorkspaceForm } from './form';
 import { useWorkspaces } from './hooks';
 import styles from './styles.module.scss';
@@ -20,6 +21,7 @@ export const Workspaces = () => {
     updateWorkspace,
     deleteWorkspace,
   } = useWorkspaces();
+  const { refreshWorkspaces } = useSelectedWorkspace();
 
   const [isModalActive, setIsModalActive] = useState(false);
   const [editingWorkspace, setEditingWorkspace] =
@@ -47,6 +49,7 @@ export const Workspaces = () => {
       } else {
         await createWorkspace(values);
       }
+      await refreshWorkspaces();
       handleCloseModal();
     } catch {
       // Error is handled in hook
@@ -56,6 +59,7 @@ export const Workspaces = () => {
   const handleDelete = async (id: string | number) => {
     if (confirm('Tem certeza que deseja excluir este workspace?')) {
       await deleteWorkspace(id);
+      await refreshWorkspaces();
     }
   };
 
