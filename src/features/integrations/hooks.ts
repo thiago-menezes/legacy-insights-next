@@ -3,7 +3,7 @@ import {
   integrationService,
   StrapiIntegration,
   IntegrationCreateInput,
-} from '@/libs/api/integrations';
+} from '@/libs/api/services/integrations';
 
 export const useIntegrations = (projectId?: string | number) => {
   const [integrations, setIntegrations] = useState<StrapiIntegration[]>([]);

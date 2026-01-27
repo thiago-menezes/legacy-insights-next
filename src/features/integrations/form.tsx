@@ -3,7 +3,7 @@ import { Button, TextField, View, Select, FormControl } from 'reshaped';
 import {
   IntegrationCreateInput,
   IntegrationType,
-} from '@/libs/api/integrations';
+} from '@/libs/api/services/integrations';
 
 interface IntegrationFormProps {
   initialValues?: Partial<IntegrationCreateInput>;

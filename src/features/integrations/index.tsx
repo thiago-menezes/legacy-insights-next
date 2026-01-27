@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { View, Text, Tabs, Loader, Modal, Button } from 'reshaped';
 import { Icon } from '@/components/icon';
-import { IntegrationType } from '@/libs/api/integrations';
+import { IntegrationType } from '@/libs/api/services/integrations';
 import { STATUS_CONFIG, TABS } from './constants';
 import { IntegrationForm } from './form';
 import { useIntegrations } from './hooks';

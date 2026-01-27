@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { Button, TextField, View, FormControl, TextArea } from 'reshaped';
-import { ProjectCreateInput } from '@/libs/api/projects';
+import { ProjectCreateInput } from '@/libs/api/services/projects';
 
 interface ProjectFormProps {
   initialValues?: Partial<ProjectCreateInput>;

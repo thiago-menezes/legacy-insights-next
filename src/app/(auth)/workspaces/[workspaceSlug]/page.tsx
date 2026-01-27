@@ -11,7 +11,7 @@ import { ProjectForm } from '@/features/projects/form';
 import { useProjects } from '@/features/projects/hooks';
 import { useSelectedWorkspace } from '@/features/workspaces/context';
 import { useWorkspaces } from '@/features/workspaces/hooks';
-import { ProjectCreateInput } from '@/libs/api/projects';
+import { ProjectCreateInput } from '@/libs/api/services/projects';
 import { getMediaUrl } from '@/libs/api/strapi';
 
 const WorkspaceDetailPage = () => {

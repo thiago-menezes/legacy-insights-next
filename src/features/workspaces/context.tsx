@@ -9,7 +9,7 @@ import React, {
   useEffect,
   type ReactNode,
 } from 'react';
-import type { StrapiWorkspace } from '@/libs/api/workspaces';
+import type { StrapiWorkspace } from '@/libs/api/services/workspaces';
 import { useWorkspaces } from './hooks';
 
 // Derive project type from StrapiWorkspace

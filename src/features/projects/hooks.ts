@@ -3,7 +3,7 @@ import {
   projectService,
   StrapiProject,
   ProjectCreateInput,
-} from '@/libs/api/projects';
+} from '@/libs/api/services/projects';
 
 export const useProjects = (workspaceId?: string) => {
   const [projects, setProjects] = useState<StrapiProject[]>([]);

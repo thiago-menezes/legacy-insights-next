@@ -1,4 +1,4 @@
-import { StrapiWorkspace } from '@/libs/api/workspaces';
+import { StrapiWorkspace } from '@/libs/api/services/workspaces';
 
 export type Workspace = StrapiWorkspace;
 

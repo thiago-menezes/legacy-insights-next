@@ -1,5 +1,6 @@
 import { existsSync } from 'fs';
 import path from 'path';
+import process from 'node:process';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -47,8 +48,15 @@ function postcssBoostModuleSpecificity(opts = {}) {
 
 postcssBoostModuleSpecificity.postcss = true;
 
-function findMonorepoRoot(startDir) {
-  let currentDir = startDir;
+function findMonorepoRoot() {
+  const cwd = process.cwd();
+
+  const cwdReshaped = path.join(cwd, 'node_modules', 'reshaped');
+  if (existsSync(cwdReshaped)) {
+    return cwd;
+  }
+
+  let currentDir = __dirname;
   while (currentDir !== path.dirname(currentDir)) {
     const nodeModulesPath = path.join(currentDir, 'node_modules', 'reshaped');
     if (existsSync(nodeModulesPath)) {
@@ -56,10 +64,11 @@ function findMonorepoRoot(startDir) {
     }
     currentDir = path.dirname(currentDir);
   }
-  return startDir;
+
+  return cwd;
 }
 
-const monorepoRoot = findMonorepoRoot(__dirname);
+const monorepoRoot = findMonorepoRoot();
 const themeMediaCSSPath = path.resolve(
   monorepoRoot,
   'node_modules/reshaped/dist/themes/reshaped/media.css',

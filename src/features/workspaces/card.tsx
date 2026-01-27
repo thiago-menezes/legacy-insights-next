@@ -2,8 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { View, Text, Button, Card } from 'reshaped';
 import { Icon } from '@/components/icon';
+import { StrapiWorkspace } from '@/libs/api/services/workspaces';
 import { getMediaUrl } from '@/libs/api/strapi';
-import { StrapiWorkspace } from '@/libs/api/workspaces';
 import styles from './styles.module.scss';
 
 /**

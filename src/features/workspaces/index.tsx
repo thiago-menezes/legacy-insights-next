@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { View, Text, Button, Loader, Modal } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { PageTitle } from '@/components/page-title';
-import { StrapiWorkspace } from '@/libs/api/workspaces';
+import { StrapiWorkspace } from '@/libs/api/services/workspaces';
 import { WorkspaceCard } from './card';
 import { useSelectedWorkspace } from './context';
 import { WorkspaceForm } from './form';

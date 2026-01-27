@@ -4,7 +4,7 @@ import {
   workspaceService,
   StrapiWorkspace,
   WorkspaceCreateInput,
-} from '@/libs/api/workspaces';
+} from '@/libs/api/services/workspaces';
 
 export const useWorkspaces = () => {
   const { user } = useAuth();
