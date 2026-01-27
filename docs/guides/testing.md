@@ -502,3 +502,4 @@ npm run test -- features/products/spec.tsx
 - [Feature Development Guide](./features.md)
 - [Code Patterns Guide](./code-patterns.md)
 - [CLI Commands](./cli-commands.md)
+- [API Utils Testing Guide](./api-utils-testing.md)

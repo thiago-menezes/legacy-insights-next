@@ -15,7 +15,9 @@
     "clean": "rm -rf .next node_modules/.cache",
     "semantic-release": "semantic-release",
     "prepare": "husky",
-    "generate:theme": "npx reshaped theming --output src/themes"
+    "generate:theme": "npx reshaped theming --output src/themes",
+    "test": "vitest",
+    "test:watch": "vitest watch"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

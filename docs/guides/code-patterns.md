@@ -15,6 +15,8 @@
 | Component files   | `index.tsx`                | `index.tsx`                  |
 | Hook files        | `hooks.ts` or `use-*.ts`   | `hooks.ts`, `use-product.ts` |
 | Type files        | `types.ts`                 | `types.ts`                   |
+| Service handlers  | `handlers.ts`              | `handlers.ts`                |
+| Service index     | `index.ts`                 | `index.ts`                   |
 | Util files        | `utils.ts`                 | `utils.ts`                   |
 | Test files        | `spec.tsx` or `*.spec.tsx` | `spec.tsx`, `utils.spec.tsx` |
 | Style files       | `styles.module.scss`       | `styles.module.scss`         |
@@ -504,6 +506,7 @@ describe('calculateDiscount', () => {
 - [ ] Export from `index.tsx`
 - [ ] Keep related code together
 - [ ] Split into folders when files grow
+- [ ] Modular services: use `handlers.ts`, `types.ts`, and `index.ts`
 
 ---
 

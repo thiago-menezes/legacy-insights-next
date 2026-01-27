@@ -9,10 +9,12 @@
 ```
 libs/api/
 ├── axios.ts           # Axios client configuration
+├── utils.ts           # createServiceKeys utility
 └── services/          # Service layer (API calls only here!)
-    ├── workspaces.ts
-    ├── projects.ts
-    └── integrations.ts
+    └── workspaces/    # Modular service folder
+        ├── handlers.ts # Direct API call definitions
+        ├── types.ts    # Service specific types
+        └── index.ts    # Service export using createServiceKeys
 
 Feature Module
 ├── hooks.ts           # Business logic hooks (uses API hooks)
@@ -32,76 +34,52 @@ Feature Module
 
 ### Service Pattern (`libs/api/services/`)
 
-Services encapsulate all direct API calls. This is the **only place** where `apiClient` (axios) should be imported:
+Services encapsulate all direct API calls using a modular structure. This is the **only place** where `apiClient` (axios) should be imported.
+
+The structure consists of:
+
+1. `handlers.ts`: Defines the API call methods.
+2. `types.ts`: Service-specific request/response types.
+3. `index.ts`: Exports the service using `createServiceKeys`.
+
+#### Example: Handlers (`libs/api/services/products/handlers.ts`)
 
 ```tsx
-// libs/api/services/products.ts
-import { apiClient } from '../axios';
+import { apiClient } from '../../axios';
 import {
   ProductsResponse,
   SingleProductResponse,
   ProductCreateInput,
 } from './types';
 
-export const productService = {
-  /**
-   * List all products with optional filters
-   */
+export const productHandler = {
   async list(filters?: { categoryId?: string }): Promise<ProductsResponse> {
-    const params = filters?.categoryId
-      ? { filters: { category: { id: filters.categoryId } } }
-      : undefined;
-
     const { data } = await apiClient.get<ProductsResponse>('/api/products', {
-      params,
+      params: filters,
     });
     return data;
   },
 
-  /**
-   * Get a single product by slug
-   */
-  async get(slug: string): Promise<SingleProductResponse> {
+  async get(id: string): Promise<SingleProductResponse> {
     const { data } = await apiClient.get<SingleProductResponse>(
-      `/api/products/${slug}?populate=*`,
-    );
-    return data;
-  },
-
-  /**
-   * Create a new product
-   */
-  async create(payload: ProductCreateInput): Promise<SingleProductResponse> {
-    const { data } = await apiClient.post<SingleProductResponse>(
-      '/api/products',
-      {
-        data: payload,
-      },
-    );
-    return data;
-  },
-
-  /**
-   * Update an existing product
-   */
-  async update(
-    id: string,
-    payload: Partial<ProductCreateInput>,
-  ): Promise<SingleProductResponse> {
-    const { data } = await apiClient.put<SingleProductResponse>(
       `/api/products/${id}`,
-      { data: payload },
     );
     return data;
   },
-
-  /**
-   * Delete a product
-   */
-  async delete(id: string): Promise<void> {
-    await apiClient.delete(`/api/products/${id}`);
-  },
+  // ... other methods
 };
+```
+
+#### Example: Index (`libs/api/services/products/index.ts`)
+
+```tsx
+import { createServiceKeys } from '../../utils';
+import { productHandler } from './handlers';
+
+export const productService =
+  createServiceKeys<typeof productHandler>(productHandler);
+
+export type * from './types';
 ```
 
 ---
@@ -175,31 +153,20 @@ export type ProductResponse = StrapiSingleResponse<StrapiProduct>;
 
 ### Query Keys Pattern
 
-Use a factory pattern for consistent query keys:
+Instead of manual key factories, use the built-in `.keys()` method provided by `createServiceKeys`.
 
 ```tsx
 // features/products/api/query.ts
+import { productService } from '@/libs/api/services/products';
 
-export const productKeys = {
-  // All product queries
-  all: ['products'] as const,
-
-  // List queries
-  lists: () => [...productKeys.all, 'list'] as const,
-  list: (filters: Record<string, unknown>) =>
-    [...productKeys.lists(), filters] as const,
-
-  // Detail queries
-  details: () => [...productKeys.all, 'detail'] as const,
-  detail: (id: string) => [...productKeys.details(), id] as const,
-};
-
-// Usage:
-// productKeys.all          → ['products']
-// productKeys.lists()      → ['products', 'list']
-// productKeys.list({ categoryId: '1' }) → ['products', 'list', { categoryId: '1' }]
-// productKeys.detail('abc') → ['products', 'detail', 'abc']
+// Usage in hooks:
+// productService.keys('list')                → ['list', 'list']
+// productService.keys('list', { cat: '1' })   → ['list', 'list', { cat: '1' }]
+// productService.keys('get', 'abc')           → ['list', 'get', 'abc']
 ```
+
+> [!NOTE]
+> The first element of the key defaults to the first method name in the handler if not explicitly provided as an alternative key.
 
 ---
 
@@ -212,21 +179,11 @@ Query hooks use services, **not direct API calls**:
 import { useQuery } from '@tanstack/react-query';
 import { productService } from '@/libs/api/services/products';
 
-export const productKeys = {
-  all: ['products'] as const,
-  lists: () => [...productKeys.all, 'list'] as const,
-  list: (filters: Record<string, unknown>) =>
-    [...productKeys.lists(), filters] as const,
-  details: () => [...productKeys.all, 'detail'] as const,
-  detail: (id: string) => [...productKeys.details(), id] as const,
-};
-
-// List query
 export const useProductsQuery = (categoryId?: string) => {
   const filters = categoryId ? { categoryId } : {};
 
   return useQuery({
-    queryKey: productKeys.list(filters),
+    queryKey: productService.keys('list', filters),
     queryFn: () => productService.list(filters),
   });
 };
@@ -271,7 +228,6 @@ Mutation hooks also use services, **not direct API calls**:
 // features/products/api/mutation.ts
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { productService } from '@/libs/api/services/products';
-import { productKeys } from './query';
 import { CreateProductParams, UpdateProductParams } from './types';
 
 // Create mutation
@@ -282,7 +238,7 @@ export const useCreateProductMutation = () => {
     mutationFn: (params: CreateProductParams) => productService.create(params),
     onSuccess: () => {
       // Invalidate list queries to refetch
-      queryClient.invalidateQueries({ queryKey: productKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: productService.keys('list') });
     },
     onError: (error) => {
       console.error('Failed to create product:', error);
@@ -298,23 +254,25 @@ export const useUpdateProductMutation = () => {
     mutationFn: ({ id, params }: { id: string; params: UpdateProductParams }) =>
       productService.update(id, params),
     onSuccess: (data) => {
-      // Invalidate all product queries
-      queryClient.invalidateQueries({ queryKey: productKeys.all });
+      // Invalidate all product queries if needed, or specific ones
+      queryClient.invalidateQueries({ queryKey: productService.keys('list') });
 
       // Or update cache directly
-      queryClient.setQueryData(productKeys.detail(data.data.slug), data.data);
+      // queryClient.setQueryData(productService.keys('get', data.data.slug), data.data);
     },
   });
 };
 
 // Delete mutation
-export const useDeleteProductMutation = () => {
+export const useDeleteWorkspaceMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (id: string) => productService.delete(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: productKeys.lists() });
+      queryClient.invalidateQueries({
+        queryKey: productService.keys('list'),
+      });
     },
   });
 };
