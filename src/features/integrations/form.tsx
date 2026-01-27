@@ -35,12 +35,12 @@ export const IntegrationForm = ({
       },
     });
 
-  // eslint-disable-next-line react-hooks/incompatible-library
+  // eslint--next-line react-hooks/incompatible-library
   const typeValue = watch('type');
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <View gap={4}>
+      <View gap={4} paddingTop={4}>
         <FormControl>
           <FormControl.Label>Nome da Integração</FormControl.Label>
           <TextField

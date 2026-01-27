@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { View, Text, Button } from 'reshaped';
+import { View, Text, Button, Card } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { getMediaUrl } from '@/libs/api/strapi';
 import { StrapiWorkspace } from '@/libs/api/workspaces';
@@ -37,7 +37,7 @@ export const WorkspaceCard = ({
       href={`/workspaces/${workspace.slug}`}
       style={{ textDecoration: 'none', color: 'inherit' }}
     >
-      <div className={styles.workspaceCard}>
+      <Card padding={4}>
         <View direction="row" align="center" gap={4} justify="space-between">
           <View direction="row" align="center" gap={4}>
             <div className={styles.workspaceIcon}>
@@ -73,17 +73,25 @@ export const WorkspaceCard = ({
             <Button
               variant="ghost"
               icon={<Icon name="edit" size={18} />}
-              onClick={() => onEdit(workspace)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onEdit(workspace);
+              }}
             />
             <Button
               variant="ghost"
               color="critical"
               icon={<Icon name="trash" size={18} />}
-              onClick={() => onDelete(workspace.documentId)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onDelete(workspace.documentId);
+              }}
             />
           </View>
         </View>
-      </div>
+      </Card>
     </Link>
   );
 };

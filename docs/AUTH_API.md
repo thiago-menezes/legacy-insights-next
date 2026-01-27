@@ -239,7 +239,7 @@ window.location.href = `${STRAPI_URL}/api/connect/google`;
 
 // 2. On callback page, extract query params
 const urlParams = new URLSearchParams(window.location.search);
-const accessToken = urlParams.get("access_token");
+const accessToken = urlParams.get('access_token');
 
 // 3. Use access_token as JWT for authenticated requests
 ```

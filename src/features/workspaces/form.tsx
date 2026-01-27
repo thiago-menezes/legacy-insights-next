@@ -1,10 +1,18 @@
 import Image from 'next/image';
 import { useEffect, useState, useRef } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import { Button, TextField, View, Text, Actionable } from 'reshaped';
+import {
+  Button,
+  TextField,
+  View,
+  Text,
+  Actionable,
+  FormControl,
+} from 'reshaped';
 import { Icon } from '@/components/icon';
 import { useAuth } from '@/features/auth/context';
 import { getMediaUrl } from '@/libs/api/strapi';
+import { WorkspaceFormSkeleton } from './form-skeleton';
 import { WorkspaceFormValues } from './types';
 
 /**
@@ -20,6 +28,8 @@ interface WorkspaceFormProps {
   onCancel: () => void;
   /** Whether the form is currently in a loading state */
   isLoading?: boolean;
+  /** Whether the form is currently in a loading state */
+  isModalActive?: boolean;
 }
 
 /**
@@ -35,6 +45,7 @@ export const WorkspaceForm = ({
   onSubmit,
   onCancel,
   isLoading,
+  isModalActive,
 }: WorkspaceFormProps) => {
   const { user } = useAuth();
   const [tempLogoPreview, setTempLogoPreview] = useState<string | null>(null);
@@ -98,83 +109,85 @@ export const WorkspaceForm = ({
     fileInputRef.current?.click();
   };
 
+  if (!isModalActive) {
+    return <WorkspaceFormSkeleton />;
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <View gap={4}>
-        <View align="center" gap={2}>
-          <Actionable onClick={handleTriggerUpload}>
-            <View
-              width={20}
-              height={20}
-              backgroundColor="neutral-faded"
-              borderRadius="medium"
-              align="center"
-              justify="center"
-              overflow="hidden"
-              attributes={{
-                style: {
-                  border: '2px dashed var(--rs-color-neutral-faded)',
-                  cursor: 'pointer',
-                },
-              }}
-            >
-              {logoPreview ? (
-                <Image
-                  src={logoPreview}
-                  alt="Logo preview"
-                  width={80}
-                  height={80}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  unoptimized
-                />
-              ) : (
-                <View align="center" gap={1}>
-                  <Icon name="upload" size={24} />
-                  <Text variant="caption-1" color="neutral-faded">
-                    Logo
-                  </Text>
-                </View>
-              )}
-            </View>
-          </Actionable>
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleLogoChange}
-            accept="image/*"
-            style={{ display: 'none' }}
+        <Actionable onClick={handleTriggerUpload}>
+          <View
+            width={20}
+            height={20}
+            backgroundColor="neutral-faded"
+            borderRadius="medium"
+            align="center"
+            justify="center"
+            overflow="hidden"
+            attributes={{
+              style: {
+                border: '2px dashed var(--rs-color-neutral-faded)',
+                cursor: 'pointer',
+                margin: 'var(--rs-unit-x4) auto 0',
+              },
+            }}
+          >
+            {logoPreview ? (
+              <Image
+                src={logoPreview}
+                alt="Logo preview"
+                width={100}
+                height={100}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+                unoptimized
+              />
+            ) : (
+              <View align="center" gap={1}>
+                <Icon name="upload" size={24} />
+                <Text variant="caption-1" color="neutral-faded">
+                  Logo
+                </Text>
+              </View>
+            )}
+          </View>
+        </Actionable>
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleLogoChange}
+          accept="image/*"
+          style={{ display: 'none' }}
+        />
+        <Text align="center" variant="caption-1" color="neutral-faded">
+          Clique para fazer upload do logo
+        </Text>
+
+        <FormControl>
+          <FormControl.Label>Nome do Workspace</FormControl.Label>
+          <TextField
+            placeholder="Ex: Minha Empresa"
+            {...register('name', { required: true })}
+            value={nameValue}
+            onChange={(e) => setValue('name', e.value)}
           />
-          <Text variant="caption-1" color="neutral-faded">
-            Clique para fazer upload do logo
-          </Text>
-        </View>
-        <View direction="row" gap={4}>
-          <View gap={1} grow>
-            <Text variant="body-3" weight="medium">
-              Nome do Workspace
-            </Text>
-            <TextField
-              placeholder="Ex: Minha Empresa"
-              {...register('name', { required: true })}
-              value={nameValue}
-              onChange={(e) => setValue('name', e.value)}
-            />
-          </View>
+        </FormControl>
 
-          <View gap={1} grow>
-            <Text variant="body-3" weight="medium">
-              Slug
-            </Text>
-            <TextField
-              placeholder="ex-minha-empresa"
-              {...register('slug', { required: true })}
-              value={slugValue}
-              onChange={(e) => setValue('slug', e.value)}
-            />
-          </View>
-        </View>
+        <FormControl>
+          <FormControl.Label>Slug</FormControl.Label>
+          <TextField
+            placeholder="ex-minha-empresa"
+            {...register('slug', { required: true })}
+            value={slugValue}
+            onChange={(e) => setValue('slug', e.value)}
+          />
+        </FormControl>
 
-        <View direction="row" gap={3} justify="end" paddingTop={4}>
+        <View gap={2} direction="row" justify="end" paddingTop={4}>
           <Button variant="outline" onClick={onCancel} disabled={isLoading}>
             Cancelar
           </Button>

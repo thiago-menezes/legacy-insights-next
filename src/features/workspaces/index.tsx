@@ -124,26 +124,25 @@ export const Workspaces = () => {
       )}
 
       <Modal active={isModalActive} onClose={handleCloseModal}>
-        <View padding={6} gap={6}>
-          <Text variant="featured-3" weight="bold">
-            {editingWorkspace ? 'Editar Workspace' : 'Novo Workspace'}
-          </Text>
+        <Modal.Title>
+          {editingWorkspace ? 'Editar Workspace' : 'Novo Workspace'}
+        </Modal.Title>
 
-          <WorkspaceForm
-            key={editingWorkspace?.documentId || 'new'}
-            initialValues={
-              editingWorkspace
-                ? {
-                    name: editingWorkspace.name,
-                    slug: editingWorkspace.slug,
-                    logo: editingWorkspace.logo?.url || null,
-                  }
-                : undefined
-            }
-            onSubmit={handleSubmit}
-            onCancel={handleCloseModal}
-          />
-        </View>
+        <WorkspaceForm
+          key={editingWorkspace?.documentId || 'new'}
+          initialValues={
+            editingWorkspace
+              ? {
+                  name: editingWorkspace.name,
+                  slug: editingWorkspace.slug,
+                  logo: editingWorkspace.logo?.url || null,
+                }
+              : undefined
+          }
+          isModalActive={isModalActive}
+          onSubmit={handleSubmit}
+          onCancel={handleCloseModal}
+        />
       </Modal>
     </View>
   );

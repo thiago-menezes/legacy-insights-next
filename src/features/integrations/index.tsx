@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useState } from 'react';
-import { View, Text, Tabs, Loader, Modal } from 'reshaped';
+import { View, Text, Tabs, Loader, Modal, Button } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { IntegrationType } from '@/libs/api/integrations';
 import { STATUS_CONFIG, TABS } from './constants';
@@ -16,9 +16,10 @@ interface IntegrationsProps {
 interface ProfileItemProps {
   profile: IntegrationProfile;
   onDelete: (id: string) => void;
+  onUpdate: (id: string) => void;
 }
 
-const ProfileItem = ({ profile, onDelete }: ProfileItemProps) => {
+const ProfileItem = ({ profile, onDelete, onUpdate }: ProfileItemProps) => {
   const statusConfig =
     STATUS_CONFIG[profile.status] || STATUS_CONFIG.disconnected;
 
@@ -47,21 +48,22 @@ const ProfileItem = ({ profile, onDelete }: ProfileItemProps) => {
       </div>
 
       <div className={styles.profileActions}>
-        {profile.status === 'disconnected' && (
-          <button className={styles.actionButton} title="Reconectar">
-            <Icon name="refresh" size={18} />
-          </button>
-        )}
-        <button className={styles.actionButton} title="Configurações">
+        <Button
+          variant="outline"
+          aria-label="Configurações"
+          onClick={() => onUpdate(profile.id)}
+        >
           <Icon name="settings" size={18} />
-        </button>
-        <button
-          className={`${styles.actionButton} ${styles.actionButton_delete}`}
-          title="Remover"
+        </Button>
+
+        <Button
+          variant="outline"
+          aria-label="Remover"
+          color="critical"
           onClick={() => onDelete(profile.id)}
         >
           <Icon name="trash" size={18} />
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -71,9 +73,15 @@ interface PlatformCardProps {
   platform: IntegrationPlatform;
   onDelete: (id: string) => void;
   onAdd: (type: string) => void;
+  onUpdate: (id: string) => void;
 }
 
-const PlatformCard = ({ platform, onDelete, onAdd }: PlatformCardProps) => {
+const PlatformCard = ({
+  platform,
+  onDelete,
+  onAdd,
+  onUpdate,
+}: PlatformCardProps) => {
   return (
     <div className={styles.platformCard}>
       <div className={styles.platformHeader}>
@@ -104,16 +112,21 @@ const PlatformCard = ({ platform, onDelete, onAdd }: PlatformCardProps) => {
 
       <div className={styles.profilesList}>
         {platform.profiles.map((profile) => (
-          <ProfileItem key={profile.id} profile={profile} onDelete={onDelete} />
+          <ProfileItem
+            key={profile.id}
+            profile={profile}
+            onDelete={onDelete}
+            onUpdate={onUpdate}
+          />
         ))}
 
-        <button
+        <Button
           className={styles.addProfileButton}
           onClick={() => onAdd(platform.id)}
         >
           <Icon name="plus" size={18} />
           Adicionar novo perfil
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -163,6 +176,11 @@ export const Integrations = ({ projectId }: IntegrationsProps) => {
   };
 
   const handleAdd = (type: string) => {
+    setSelectedType(type as IntegrationType);
+    setIsModalOpen(true);
+  };
+
+  const handleUpdate = (type: string) => {
     setSelectedType(type as IntegrationType);
     setIsModalOpen(true);
   };
@@ -217,15 +235,15 @@ export const Integrations = ({ projectId }: IntegrationsProps) => {
                 platform={platform}
                 onDelete={handleDelete}
                 onAdd={handleAdd}
+                onUpdate={handleUpdate}
               />
             ))}
         </div>
       </View>
 
       <Modal active={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <Text variant="featured-3" weight="bold">
-          Nova Integração
-        </Text>
+        <Modal.Title>Nova Integração</Modal.Title>
+
         <IntegrationForm
           projectId={projectId}
           initialValues={{ type: selectedType }}
