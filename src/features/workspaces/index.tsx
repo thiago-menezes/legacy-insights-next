@@ -5,7 +5,9 @@ import { Icon } from '@/components/icon';
 import { PageTitle } from '@/components/page-title';
 import { WorkspaceCard } from './card';
 import { WorkspaceForm } from './form';
+import { SwitchWorkspaceModal } from './switch-modal';
 import { useWorkspaces } from './hooks';
+import { useSelectedWorkspace } from './context';
 
 export const Workspaces = () => {
   const {
@@ -20,7 +22,15 @@ export const Workspaces = () => {
     handleSubmit,
     handleDelete,
     setIsModalFirstWorkspaceActive,
+    isSwitchModalActive,
+    pendingWorkspace,
+    handleWorkspaceClick,
+    handleConfirmSwitch,
+    handleCloseSwitchModal,
   } = useWorkspaces();
+
+  const { selectedOrg, selectedOrgId, selectWorkspace } =
+    useSelectedWorkspace();
 
   return (
     <>
@@ -104,6 +114,7 @@ export const Workspaces = () => {
               workspace={workspace}
               onEdit={handleOpenEdit}
               onDelete={handleDelete}
+              onClick={(w) => handleWorkspaceClick(w, selectedOrgId)}
             />
           ))}
         </View>
@@ -131,6 +142,14 @@ export const Workspaces = () => {
           onCancel={handleCloseModal}
         />
       </Modal>
+
+      <SwitchWorkspaceModal
+        active={isSwitchModalActive}
+        onClose={handleCloseSwitchModal}
+        onConfirm={() => handleConfirmSwitch(selectWorkspace)}
+        currentWorkspace={selectedOrg}
+        pendingWorkspace={pendingWorkspace}
+      />
     </>
   );
 };

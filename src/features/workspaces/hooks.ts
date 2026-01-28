@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Workspace } from '@/libs/api/services/workspaces';
 import {
   useCreateWorkspaceMutation,
@@ -31,6 +32,13 @@ export const useWorkspaces = () => {
   const [editingWorkspace, setEditingWorkspace] = useState<Workspace | null>(
     null,
   );
+
+  const [isSwitchModalActive, setIsSwitchModalActive] = useState(false);
+  const [pendingWorkspace, setPendingWorkspace] = useState<Workspace | null>(
+    null,
+  );
+
+  const router = useRouter();
 
   const handleOpenCreate = () => {
     setEditingWorkspace(null);
@@ -67,6 +75,37 @@ export const useWorkspaces = () => {
     }
   };
 
+  const handleWorkspaceClick = (
+    workspace: Workspace,
+    currentWorkspaceId?: string,
+  ) => {
+    if (workspace.documentId !== currentWorkspaceId) {
+      setPendingWorkspace(workspace);
+      setIsSwitchModalActive(true);
+    } else {
+      router.push(`/workspaces/${workspace.slug}`);
+    }
+  };
+
+  const handleConfirmSwitch = (
+    selectWorkspace: (orgId: string, projectId: string) => void,
+  ) => {
+    if (pendingWorkspace) {
+      selectWorkspace(
+        pendingWorkspace.documentId,
+        String(pendingWorkspace.projects?.[0]?.id || ''),
+      );
+      router.push(`/workspaces/${pendingWorkspace.slug}`);
+      setIsSwitchModalActive(false);
+      setPendingWorkspace(null);
+    }
+  };
+
+  const handleCloseSwitchModal = () => {
+    setIsSwitchModalActive(false);
+    setPendingWorkspace(null);
+  };
+
   return {
     handleGetWorkspaces,
     workspaces: getWorkspaces.data || { data: [] },
@@ -85,5 +124,10 @@ export const useWorkspaces = () => {
     handleSubmit,
     handleDelete,
     setIsModalFirstWorkspaceActive,
+    isSwitchModalActive,
+    pendingWorkspace,
+    handleWorkspaceClick,
+    handleConfirmSwitch,
+    handleCloseSwitchModal,
   };
 };

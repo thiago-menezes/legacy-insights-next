@@ -10,10 +10,19 @@ export const WorkspaceCard = ({
   workspace,
   onEdit,
   onDelete,
+  onClick,
 }: WorkspaceCardProps) => {
   return (
     <View width="100%" maxWidth={{ s: '100%', l: 'calc(50% - 8px)' }}>
-      <Link href={`/workspaces/${workspace.slug}`}>
+      <Link
+        href={`/workspaces/${workspace.slug}`}
+        onClick={(e) => {
+          if (onClick) {
+            e.preventDefault();
+            onClick(workspace);
+          }
+        }}
+      >
         <Card padding={4}>
           <View direction="row" align="center" gap={4} justify="space-between">
             <View direction="row" align="center" gap={4}>

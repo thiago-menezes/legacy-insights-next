@@ -22,3 +22,10 @@ export interface SelectedWorkspaceContextValue {
   selectWorkspace: (orgId: string, projectId: string) => void;
   refreshWorkspaces: () => Promise<unknown>;
 }
+
+export interface WorkspaceCardProps {
+  workspace: Workspace;
+  onEdit: (workspace: Workspace) => void;
+  onDelete: (id: string) => void;
+  onClick?: (workspace: Workspace) => void;
+}
