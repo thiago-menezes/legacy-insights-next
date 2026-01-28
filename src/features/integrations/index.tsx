@@ -7,7 +7,6 @@ import { Icon } from '@/components/icon';
 import { PageTitle } from '@/components/page-title';
 import { useProjects } from '../projects/hooks';
 import { useSelectedWorkspace } from '../workspaces/context';
-import { WorkspaceMembersList } from '../workspaces/members/list';
 import { BREADCRUMBS, TABS } from './constants';
 import { IntegrationForm } from './form';
 import { useIntegrations } from './hooks';
@@ -129,15 +128,6 @@ export const Integrations = () => {
           onCancel={handleModalClose}
         />
       </Modal>
-
-      {selectedOrg && (
-        <View paddingTop={10}>
-          <WorkspaceMembersList
-            workspaceId={selectedOrg.documentId}
-            workspaceOwnerId={selectedOrg.owner?.id}
-          />
-        </View>
-      )}
     </View>
   );
 };
