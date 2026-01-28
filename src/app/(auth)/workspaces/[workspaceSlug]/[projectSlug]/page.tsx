@@ -1,6 +1,6 @@
 'use client';
 
-import { notFound, useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { View, Text, Loader } from 'reshaped';
 import { Icon } from '@/components/icon';
@@ -23,12 +23,11 @@ const Page = () => {
 
   const isLoading = isLoadingProject || isLoadingWorkspace;
 
-
   useEffect(() => {
     if (!isLoadingWorkspace && !currentWorkspaceHasProjects && selectedOrg) {
       router.push(`/workspaces/${selectedOrg.slug}`);
     }
-  }, []);
+  }, [isLoadingWorkspace, currentWorkspaceHasProjects, selectedOrg]);
 
   if (isLoading) {
     return (
