@@ -76,8 +76,10 @@ export const productHandler = {
 import { createServiceKeys } from '../../utils';
 import { productHandler } from './handlers';
 
-export const productService =
-  createServiceKeys<typeof productHandler>(productHandler);
+export const productService = createServiceKeys<typeof productHandler>(
+  productHandler,
+  'products',
+);
 
 export type * from './types';
 ```
@@ -191,7 +193,7 @@ export const useProductsQuery = (categoryId?: string) => {
 // Detail query with conditional fetching
 export const useProductQuery = (slug: string) => {
   return useQuery({
-    queryKey: productKeys.detail(slug),
+    queryKey: ['product', slug],
     queryFn: () => productService.get(slug),
     enabled: !!slug,
   });
@@ -492,7 +494,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 export const useProductsInfiniteQuery = (pageSize = 10) => {
   return useInfiniteQuery({
-    queryKey: productKeys.list({ pageSize }),
+    queryKey: ['products', { pageSize }],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await apiClient.get<ProductsResponse>('/api/products', {
         params: {

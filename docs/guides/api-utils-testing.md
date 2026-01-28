@@ -12,24 +12,6 @@ The `createServiceKeys` utility is a central part of our API layer. It simplifie
 
 Located in [src/libs/api/utils.ts](file:///Users/thiagomenezes/Projects/legacy-insights-next/src/libs/api/utils.ts), this function wraps a service object and adds a `keys` method.
 
-```typescript
-export const createServiceKeys = <T extends Record<string, unknown>>(
-  service: T,
-  alternativeKeys?: string[],
-): ServiceKeys<T> => {
-  return {
-    keys: <K extends keyof T>(methodName: K, ...args: unknown[]) => {
-      return [
-        alternativeKeys?.[0] ?? Object.keys(service)[0],
-        methodName,
-        ...args,
-      ];
-    },
-    ...service,
-  };
-};
-```
-
 ---
 
 ## 🧪 Testing Patterns
@@ -59,7 +41,7 @@ Verifies that the default primary key (usually the first method name) is used co
 ```typescript
 it('should generate a default key using the first method name', () => {
   const service = createServiceKeys(mockHandler);
-  expect(service.keys('list')).toEqual(['list', 'list']);
+  expect(service.keys()).toEqual(['list']);
 });
 ```
 

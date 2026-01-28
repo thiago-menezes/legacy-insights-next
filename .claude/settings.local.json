@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run lint:styles:*)",
+      "WebSearch",
+      "Bash(~/.local/bin/claude mcp add:*)",
+      "Bash(tree:*)",
+      "Bash(cd:*)",
+      "Bash(cd /Users/thiago/Projects/Black\\\\ Legacy/Legacy\\\\ Insight/legacy-insights-next && npm run build:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(npx tsc:*)",
+      "WebFetch(domain:www.ag-grid.com)"
+    ]
+  }
+}

@@ -315,19 +315,11 @@ export interface CreateProductParams {
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/libs/api/client';
 import { ProductsResponse, StrapiProduct } from './types';
-
-export const productKeys = {
-  all: ['products'] as const,
-  lists: () => [...productKeys.all, 'list'] as const,
-  list: (filters: Record<string, unknown>) =>
-    [...productKeys.lists(), filters] as const,
-  details: () => [...productKeys.all, 'detail'] as const,
-  detail: (id: string) => [...productKeys.details(), id] as const,
-};
+import { productService } from './service';
 
 export const useProductsQuery = (categoryId?: string) => {
   return useQuery({
-    queryKey: productKeys.list({ categoryId }),
+    queryKey: productService.list.keys({ categoryId }),
     queryFn: async () => {
       const params = categoryId
         ? { filters: { category: { id: categoryId } } }
@@ -343,7 +335,7 @@ export const useProductsQuery = (categoryId?: string) => {
 
 export const useProductQuery = (slug: string) => {
   return useQuery({
-    queryKey: productKeys.detail(slug),
+    queryKey: ['product', slug],
     queryFn: async () => {
       const response = await apiClient.get<{ data: StrapiProduct }>(
         `/api/products/${slug}`,
@@ -378,7 +370,7 @@ export const useCreateProductMutation = () => {
       return response.data.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: productKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
     },
   });
 };
@@ -401,7 +393,7 @@ export const useUpdateProductMutation = () => {
       return response.data.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: productKeys.all });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
     },
   });
 };
@@ -414,7 +406,7 @@ export const useDeleteProductMutation = () => {
       await apiClient.delete(`/api/products/${id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: productKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
     },
   });
 };
