@@ -1,4 +1,4 @@
-import { IntegrationType } from '../integrations/handlers';
+import { IntegrationType } from '../integrations';
 
 export interface StrapiProject {
   id: number;
