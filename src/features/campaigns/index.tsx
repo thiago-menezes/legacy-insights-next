@@ -1,14 +1,13 @@
 'use client';
 
-import Image from 'next/image';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { View, Button, Tabs } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { MetricCard } from '@/components/metric-card';
-import { PageTitle } from '@/components/page-title';
 import { useDataAccessStatus } from '@/hooks';
-import { PLATFORM_CONFIG, TABS } from './constants';
+import { TABS } from './constants';
 import { CampaignsEmptyState } from './empty-states';
+import { CampaignsHeader } from './header';
 import { useCampaignsData } from './hooks';
 import { CampaignsSkeleton } from './skeleton';
 import styles from './styles.module.scss';
@@ -17,13 +16,16 @@ import { UseParamsCampaigns } from './types';
 
 export const Campaigns = () => {
   const { client: platformParam } = useParams<UseParamsCampaigns>();
+  const searchParams = useSearchParams();
+  const integrationId = searchParams.get('integrationId');
+
   const {
     data,
     isLoading: isLoadingData,
     filters,
     handlePageChange,
     handlePageSizeChange,
-  } = useCampaignsData(platformParam);
+  } = useCampaignsData(platformParam, integrationId || undefined);
 
   const integrationType =
     platformParam === 'google' ? 'google_ads' : 'meta_ads';
@@ -81,26 +83,9 @@ export const Campaigns = () => {
 
   const { metrics, campaigns, totalPages, currentPage, totalItems } = data;
 
-  const currentPlatform = PLATFORM_CONFIG[platformParam];
-
   return (
     <View gap={4} className={styles.campaigns}>
-      <PageTitle
-        icon={
-          <div className={styles.iconContainer}>
-            <Image
-              src={currentPlatform.icon}
-              alt={platformParam}
-              width={32}
-              height={32}
-              priority
-              quality={80}
-            />
-          </div>
-        }
-        title={currentPlatform.title}
-        description={currentPlatform.description}
-      />
+      <CampaignsHeader />
 
       <View
         direction="row"

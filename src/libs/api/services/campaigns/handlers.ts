@@ -6,6 +6,7 @@ export const list = async (
 ): Promise<StrapiCampaignListResponse> => {
   const {
     platform = 'meta',
+    integrationId,
     startDate,
     endDate,
     page = 1,
@@ -24,6 +25,13 @@ export const list = async (
 
   if (endDate) {
     query.append('filters[dailyMetrics][date][$lte]', endDate);
+  }
+
+  if (integrationId) {
+    query.append(
+      'filters[integration][documentId][$eq]',
+      integrationId.toString(),
+    );
   }
 
   const { data } = await apiClient.get<StrapiCampaignListResponse>(

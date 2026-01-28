@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, TextField, View, Select, FormControl } from 'reshaped';
 import {
@@ -9,6 +9,8 @@ import {
 import { INTEGRATION_TYPES } from './constants';
 import { IntegrationFormProps } from './types';
 
+const MASKED_TOKEN = '••••••••••••••••';
+
 export const IntegrationForm = ({
   initialValues,
   onSubmit,
@@ -16,7 +18,13 @@ export const IntegrationForm = ({
   isLoading,
   projectId,
 }: IntegrationFormProps) => {
-  const { register, handleSubmit, setValue, watch, reset } =
+  const isEditMode = initialValues && 'documentId' in initialValues;
+
+  const [accessTokenTouched, setAccessTokenTouched] = useState(false);
+  const [refreshTokenTouched, setRefreshTokenTouched] = useState(false);
+  const [clientSecretTouched, setClientSecretTouched] = useState(false);
+
+  const { handleSubmit, setValue, watch, reset } =
     useForm<IntegrationCreateInput>({
       defaultValues: {
         name: initialValues?.name || '',
@@ -30,31 +38,108 @@ export const IntegrationForm = ({
   useEffect(() => {
     if (initialValues) {
       const isStrapi = 'documentId' in initialValues;
+      const strapiData = initialValues as StrapiIntegration;
+      const createData = initialValues as IntegrationCreateInput;
       reset({
         name: initialValues?.name || '',
         type: initialValues?.type || 'meta_ads',
         project: isStrapi
-          ? (initialValues as StrapiIntegration).project?.documentId ||
-            projectId
-          : (initialValues as IntegrationCreateInput).project || projectId,
-        status: (initialValues as StrapiIntegration)?.status || 'disconnected',
-        config: (initialValues as StrapiIntegration)?.config || {},
+          ? strapiData.project?.documentId || projectId
+          : createData.project || projectId,
+        status: strapiData?.status || 'disconnected',
+        accessToken: isStrapi ? MASKED_TOKEN : createData.accessToken || '',
+        refreshToken: isStrapi ? MASKED_TOKEN : createData.refreshToken || '',
+        config: strapiData?.config || {},
       });
+      setAccessTokenTouched(false);
+      setRefreshTokenTouched(false);
+      setClientSecretTouched(false);
     }
   }, [initialValues, reset, projectId]);
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const typeValue = watch('type');
+  const currentAccessToken = watch('accessToken');
+  const currentRefreshToken = watch('refreshToken');
+
+  const hasChanges = useMemo(() => {
+    if (!isEditMode) return true;
+
+    // Em modo de edição, só permitimos alterar tokens
+    const accessTokenChanged =
+      accessTokenTouched && currentAccessToken !== MASKED_TOKEN;
+    const refreshTokenChanged =
+      refreshTokenTouched && currentRefreshToken !== MASKED_TOKEN;
+    const clientSecretChanged = clientSecretTouched;
+
+    return accessTokenChanged || refreshTokenChanged || clientSecretChanged;
+  }, [
+    isEditMode,
+    currentAccessToken,
+    currentRefreshToken,
+    accessTokenTouched,
+    refreshTokenTouched,
+    clientSecretTouched,
+  ]);
+
+  const handleFormSubmit = (values: IntegrationCreateInput) => {
+    const payload = { ...values };
+
+    if (isEditMode) {
+      if (!accessTokenTouched || payload.accessToken === MASKED_TOKEN) {
+        delete payload.accessToken;
+      }
+      if (!refreshTokenTouched || payload.refreshToken === MASKED_TOKEN) {
+        delete payload.refreshToken;
+      }
+      if (!clientSecretTouched) {
+        if (payload.config) {
+          delete payload.config.clientSecret;
+        }
+      }
+    }
+
+    onSubmit(payload);
+  };
+
+  const handleAccessTokenChange = (value: string) => {
+    if (!accessTokenTouched) {
+      setAccessTokenTouched(true);
+      setValue('accessToken', value === MASKED_TOKEN ? '' : value);
+    } else {
+      setValue('accessToken', value);
+    }
+  };
+
+  const handleRefreshTokenChange = (value: string) => {
+    if (!refreshTokenTouched) {
+      setRefreshTokenTouched(true);
+      setValue('refreshToken', value === MASKED_TOKEN ? '' : value);
+    } else {
+      setValue('refreshToken', value);
+    }
+  };
+
+  const handleClientSecretChange = (value: string) => {
+    if (!clientSecretTouched) {
+      setClientSecretTouched(true);
+      setValue('config.clientSecret', value === MASKED_TOKEN ? '' : value);
+    } else {
+      setValue('config.clientSecret', value);
+    }
+  };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(handleFormSubmit)}>
       <View gap={4} paddingTop={4}>
         <FormControl>
           <FormControl.Label>Nome da Integração</FormControl.Label>
           <TextField
             placeholder="Ex: Minha Conta de Anúncios"
-            {...register('name', { required: true })}
+            name="name"
+            value={watch('name') || ''}
             onChange={(e) => setValue('name', e.value)}
+            disabled={isEditMode}
           />
         </FormControl>
 
@@ -65,6 +150,7 @@ export const IntegrationForm = ({
             options={INTEGRATION_TYPES}
             value={typeValue}
             onChange={(e) => setValue('type', e.value as IntegrationType)}
+            disabled={isEditMode}
           />
         </FormControl>
 
@@ -74,16 +160,41 @@ export const IntegrationForm = ({
               <FormControl.Label>Access Token</FormControl.Label>
               <TextField
                 placeholder="EAAL..."
-                {...register('accessToken', { required: true })}
-                onChange={(e) => setValue('accessToken', e.value)}
+                name="accessToken"
+                value={currentAccessToken || ''}
+                onChange={(e) => handleAccessTokenChange(e.value)}
+                onFocus={() => {
+                  if (isEditMode && !accessTokenTouched) {
+                    setAccessTokenTouched(true);
+                    setValue('accessToken', '');
+                  }
+                }}
               />
+              {isEditMode && !accessTokenTouched && (
+                <FormControl.Helper>
+                  Clique no campo para inserir um novo token
+                </FormControl.Helper>
+              )}
             </FormControl>
             <FormControl>
               <FormControl.Label>App ID</FormControl.Label>
               <TextField
                 placeholder="Ex: 8290..."
-                {...register('config.appId', { required: true })}
+                name="config.appId"
+                value={(watch('config.appId') as string) || ''}
                 onChange={(e) => setValue('config.appId', e.value)}
+                disabled={isEditMode}
+              />
+            </FormControl>
+            <FormControl>
+              <FormControl.Label>App Secret</FormControl.Label>
+              <TextField
+                placeholder="Ex: a1b2..."
+                name="config.appSecret"
+                value={(watch('config.appSecret') as string) || ''}
+                onChange={(e) => setValue('config.appSecret', e.value)}
+                inputAttributes={{ type: 'password' }}
+                disabled={isEditMode}
               />
             </FormControl>
             <FormControl>
@@ -93,7 +204,11 @@ export const IntegrationForm = ({
               <TextField
                 name="config.adAccountIds"
                 placeholder="Ex: act_123, act_456"
-                value={watch('config.adAccountIds')?.join(', ')}
+                value={
+                  (watch('config.adAccountIds') as string[] | undefined)?.join(
+                    ', ',
+                  ) || ''
+                }
                 onChange={(e) => {
                   const ids = e.value
                     .split(',')
@@ -101,6 +216,7 @@ export const IntegrationForm = ({
                     .filter(Boolean);
                   setValue('config.adAccountIds', ids);
                 }}
+                disabled={isEditMode}
               />
             </FormControl>
           </View>
@@ -112,32 +228,64 @@ export const IntegrationForm = ({
               <FormControl.Label>Client ID</FormControl.Label>
               <TextField
                 placeholder="Ex: 8761..."
-                {...register('config.clientId', { required: true })}
+                name="config.clientId"
+                value={(watch('config.clientId') as string) || ''}
                 onChange={(e) => setValue('config.clientId', e.value)}
+                disabled={isEditMode}
               />
             </FormControl>
             <FormControl>
               <FormControl.Label>Client Secret</FormControl.Label>
               <TextField
                 placeholder="Ex: GOCSPX-..."
-                {...register('config.clientSecret', { required: true })}
-                onChange={(e) => setValue('config.clientSecret', e.value)}
+                name="config.clientSecret"
+                value={
+                  isEditMode && !clientSecretTouched
+                    ? MASKED_TOKEN
+                    : (watch('config.clientSecret') as string) || ''
+                }
+                onChange={(e) => handleClientSecretChange(e.value)}
+                onFocus={() => {
+                  if (isEditMode && !clientSecretTouched) {
+                    setClientSecretTouched(true);
+                    setValue('config.clientSecret', '');
+                  }
+                }}
               />
+              {isEditMode && !clientSecretTouched && (
+                <FormControl.Helper>
+                  Clique no campo para inserir um novo secret
+                </FormControl.Helper>
+              )}
             </FormControl>
             <FormControl>
               <FormControl.Label>Refresh Token</FormControl.Label>
               <TextField
                 placeholder="Ex: 1//0..."
-                {...register('refreshToken', { required: true })}
-                onChange={(e) => setValue('refreshToken', e.value)}
+                name="refreshToken"
+                value={currentRefreshToken || ''}
+                onChange={(e) => handleRefreshTokenChange(e.value)}
+                onFocus={() => {
+                  if (isEditMode && !refreshTokenTouched) {
+                    setRefreshTokenTouched(true);
+                    setValue('refreshToken', '');
+                  }
+                }}
               />
+              {isEditMode && !refreshTokenTouched && (
+                <FormControl.Helper>
+                  Clique no campo para inserir um novo token
+                </FormControl.Helper>
+              )}
             </FormControl>
             <FormControl>
               <FormControl.Label>Developer Token</FormControl.Label>
               <TextField
                 placeholder="Ex: DvD3..."
-                {...register('config.developerToken', { required: true })}
+                name="config.developerToken"
+                value={(watch('config.developerToken') as string) || ''}
                 onChange={(e) => setValue('config.developerToken', e.value)}
+                disabled={isEditMode}
               />
             </FormControl>
             <FormControl>
@@ -147,7 +295,11 @@ export const IntegrationForm = ({
               <TextField
                 name="config.customerIds"
                 placeholder="Ex: 5559111179, 6421607101"
-                value={watch('config.customerIds')?.join(', ')}
+                value={
+                  (watch('config.customerIds') as string[] | undefined)?.join(
+                    ', ',
+                  ) || ''
+                }
                 onChange={(e) => {
                   const ids = e.value
                     .split(',')
@@ -155,6 +307,7 @@ export const IntegrationForm = ({
                     .filter(Boolean);
                   setValue('config.customerIds', ids);
                 }}
+                disabled={isEditMode}
               />
             </FormControl>
           </View>
@@ -168,9 +321,9 @@ export const IntegrationForm = ({
             type="submit"
             color="primary"
             loading={isLoading}
-            disabled={isLoading}
+            disabled={isLoading || !hasChanges}
           >
-            {initialValues?.name ? 'Salvar Alterações' : 'Conectar'}
+            {isEditMode ? 'Atualizar Token' : 'Conectar'}
           </Button>
         </View>
       </View>

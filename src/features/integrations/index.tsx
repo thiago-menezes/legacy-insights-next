@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { View, Text, Tabs, Loader, Modal } from 'reshaped';
+import { View, Text, Tabs, Loader, Modal, ActionBar } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { PageTitle } from '@/components/page-title';
 import { useProjects } from '../projects/hooks';
@@ -26,6 +26,7 @@ export const Integrations = () => {
     handleAdd,
     handleEdit,
     handleValidate,
+    handleProcess,
     handleFormSubmit,
     handleModalClose,
   } = useIntegrations(project?.documentId);
@@ -93,9 +94,11 @@ export const Integrations = () => {
       </View>
 
       <View gap={4} paddingTop={4}>
-        <Text variant="featured-2" weight="medium">
-          Anúncios
-        </Text>
+        <ActionBar>
+          <Text variant="featured-2" weight="medium">
+            Anúncios
+          </Text>
+        </ActionBar>
 
         <div className={styles.platformsGrid}>
           {platforms
@@ -108,6 +111,7 @@ export const Integrations = () => {
                 onAdd={handleAdd}
                 onEdit={handleEdit}
                 onValidate={handleValidate}
+                onProcess={handleProcess}
               />
             ))}
         </div>
@@ -115,7 +119,7 @@ export const Integrations = () => {
 
       <Modal active={isModalOpen} onClose={handleModalClose} size="m">
         <Modal.Title>
-          {editingIntegration ? 'Editar Integração' : 'Nova Integração'}
+          {editingIntegration ? 'Atualizar Token' : 'Nova Integração'}
         </Modal.Title>
 
         <IntegrationForm

@@ -1,11 +1,7 @@
-'use client';
-
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { View } from 'reshaped';
 import { EmptyState } from '@/components/empty-state';
-import { PageTitle } from '@/components/page-title';
-import { PLATFORM_CONFIG } from '../constants';
+import { CampaignsHeader } from '../header';
 import styles from './styles.module.scss';
 import { CampaignsEmptyStateProps } from './types';
 
@@ -42,7 +38,6 @@ export const CampaignsEmptyState = (props: CampaignsEmptyStateProps) => {
   const router = useRouter();
   const { state, platform } = props;
 
-  const platformConfig = PLATFORM_CONFIG[platform];
   const emptyStateConfig = getEmptyStateConfig(platform);
   const config = emptyStateConfig[state];
 
@@ -55,23 +50,7 @@ export const CampaignsEmptyState = (props: CampaignsEmptyStateProps) => {
 
   return (
     <View gap={6}>
-      <PageTitle
-        icon={
-          <div className={styles.iconContainer}>
-            <Image
-              src={platformConfig.icon}
-              alt={platform}
-              width={32}
-              height={32}
-              priority
-              quality={80}
-              className={styles.icon}
-            />
-          </div>
-        }
-        title={platformConfig.title}
-        description={platformConfig.description}
-      />
+      <CampaignsHeader />
 
       <View className={styles.container}>
         <EmptyState

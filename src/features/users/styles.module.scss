@@ -1,0 +1,57 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-spacing-4);
+}
+
+.scopeSelector {
+  display: flex;
+  flex-direction: row;
+  gap: var(--rs-spacing-3);
+  align-items: center;
+}
+
+.projectSelector {
+  min-width: 200px;
+}
+
+.tableContainer {
+  height: 400px;
+}
+
+.roleCell {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.actionsCell {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--rs-spacing-1);
+  height: 100%;
+}
+
+.emptyState {
+  padding: var(--rs-spacing-8);
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-spacing-4);
+  padding-top: var(--rs-spacing-4);
+}
+
+.modalActions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: var(--rs-spacing-2);
+  padding-top: var(--rs-spacing-4);
+}
+
+.passwordField {
+  margin-top: var(--rs-spacing-2);
+}

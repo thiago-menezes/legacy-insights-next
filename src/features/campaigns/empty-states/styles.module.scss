@@ -6,16 +6,3 @@
   min-height: 400px;
   padding: var(--rs-unit-x6);
 }
-
-.iconContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  background: var(--rs-color-background-neutral-faded);
-  border-radius: var(--rs-radius-medium);
-  .icon {
-    object-fit: contain;
-  }
-}

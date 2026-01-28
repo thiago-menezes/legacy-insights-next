@@ -1,6 +1,11 @@
 export type IntegrationType = 'meta_ads' | 'google_ads';
 
 export type IntegrationStatus = 'connected' | 'disconnected' | 'token_expired';
+export type ProcessStatus =
+  | 'não processado'
+  | 'processando'
+  | 'erro'
+  | 'finalizado com sucesso';
 export type SyncStatus = 'success' | 'failed' | 'pending';
 
 export interface StrapiIntegration {
@@ -9,6 +14,10 @@ export interface StrapiIntegration {
   name: string;
   type: IntegrationType;
   status: IntegrationStatus;
+  processStatus: ProcessStatus;
+  accessToken?: string;
+  refreshToken?: string;
+  tokenExpiresAt?: string | null;
   lastSyncAt: string | null;
   lastSyncStatus: SyncStatus | null;
   createdAt: string;

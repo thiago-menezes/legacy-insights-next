@@ -16,14 +16,19 @@ export const useProjects = () => {
   const toast = useToast();
   const slug = params.workspaceSlug;
   const { workspaces, isLoading: isLoadingWorkspaces } = useWorkspaces();
-  const { hasWorkspaces, selectedOrg, selectedProject } =
+
+  const workspace = workspaces?.data.find(
+    (w) => w.slug === slug || w.documentId === slug,
+  );
+
+  const { hasWorkspaces, selectedProject, selectWorkspace, refreshWorkspaces } =
     useSelectedWorkspace();
 
-  const projectsQuery = useProjectsQuery(selectedOrg?.documentId);
+  const projectsQuery = useProjectsQuery(workspace?.documentId);
   const projectBySlugQuery = useProjectBySlugQuery(params.projectSlug);
   const project = projectBySlugQuery.data || null;
 
-  const createMutation = useCreateProjectMutation(selectedOrg?.documentId);
+  const createMutation = useCreateProjectMutation(workspace?.documentId);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSwitchModalActive, setIsSwitchModalActive] = useState(false);
@@ -51,10 +56,6 @@ export const useProjects = () => {
       router.push('/workspaces');
     }
   }, [isLoadingWorkspaces, hasWorkspaces, router, toast]);
-
-  const workspace = workspaces?.data.find(
-    (w) => w.slug === slug || w.documentId === slug,
-  );
 
   const handleProjectClick = (project: StrapiProject) => {
     if (project.documentId !== selectedProject?.documentId) {
@@ -88,7 +89,14 @@ export const useProjects = () => {
     projects,
     isLoading,
     handleCreateProject: async (data: ProjectCreateInput) => {
-      await createMutation.mutateAsync(data);
+      const result = await createMutation.mutateAsync(data);
+      const newProject = result.data;
+
+      if (projects.length === 0 && workspace && newProject) {
+        selectWorkspace(workspace.documentId, String(newProject.id));
+      }
+
+      refreshWorkspaces();
       handleCloseModal();
     },
     isModalOpen,

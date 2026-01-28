@@ -45,6 +45,7 @@ export interface StrapiCampaignListResponse {
 
 export interface CampaignListParams {
   platform?: 'meta' | 'google';
+  integrationId?: string | number;
   startDate?: string;
   endDate?: string;
   page?: number;

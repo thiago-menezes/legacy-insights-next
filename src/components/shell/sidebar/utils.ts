@@ -58,6 +58,16 @@ export const buildNavigationSections = (
         ? 'Você ainda não possui projetos cadastrados nesse workspace'
         : undefined,
     });
+
+    gestaoSection.items.push({
+      label: 'Usuários',
+      href: '/usuarios',
+      icon: 'users',
+      disabled: !hasWorkspaces,
+      disabledTooltip: !hasWorkspaces
+        ? 'Você ainda não possui workspaces'
+        : undefined,
+    });
   }
 
   return sections;

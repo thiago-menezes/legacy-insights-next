@@ -60,3 +60,10 @@ export const validate = async (
   const { data } = await apiClient.post(`/api/integrations/${id}/validate`);
   return data;
 };
+
+export const process = async (
+  id: string | number,
+): Promise<{ message: string; status: string }> => {
+  const { data } = await apiClient.post(`/api/integrations/${id}/process`);
+  return data;
+};

@@ -56,3 +56,14 @@ export const useValidateIntegrationMutation = (projectId?: string | number) => {
     },
   });
 };
+
+export const useProcessIntegrationMutation = (projectId?: string | number) => {
+  const { refetch } = useIntegrationsQuery(projectId);
+
+  return useMutation({
+    mutationFn: (id: string | number) => integrationsService.process(id),
+    onSuccess: () => {
+      refetch();
+    },
+  });
+};

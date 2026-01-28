@@ -45,6 +45,7 @@ export interface CampaignsData {
 }
 
 export interface CampaignsFilters {
+  integrationId?: string | number;
   startDate?: Date;
   endDate?: Date;
   status?: CampaignStatus[];

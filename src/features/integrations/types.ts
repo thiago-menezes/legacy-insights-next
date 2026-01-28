@@ -1,5 +1,6 @@
 import {
   IntegrationCreateInput,
+  IntegrationType,
   StrapiIntegration,
 } from '@/libs/api/services/integrations';
 
@@ -16,11 +17,12 @@ export interface IntegrationProfile {
   id: string;
   name: string;
   status: ConnectionStatus;
+  processStatus?: string;
   integration: StrapiIntegration;
 }
 
 export interface IntegrationPlatform {
-  id: string;
+  id: IntegrationType | string;
   name: string;
   description: string;
   icon: string;
@@ -42,14 +44,16 @@ export interface ProfileItemProps {
   onDelete: (id: string) => void;
   onEdit: (integration: StrapiIntegration) => void;
   onValidate: (id: string) => void;
+  onProcess: (id: string) => void;
 }
 
 export interface PlatformCardProps {
   platform: IntegrationPlatform;
   onDelete: (id: string) => void;
-  onAdd: (type: string) => void;
+  onAdd: (type: IntegrationType) => void;
   onEdit: (integration: StrapiIntegration) => void;
   onValidate: (id: string) => void;
+  onProcess: (id: string) => void;
 }
 
 export interface IntegrationFormProps {

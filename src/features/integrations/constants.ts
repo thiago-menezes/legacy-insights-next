@@ -51,6 +51,27 @@ export const STATUS_CONFIG: Record<
     color: 'neutral',
   },
 };
+export const PROCESS_STATUS_CONFIG: Record<
+  string,
+  { label: string; color: 'positive' | 'neutral' | 'critical' }
+> = {
+  'não processado': {
+    label: 'Não Processado',
+    color: 'neutral',
+  },
+  processando: {
+    label: 'Processando',
+    color: 'neutral',
+  },
+  erro: {
+    label: 'Erro',
+    color: 'critical',
+  },
+  'finalizado com sucesso': {
+    label: 'Finalizado',
+    color: 'positive',
+  },
+};
 
 export const INTEGRATION_TYPES: { label: string; value: IntegrationType }[] = [
   { label: 'Meta Ads', value: 'meta_ads' },

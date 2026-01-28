@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Text, Button } from 'reshaped';
 import { Icon } from '@/components/icon';
+import { IntegrationType } from '@/libs/api/services/integrations';
 import { ProfileItem } from './profile-item';
 import styles from './styles.module.scss';
 import { PlatformCardProps } from './types';
@@ -11,6 +12,7 @@ export const PlatformCard = ({
   onAdd,
   onEdit,
   onValidate,
+  onProcess,
 }: PlatformCardProps) => {
   return (
     <div className={styles.platformCard}>
@@ -48,12 +50,13 @@ export const PlatformCard = ({
             onDelete={onDelete}
             onEdit={onEdit}
             onValidate={onValidate}
+            onProcess={onProcess}
           />
         ))}
 
         <Button
           className={styles.addProfileButton}
-          onClick={() => onAdd(platform.id)}
+          onClick={() => onAdd(platform.id as IntegrationType)}
         >
           <Icon name="plus" size={18} />
           Adicionar novo perfil

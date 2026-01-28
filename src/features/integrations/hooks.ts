@@ -9,6 +9,7 @@ import {
   useDeleteIntegrationMutation,
   useUpdateIntegrationMutation,
   useValidateIntegrationMutation,
+  useProcessIntegrationMutation,
 } from './api/mutation';
 import { useIntegrationsQuery } from './api/query';
 import { PLATFORM_METADATA } from './constants';
@@ -27,6 +28,7 @@ export const useIntegrations = (projectId?: string) => {
   const updateMutation = useUpdateIntegrationMutation(projectId);
   const deleteMutation = useDeleteIntegrationMutation(projectId);
   const validateMutation = useValidateIntegrationMutation(projectId);
+  const processMutation = useProcessIntegrationMutation(projectId);
 
   const platforms = useMemo(() => {
     return PLATFORM_METADATA.map((platform) => ({
@@ -37,6 +39,7 @@ export const useIntegrations = (projectId?: string) => {
           id: i.documentId,
           name: i.name,
           status: i.status || 'disconnected',
+          processStatus: i.processStatus,
           integration: i,
         })),
     }));
@@ -71,6 +74,16 @@ export const useIntegrations = (projectId?: string) => {
     } catch (err) {
       console.error(err);
       alert('Falha ao validar integração.');
+    }
+  };
+
+  const handleProcess = async (id: string) => {
+    try {
+      await processMutation.mutateAsync(id);
+      alert('Processamento iniciado!');
+    } catch (err) {
+      console.error(err);
+      alert('Falha ao iniciar processamento.');
     }
   };
 
@@ -110,6 +123,7 @@ export const useIntegrations = (projectId?: string) => {
     handleAdd,
     handleEdit,
     handleValidate,
+    handleProcess,
     handleFormSubmit,
     handleModalClose,
   };

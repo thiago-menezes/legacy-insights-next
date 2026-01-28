@@ -1,5 +1,5 @@
 import { IconNames } from '@/components/icon';
-import { CampaignStatus, CampaignTab, UseParamsCampaigns } from './types';
+import { CampaignStatus, CampaignTab } from './types';
 
 export const STATUS_CONFIG: Record<
   CampaignStatus,
@@ -37,20 +37,3 @@ export const TABS: { id: CampaignTab; label: string }[] = [
   { id: 'adsets', label: 'Conjuntos' },
   { id: 'ads', label: 'Anúncios' },
 ];
-
-export const PLATFORM_CONFIG: Record<
-  UseParamsCampaigns['client'],
-  { title: string; description: string; icon: string }
-> = {
-  meta: {
-    title: 'Campanhas da Meta',
-    description:
-      ' Gestão de campanhas do Instagram, Facebook e outras ferramentas da Meta',
-    icon: '/icon-meta.png',
-  },
-  google: {
-    title: 'Campanhas do Google',
-    description: 'Gestão de campanhas de pesquisa, display, Youtube e Shopping',
-    icon: '/icon-google.png',
-  },
-};

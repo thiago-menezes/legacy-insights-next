@@ -1,7 +1,16 @@
 'use client';
 
 import Image from 'next/image';
-import { View, Text, Loader, Button, Modal, Card, Grid } from 'reshaped';
+import {
+  View,
+  Text,
+  Loader,
+  Button,
+  Modal,
+  Card,
+  Grid,
+  ActionBar,
+} from 'reshaped';
 import { EmptyState } from '@/components/empty-state';
 import { Icon } from '@/components/icon';
 import { PageTitle } from '@/components/page-title';
@@ -74,12 +83,8 @@ export const WorkspaceDetail = () => {
             label: `Workspace: ${workspace.name}`,
           },
         ]}
-        title="Projetos"
-        description={
-          <>
-            Gerencie os projetos do workspace <strong>{workspace.name}</strong>
-          </>
-        }
+        title={`Workspace: ${workspace.name}`}
+        description="Gerencie seu workspace"
       >
         <Button
           variant="solid"
@@ -91,12 +96,18 @@ export const WorkspaceDetail = () => {
         </Button>
       </PageTitle>
 
+      <ActionBar>
+        <Text variant="featured-3">Projetos</Text>
+      </ActionBar>
+
       <View gap={4} paddingTop={4}>
         {projects.length === 0 ? (
           <EmptyState
             icon="file-text"
             title="Nenhum projeto cadastrado"
             description="Comece criando seu primeiro projeto."
+            actionLabel="Novo Projeto"
+            onAction={handleOpenCreate}
           />
         ) : (
           <Grid gap={2} columns={{ s: 1, m: 1, l: 2, xl: 3 }}>

@@ -27,14 +27,14 @@ export const useDataAccessStatus = (
   const { data: integrationsData, isLoading: isLoadingIntegrations } =
     useIntegrationsQuery(projectDocumentId);
 
-  const hasIntegration = useMemo(() => {
+  const integrationsOfThisType = useMemo(() => {
     const integrations = integrationsData?.data || [];
-    return integrations.some(
-      (integration) =>
-        integration.type === integrationType &&
-        integration.status === 'connected',
+    return integrations.filter(
+      (integration) => integration.type === integrationType,
     );
   }, [integrationsData, integrationType]);
+
+  const hasIntegration = integrationsOfThisType.length > 0;
 
   const isLoading = isLoadingWorkspaces || isLoadingIntegrations;
 
