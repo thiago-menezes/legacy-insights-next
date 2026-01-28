@@ -7,3 +7,9 @@ export interface ProjectFormProps {
   isLoading?: boolean;
   workspaceId: string;
 }
+
+export interface UseProjectParams {
+  workspaceId?: string;
+  id?: string;
+  slug?: string;
+}

@@ -19,8 +19,6 @@ export const Table = <T,>(props: AgGridReactProps<T>) => {
     foregroundColor: 'var(--rs-color-foreground-neutral)',
     fontFamily: 'Montserrat, sans-serif',
     fontSize: 14,
-    rowHeight: 72,
-    headerHeight: 48,
     cellHorizontalPadding: 'var(--rs-unit-x4)',
   });
 

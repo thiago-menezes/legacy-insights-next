@@ -1,99 +1,74 @@
-import { useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useToast } from 'reshaped';
+import { ProjectCreateInput } from '@/libs/api/services/projects';
+import { useSelectedWorkspace } from '../workspaces/context';
+import { useWorkspaces } from '../workspaces/hooks';
+import { useCreateProjectMutation } from './api/mutation';
 import {
-  ProjectCreateInput,
-  StrapiProject,
-} from '@/libs/api/services/projects';
-import {
-  useCreateProjectMutation,
-  useUpdateProjectMutation,
-  useDeleteProjectMutation,
-} from './api/mutation';
-import {
-  useProjectsQuery,
-  useProjectQuery,
   useProjectBySlugQuery,
+  useProjectQuery,
+  useProjectsQuery,
 } from './api/query';
 
-interface UseProjectParams {
-  workspaceId?: string;
-  id?: string;
-  slug?: string;
-}
+export const useProjects = () => {
+  const params = useParams<{ workspaceSlug: string; projectSlug: string }>();
+  const router = useRouter();
+  const toast = useToast();
+  const slug = params.workspaceSlug;
+  const { workspaces, isLoading: isLoadingWorkspaces } = useWorkspaces();
+  const { hasWorkspaces, selectedOrg } = useSelectedWorkspace();
 
-export const useProject = (params: UseProjectParams = {}) => {
-  const { workspaceId, id, slug } = params;
+  const projectsQuery = useProjectsQuery(selectedOrg?.documentId);
+  const projectQuery = useProjectQuery(params.projectSlug);
+  const projectBySlugQuery = useProjectBySlugQuery(params.projectSlug);
 
-  const projectsQuery = useProjectsQuery(workspaceId);
-  const projectQuery = useProjectQuery(id || '');
-  const projectBySlugQuery = useProjectBySlugQuery(slug || '');
+  const createMutation = useCreateProjectMutation(selectedOrg?.documentId);
 
-  const createMutation = useCreateProjectMutation(workspaceId);
-  const updateMutation = useUpdateProjectMutation(workspaceId);
-  const deleteMutation = useDeleteProjectMutation(workspaceId);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingProject, setEditingProject] = useState<StrapiProject | null>(
-    null,
-  );
-
-  const handleOpenCreate = () => {
-    setEditingProject(null);
-    setIsModalOpen(true);
-  };
-
-  const handleOpenEdit = (project: StrapiProject) => {
-    setEditingProject(project);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setEditingProject(null);
-  };
-
-  const projects = projectsQuery.data?.data || [];
-  const project = id
+  const project = params.projectSlug
     ? projectQuery.data?.data
     : slug
       ? projectBySlugQuery.data
       : null;
 
-  return {
-    projects,
-    project,
-    isLoading:
-      projectsQuery.isLoading ||
-      projectQuery.isLoading ||
-      projectBySlugQuery.isLoading ||
-      createMutation.isPending ||
-      updateMutation.isPending ||
-      deleteMutation.isPending,
-    error:
-      (projectsQuery.error as Error)?.message ||
-      (projectQuery.error as Error)?.message ||
-      (projectBySlugQuery.error as Error)?.message ||
-      createMutation.error?.message ||
-      updateMutation.error?.message ||
-      deleteMutation.error?.message ||
-      null,
-    refresh: projectsQuery.refetch,
-    createProject: (data: ProjectCreateInput) =>
-      createMutation.mutateAsync(data),
-    updateProject: (id: string, data: Partial<ProjectCreateInput>) =>
-      updateMutation.mutateAsync({ id, params: data }),
-    deleteProject: (id: string) => deleteMutation.mutateAsync(id),
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // Modal state
+  const handleOpenCreate = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const projects = projectsQuery.data?.data || [];
+
+  useEffect(() => {
+    if (!isLoadingWorkspaces && !hasWorkspaces) {
+      toast.show({
+        title: 'Acesso restrito',
+        text: 'Você não consegue visualizar projetos pois não tem nenhum workspace cadastrado.',
+        color: 'critical',
+      });
+      router.push('/workspaces');
+    }
+  }, [isLoadingWorkspaces, hasWorkspaces, router, toast]);
+
+  const workspace = workspaces?.data.find(
+    (w) => w.slug === slug || w.documentId === slug,
+  );
+
+  const isLoading = projectsQuery.isLoading;
+
+  return {
+    project,
+    projects,
+    isLoading,
+    handleCreateProject: (data: ProjectCreateInput) =>
+      createMutation.mutateAsync(data),
     isModalOpen,
-    editingProject,
     handleOpenCreate,
-    handleOpenEdit,
     handleCloseModal,
+    workspace,
   };
 };
-
-/**
- * @deprecated Use useProject instead. This is kept for backward compatibility during refactoring.
- */
-export const useProjects = (workspaceId?: string) =>
-  useProject({ workspaceId });

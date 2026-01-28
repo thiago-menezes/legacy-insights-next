@@ -1,7 +1,6 @@
-import { useForm } from 'react-hook-form';
 import { Button, TextField, View, FormControl, TextArea } from 'reshaped';
-import { ProjectCreateInput } from '@/libs/api/services/projects';
-import { ProjectFormProps } from './types';
+import { ProjectFormProps } from '../types';
+import { useProjectForm } from './hooks';
 
 export const ProjectForm = ({
   initialValues,
@@ -10,32 +9,11 @@ export const ProjectForm = ({
   isLoading,
   workspaceId,
 }: ProjectFormProps) => {
-  const { register, handleSubmit, setValue, watch } =
-    useForm<ProjectCreateInput>({
-      defaultValues: {
-        name: initialValues?.name || '',
-        slug: initialValues?.slug || '',
-        description: initialValues?.description || '',
-        workspace: workspaceId,
-      },
+  const { register, handleSubmit, setValue, handleNameChange, nameValue } =
+    useProjectForm({
+      initialValues,
+      workspaceId,
     });
-
-  // eslint-disable-next-line react-hooks/incompatible-library -- watch() is needed for controlled input value
-  const nameValue = watch('name');
-
-  // Auto-generate slug from name
-  const handleNameChange = (value: string) => {
-    setValue('name', value);
-    if (!initialValues?.slug) {
-      const slug = value
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)/g, '');
-      setValue('slug', slug);
-    }
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

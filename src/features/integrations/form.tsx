@@ -4,19 +4,8 @@ import {
   IntegrationCreateInput,
   IntegrationType,
 } from '@/libs/api/services/integrations';
-
-interface IntegrationFormProps {
-  initialValues?: Partial<IntegrationCreateInput>;
-  onSubmit: (values: IntegrationCreateInput) => void;
-  onCancel: () => void;
-  isLoading?: boolean;
-  projectId: string | number;
-}
-
-const INTEGRATION_TYPES: { label: string; value: IntegrationType }[] = [
-  { label: 'Meta Ads', value: 'meta_ads' },
-  { label: 'Google Ads', value: 'google_ads' },
-];
+import { INTEGRATION_TYPES } from './constants';
+import { IntegrationFormProps } from './types';
 
 export const IntegrationForm = ({
   initialValues,

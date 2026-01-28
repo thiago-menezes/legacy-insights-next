@@ -1,9 +1,18 @@
-import { useState } from 'react';
+import { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { useMemo, useState } from 'react';
 import { View, Text, Button, Loader, Badge, ActionBar } from 'reshaped';
 import { EmptyState } from '@/components/empty-state';
 import { Icon } from '@/components/icon';
+import { Table } from '@/components/table';
 import { useWorkspaceMembers } from './api/query';
 import { InviteMemberModal } from './invite-modal';
+
+interface WorkspaceMember {
+  id: number;
+  username: string;
+  email: string;
+  role?: string;
+}
 
 interface WorkspaceMembersListProps {
   workspaceId: string;
@@ -17,6 +26,63 @@ export const WorkspaceMembersList = ({
   const { data: members, isLoading } = useWorkspaceMembers(workspaceId);
   const [isInviteModalActive, setIsInviteModalActive] = useState(false);
 
+  const columnDefs = useMemo<ColDef<WorkspaceMember>[]>(
+    () => [
+      {
+        field: 'username',
+        headerName: 'Nome',
+        flex: 1,
+      },
+      {
+        field: 'email',
+        headerName: 'Email',
+        flex: 1,
+      },
+      {
+        field: 'role',
+        headerName: 'Permissões',
+        width: 150,
+        cellRenderer: (params: ICellRendererParams<WorkspaceMember>) => {
+          const isOwner =
+            workspaceOwnerId && params.data?.id === workspaceOwnerId;
+          const isAdmin = params.data?.role === 'admin' || isOwner;
+
+          return (
+            <View align="start" justify="center" height="100%">
+              <Badge color={isAdmin ? 'primary' : 'neutral'}>
+                {isOwner ? 'Owner' : params.data?.role || 'Member'}
+              </Badge>
+            </View>
+          );
+        },
+      },
+      {
+        headerName: 'Ações',
+        width: 100,
+        cellRenderer: (params: ICellRendererParams<WorkspaceMember>) => {
+          const isOwner =
+            workspaceOwnerId && params.data?.id === workspaceOwnerId;
+
+          if (isOwner) return null;
+
+          return (
+            <View align="center" justify="center" height="100%">
+              <Button
+                icon={<Icon name="trash" size={16} />}
+                variant="ghost"
+                color="critical"
+                onClick={() => {
+                  /* TODO: Implement remove member */
+                }}
+              />
+            </View>
+          );
+        },
+      },
+    ],
+    [workspaceOwnerId],
+  );
+
   if (isLoading) {
     return (
       <View align="center" padding={4}>
@@ -26,7 +92,7 @@ export const WorkspaceMembersList = ({
   }
 
   return (
-    <View gap={4}>
+    <>
       <ActionBar>
         <View
           direction="row"
@@ -45,59 +111,24 @@ export const WorkspaceMembersList = ({
         </View>
       </ActionBar>
 
-      <View gap={2} direction="column">
-        {members?.map((member) => (
-          <View
-            key={member.id}
-            direction="row"
-            align="center"
-            justify="space-between"
-            padding={3}
-            backgroundColor="neutral-faded"
-            borderRadius="medium"
-          >
-            <View direction="column">
-              <Text weight="medium">{member.username}</Text>
-              <Text variant="caption-1" color="neutral-faded">
-                {member.email}
-              </Text>
-            </View>
-            <View direction="row" align="center" gap={3}>
-              <Badge
-                color={
-                  member.role === 'admin' ||
-                  (workspaceOwnerId && member.id === workspaceOwnerId)
-                    ? 'primary'
-                    : 'neutral'
-                }
-              >
-                {workspaceOwnerId && member.id === workspaceOwnerId
-                  ? 'Owner'
-                  : member.role || 'Member'}
-              </Badge>
-              {!(workspaceOwnerId && member.id === workspaceOwnerId) && (
-                <Button
-                  icon={<Icon name="trash" size={16} />}
-                  variant="ghost"
-                  color="critical"
-                  onClick={() => {
-                    /* TODO: Implement remove member */
-                  }}
-                />
-              )}
-            </View>
-          </View>
-        ))}
-        {members?.length === 0 && (
-          <EmptyState icon="user" title="Nenhum membro encontrado" />
-        )}
-      </View>
+      {members && members.length > 0 ? (
+        <View height="240px" paddingStart={2} paddingEnd={2}>
+          <Table<WorkspaceMember>
+            rowData={members}
+            columnDefs={columnDefs}
+            suppressCellFocus
+            pagination={false}
+          />
+        </View>
+      ) : (
+        <EmptyState icon="user" title="Nenhum membro encontrado" />
+      )}
 
       <InviteMemberModal
         active={isInviteModalActive}
         onClose={() => setIsInviteModalActive(false)}
         workspaceId={workspaceId}
       />
-    </View>
+    </>
   );
 };

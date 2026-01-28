@@ -2,78 +2,25 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter, useParams } from 'next/navigation';
-import { useEffect } from 'react';
-import {
-  View,
-  Text,
-  Loader,
-  Button,
-  Modal,
-  Card,
-  Grid,
-  useToast,
-} from 'reshaped';
+import { View, Text, Loader, Button, Modal, Card, Grid } from 'reshaped';
 import { EmptyState } from '@/components/empty-state';
 import { Icon } from '@/components/icon';
 import { PageTitle } from '@/components/page-title';
-import { useSelectedWorkspace } from '@/features/workspaces/context';
-import { useWorkspaces } from '@/features/workspaces/hooks';
 import { WorkspaceMembersList } from '@/features/workspaces/members/list';
-import { ProjectCreateInput } from '@/libs/api/services/projects';
 import { getMediaUrl } from '@/libs/api/strapi';
 import { ProjectForm } from './form';
-import { useProject } from './hooks';
+import { useProjects } from './hooks';
 
 const WorkspaceDetailPage = () => {
-  const params = useParams();
-  const router = useRouter();
-  const toast = useToast();
-  const slug = params.workspaceSlug as string;
-  const { workspaces, isLoading: isLoadingWorkspaces } = useWorkspaces();
-  const { refreshWorkspaces, hasWorkspaces } = useSelectedWorkspace();
-
-  useEffect(() => {
-    if (!isLoadingWorkspaces && !hasWorkspaces) {
-      toast.show({
-        title: 'Acesso restrito',
-        text: 'Você não consegue visualizar projetos pois não tem nenhum workspace cadastrado.',
-        color: 'critical',
-      });
-      router.push('/workspaces');
-    }
-  }, [isLoadingWorkspaces, hasWorkspaces, router, toast]);
-
-  const workspace = workspaces?.data.find(
-    (w) => w.slug === slug || w.documentId === slug,
-  );
-
   const {
     projects,
-    isLoading: isLoadingProjects,
-    createProject,
     isModalOpen,
     handleOpenCreate,
     handleCloseModal,
-  } = useProject({ workspaceId: workspace?.documentId });
-
-  const isLoading = isLoadingWorkspaces || isLoadingProjects;
-
-  const handleCreateProject = async (values: ProjectCreateInput) => {
-    if (!workspace) return;
-
-    try {
-      await createProject({
-        ...values,
-        workspace: workspace.documentId,
-      });
-      await refreshWorkspaces();
-      handleCloseModal();
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('Failed to create project:', err);
-    }
-  };
+    workspace,
+    handleCreateProject,
+    isLoading,
+  } = useProjects();
 
   if (isLoading) {
     return (
@@ -148,7 +95,6 @@ const WorkspaceDetailPage = () => {
               <Link
                 key={project.documentId}
                 href={`/workspaces/${workspace.slug}/${project.slug}`}
-                style={{ textDecoration: 'none' }}
               >
                 <Card
                   attributes={{
@@ -192,7 +138,7 @@ const WorkspaceDetailPage = () => {
           workspaceId={workspace.documentId}
           onSubmit={handleCreateProject}
           onCancel={handleCloseModal}
-          isLoading={isLoadingProjects}
+          isLoading={isLoading}
         />
       </Modal>
     </>
