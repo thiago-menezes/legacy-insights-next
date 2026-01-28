@@ -21,8 +21,6 @@ export const Campaigns = () => {
 
   const { metrics, campaigns, totalPages, currentPage, totalItems } = data;
 
-  console.log({ data });
-
   return (
     <View gap={6} className={styles.campaigns}>
       <View gap={1}>
@@ -82,7 +80,6 @@ export const Campaigns = () => {
         ))}
       </div>
 
-      {/* Filter Bar */}
       <View className={styles.filterBar}>
         <div className={styles.filterBarLeft}>
           <Button variant="outline" icon={<Icon name="calendar" size={18} />}>
