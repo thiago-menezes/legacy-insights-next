@@ -16,6 +16,8 @@ export const WorkspaceMembersList = ({
   const { data: members, isLoading } = useWorkspaceMembers(workspaceId);
   const [isInviteModalActive, setIsInviteModalActive] = useState(false);
 
+  console.log({ members });
+
   if (isLoading) {
     return (
       <View align="center" padding={4}>

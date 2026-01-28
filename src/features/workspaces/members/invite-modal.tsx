@@ -28,7 +28,7 @@ export const InviteMemberModal = ({
   return (
     <Modal active={active} onClose={onClose}>
       <Modal.Title>Convidar Membro</Modal.Title>
-      <View gap={4}>
+      <View gap={4} paddingTop={4}>
         <FormControl>
           <FormControl.Label>Email</FormControl.Label>
           <TextField
@@ -53,7 +53,7 @@ export const InviteMemberModal = ({
         </FormControl>
       </View>
 
-      <View gap={2} justify="center">
+      <View direction="row" gap={2} justify="center" align="center" padding={4}>
         <Button onClick={onClose}>Cancelar</Button>
         <Button color="primary" onClick={handleSubmit} loading={isPending}>
           Enviar Convite

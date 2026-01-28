@@ -7,10 +7,10 @@ export const useWorkspaceMembers = (workspaceId?: string) => {
     queryKey: ['workspace-members', workspaceId],
     queryFn: async () => {
       if (!workspaceId) throw new Error('Workspace ID is required');
-      const { data } = await apiClient.get<{ data: WorkspaceMember[] }>(
+      const { data } = await apiClient.get<WorkspaceMember[]>(
         `/api/workspaces/${workspaceId}/members`,
       );
-      return data.data;
+      return data;
     },
     enabled: !!workspaceId,
   });

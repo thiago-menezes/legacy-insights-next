@@ -1,10 +1,13 @@
-export type WorkspaceRole = 'admin' | 'member' | 'viewer';
+export type WorkspaceRole = 'owner' | 'admin' | 'member' | 'viewer';
 
 export interface WorkspaceMember {
   id: number;
+  documentId: string | null;
   username: string;
   email: string;
-  role?: WorkspaceRole;
+  role: WorkspaceRole;
+  invitedAt?: string | null;
+  invitedBy?: { id: number; username: string } | null;
 }
 
 export interface Workspace {
