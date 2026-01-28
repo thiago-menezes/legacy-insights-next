@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { View, Text, Button, Loader, Badge, ActionBar } from 'reshaped';
+import { EmptyState } from '@/components/empty-state';
 import { Icon } from '@/components/icon';
 import { useWorkspaceMembers } from './api/query';
 import { InviteMemberModal } from './invite-modal';
@@ -15,8 +16,6 @@ export const WorkspaceMembersList = ({
 }: WorkspaceMembersListProps) => {
   const { data: members, isLoading } = useWorkspaceMembers(workspaceId);
   const [isInviteModalActive, setIsInviteModalActive] = useState(false);
-
-  console.log({ members });
 
   if (isLoading) {
     return (
@@ -90,7 +89,7 @@ export const WorkspaceMembersList = ({
           </View>
         ))}
         {members?.length === 0 && (
-          <Text color="neutral-faded">Nenhum membro encontrado.</Text>
+          <EmptyState icon="user" title="Nenhum membro encontrado" />
         )}
       </View>
 

@@ -17,7 +17,6 @@ export const useWorkspaces = () => {
   const updateWorkspace = useUpdateWorkspaceMutation();
   const deleteWorkspace = useDeleteWorkspaceMutation();
   const getWorkspaces = useWorkspacesQuery();
-  const workspaces = getWorkspaces.data;
 
   const error =
     createWorkspace.error ||
@@ -28,8 +27,6 @@ export const useWorkspaces = () => {
   const handleGetWorkspaces = () => getWorkspaces.refetch();
 
   const [isModalActive, setIsModalActive] = useState(false);
-  const [isModalFirstWorkspaceActive, setIsModalFirstWorkspaceActive] =
-    useState(workspaces?.data.length === 0);
 
   const [editingWorkspace, setEditingWorkspace] = useState<Workspace | null>(
     null,
@@ -123,14 +120,12 @@ export const useWorkspaces = () => {
       createWorkspace.isPending ||
       deleteWorkspace.isPending,
     isModalActive,
-    isModalFirstWorkspaceActive,
     editingWorkspace,
     handleOpenCreate,
     handleOpenEdit,
     handleCloseModal,
     handleSubmit,
     handleDelete,
-    setIsModalFirstWorkspaceActive,
     isSwitchModalActive,
     pendingWorkspace,
     handleWorkspaceClick,

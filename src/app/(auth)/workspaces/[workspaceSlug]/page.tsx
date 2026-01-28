@@ -14,6 +14,7 @@ import {
   Grid,
   useToast,
 } from 'reshaped';
+import { EmptyState } from '@/components/empty-state';
 import { Icon } from '@/components/icon';
 import { PageTitle } from '@/components/page-title';
 import { ProjectForm } from '@/features/projects/form';
@@ -138,15 +139,11 @@ const WorkspaceDetailPage = () => {
 
       <View gap={4}>
         {projects.length === 0 ? (
-          <View
-            padding={8}
-            align="center"
-            justify="center"
-            backgroundColor="neutral-faded"
-            borderRadius="medium"
-          >
-            <Text color="neutral">Nenhum projeto cadastrado</Text>
-          </View>
+          <EmptyState
+            icon="file-text"
+            title="Nenhum projeto cadastrado"
+            description="Comece criando seu primeiro projeto."
+          />
         ) : (
           <Grid gap={2} columns={{ s: 1, m: 1, l: 2, xl: 3 }}>
             {projects.map((project) => (
