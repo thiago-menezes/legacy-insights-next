@@ -29,3 +29,17 @@ export const useSearchUser = (email: string) => {
     retry: false,
   });
 };
+
+export const useWorkspaceProjects = (workspaceId?: string) => {
+  return useQuery({
+    queryKey: ['workspace-projects', workspaceId],
+    queryFn: async () => {
+      if (!workspaceId) throw new Error('Workspace ID is required');
+      const { data } = await apiClient.get<
+        { id: number; documentId: string; name: string; slug: string }[]
+      >(`/api/workspaces/${workspaceId}/projects`);
+      return data;
+    },
+    enabled: !!workspaceId,
+  });
+};

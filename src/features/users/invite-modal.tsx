@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button, FormControl, Modal, Select, TextField, View } from 'reshaped';
-import { useSearchUser } from './api/query';
+import { useSearchUser, useWorkspaceProjects } from './api/query';
+import { ProjectSelector } from './project-selector';
 import { InviteFormData, MemberRole } from './types';
 
 interface InviteModalProps {
@@ -9,6 +10,7 @@ interface InviteModalProps {
   onSubmit: (data: InviteFormData) => Promise<void>;
   isPending: boolean;
   scope: 'workspace' | 'project';
+  workspaceId?: string; // Required when scope is 'workspace'
 }
 
 export const InviteModal = ({
@@ -17,11 +19,13 @@ export const InviteModal = ({
   onSubmit,
   isPending,
   scope,
+  workspaceId,
 }: InviteModalProps) => {
   const [email, setEmail] = useState('');
   const [debouncedEmail, setDebouncedEmail] = useState('');
   const [role, setRole] = useState<MemberRole>('member');
   const [password, setPassword] = useState('');
+  const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
 
   // Debounce email
   useEffect(() => {
@@ -37,6 +41,9 @@ export const InviteModal = ({
     isLoading: isSearching,
     isError,
   } = useSearchUser(debouncedEmail);
+
+  const { data: projects = [], isLoading: isLoadingProjects } =
+    useWorkspaceProjects(scope === 'workspace' ? workspaceId : undefined);
 
   // Derive state
   // Search is complete only if we have data and no errors
@@ -55,6 +62,7 @@ export const InviteModal = ({
     setDebouncedEmail('');
     setRole('member');
     setPassword('');
+    setSelectedProjects([]);
   };
 
   const handleSubmit = async () => {
@@ -63,6 +71,7 @@ export const InviteModal = ({
       role,
       password: shouldCreateUser ? password : undefined,
       createUser: shouldCreateUser,
+      projects: scope === 'workspace' ? selectedProjects : undefined,
     });
     resetForm();
   };
@@ -121,19 +130,28 @@ export const InviteModal = ({
           />
         </FormControl>
 
+        {scope === 'workspace' && (
+          <ProjectSelector
+            projects={projects}
+            selectedProjects={selectedProjects}
+            onChange={setSelectedProjects}
+            isLoading={isLoadingProjects}
+          />
+        )}
+
         {shouldCreateUser && (
           <View paddingTop={2}>
             <FormControl>
-              <FormControl.Label>Senha</FormControl.Label>
+              <FormControl.Label>Senha *</FormControl.Label>
               <TextField
                 name="password"
                 value={password}
                 onChange={({ value }) => setPassword(value)}
                 placeholder="Senha para o novo usuário"
-                inputAttributes={{ type: 'password' }}
+                inputAttributes={{ type: 'password', required: true }}
               />
               <FormControl.Helper>
-                Deixe em branco para gerar uma senha aleatória
+                Digite a senha que será passada ao novo usuário
               </FormControl.Helper>
             </FormControl>
           </View>
@@ -146,7 +164,11 @@ export const InviteModal = ({
           color="primary"
           onClick={handleSubmit}
           loading={isPending}
-          disabled={!isSearchComplete}
+          disabled={
+            !isSearchComplete ||
+            (scope === 'workspace' && selectedProjects.length === 0) ||
+            (shouldCreateUser && !password.trim())
+          }
         >
           {shouldCreateUser ? 'Criar e Convidar' : 'Enviar Convite'}
         </Button>

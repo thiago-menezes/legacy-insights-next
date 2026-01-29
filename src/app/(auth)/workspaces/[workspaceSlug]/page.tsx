@@ -1,7 +1,12 @@
+import { RoleGuard } from '@/components/role-guard';
 import { WorkspaceDetail } from '@/features/projects';
 
 const WorkspaceDetailPage = () => {
-  return <WorkspaceDetail />;
+  return (
+    <RoleGuard requireManagement>
+      <WorkspaceDetail />
+    </RoleGuard>
+  );
 };
 
 export default WorkspaceDetailPage;

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { View, Text, Button, useTheme } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { useSelectedWorkspace } from '@/features/workspaces/context';
+import { useUserRole } from '@/features/workspaces/use-user-role';
 import { normalizeUrlPath } from '@/utils/sanitize-slug';
 import { SidebarItem } from './item';
 import styles from './styles.module.scss';
@@ -22,6 +23,7 @@ export const Sidebar = ({ isVisible, onToggle, isMobile }: SidebarProps) => {
     hasWorkspaces,
     currentWorkspaceHasProjects,
   } = useSelectedWorkspace();
+  const { canManage } = useUserRole();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
   const toggleExpand = (itemLabel: string) => {
@@ -75,6 +77,7 @@ export const Sidebar = ({ isVisible, onToggle, isMobile }: SidebarProps) => {
           selectedProject?.slug,
           hasWorkspaces,
           currentWorkspaceHasProjects,
+          canManage,
         ).map((section) => {
           const items = section.items;
 

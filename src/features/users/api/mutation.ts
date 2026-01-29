@@ -27,6 +27,39 @@ export const useInviteWorkspaceMember = (workspaceId?: string) => {
   });
 };
 
+export const useInviteToProjects = (workspaceId?: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: InviteFormData) => {
+      if (!workspaceId) throw new Error('Workspace ID is required');
+      if (!data.projects || data.projects.length === 0) {
+        throw new Error('At least one project must be selected');
+      }
+
+      const response = await apiClient.post(
+        `/api/workspaces/${workspaceId}/invite-to-projects`,
+        {
+          email: data.email,
+          role: data.role,
+          password: data.password,
+          projects: data.projects,
+        },
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      // Invalidate all project members queries since we added to multiple projects
+      queryClient.invalidateQueries({
+        queryKey: ['project-members'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['workspace-members', workspaceId],
+      });
+    },
+  });
+};
+
 export const useUpdateWorkspaceMemberRole = (workspaceId?: string) => {
   const queryClient = useQueryClient();
 

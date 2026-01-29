@@ -44,10 +44,10 @@ export const SelectedWorkspaceProvider = ({ children }: PropsWithChildren) => {
     return '';
   }, [userSelectedOrgId, workspaces, isLoading]);
 
-  const selectedOrg = useMemo(
-    () => workspaces?.data.find((o) => o.documentId === selectedOrgId),
-    [workspaces, selectedOrgId],
-  );
+  const selectedOrg = useMemo(() => {
+    const org = workspaces?.data.find((o) => o.documentId === selectedOrgId);
+    return org;
+  }, [workspaces, selectedOrgId]);
 
   const selectedProjectId = useMemo(() => {
     if (userSelectedProjectId) return userSelectedProjectId;

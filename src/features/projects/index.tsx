@@ -5,7 +5,6 @@ import { View, Text, Loader, Button, Modal, Card, Grid } from 'reshaped';
 import { EmptyState } from '@/components/empty-state';
 import { Icon } from '@/components/icon';
 import { PageTitle } from '@/components/page-title';
-import { WorkspaceMembersList } from '@/features/workspaces/members/list';
 import { getMediaUrl } from '@/libs/api/strapi';
 import { useSelectedWorkspace } from '../workspaces/context';
 import { ProjectForm } from './form';
@@ -151,13 +150,6 @@ export const WorkspaceDetail = () => {
             ))}
           </Grid>
         )}
-      </View>
-
-      <View paddingTop={10}>
-        <WorkspaceMembersList
-          workspaceId={workspace.documentId}
-          workspaceOwnerId={workspace.owner?.id}
-        />
       </View>
 
       <Modal active={isModalOpen} onClose={handleCloseModal}>

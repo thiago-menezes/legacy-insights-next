@@ -1,11 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
-import { useProjectsQuery } from '@/features/projects/api/query';
 import { useSelectedWorkspace } from '@/features/workspaces/context';
-import { useWorkspaceMembers } from '@/features/workspaces/members/api/query';
 import {
-  useInviteWorkspaceMember,
-  useUpdateWorkspaceMemberRole,
-  useRemoveWorkspaceMember,
   useInviteProjectMember,
   useUpdateProjectMemberRole,
   useRemoveProjectMember,
@@ -13,19 +8,10 @@ import {
 import { useProjectMembers } from './api/query';
 import { InviteFormData, MemberRole, WorkspaceMemberItem } from './types';
 
-type MemberScope = 'workspace' | 'project';
-
 export const useUsersManagement = () => {
   const { selectedOrg, selectedProject } = useSelectedWorkspace();
 
   const workspaceId = selectedOrg?.documentId;
-  const workspaceOwnerId = selectedOrg?.owner?.id;
-
-  // Scope state
-  const [activeScope, setActiveScope] = useState<MemberScope>('workspace');
-  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
-    selectedProject?.documentId || null,
-  );
 
   // Modal states
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
@@ -35,79 +21,40 @@ export const useUsersManagement = () => {
     useState<WorkspaceMemberItem | null>(null);
 
   // Data fetching
-  const { data: workspaceMembers, isLoading: isLoadingWorkspaceMembers } =
-    useWorkspaceMembers(workspaceId);
-
   const { data: projectMembers, isLoading: isLoadingProjectMembers } =
-    useProjectMembers(selectedProjectId || undefined);
-
-  const { data: projectsResponse, isLoading: isLoadingProjects } =
-    useProjectsQuery(workspaceId);
-
-  // Mutations - Workspace
-  const inviteWorkspaceMemberMutation = useInviteWorkspaceMember(workspaceId);
-  const updateWorkspaceMemberRoleMutation =
-    useUpdateWorkspaceMemberRole(workspaceId);
-  const removeWorkspaceMemberMutation = useRemoveWorkspaceMember(workspaceId);
+    useProjectMembers(selectedProject?.documentId || undefined);
 
   // Mutations - Project
   const inviteProjectMemberMutation = useInviteProjectMember(
-    selectedProjectId || undefined,
+    selectedProject?.documentId || undefined,
   );
   const updateProjectMemberRoleMutation = useUpdateProjectMemberRole(
-    selectedProjectId || undefined,
+    selectedProject?.documentId || undefined,
   );
   const removeProjectMemberMutation = useRemoveProjectMember(
-    selectedProjectId || undefined,
+    selectedProject?.documentId || undefined,
   );
-
-  // Extract projects from response
-  const projects = useMemo(() => {
-    if (!projectsResponse) return [];
-    if ('data' in projectsResponse) {
-      return projectsResponse.data;
-    }
-    return [];
-  }, [projectsResponse]);
 
   // Computed values
   const currentMembers = useMemo((): WorkspaceMemberItem[] => {
-    if (activeScope === 'workspace') {
-      return (workspaceMembers || []).map((member) => ({
-        ...member,
-        invitedAt: member.invitedAt ?? null,
-        invitedBy: member.invitedBy ?? null,
-      }));
-    }
     return (projectMembers || []).map((member) => ({
       ...member,
       invitedAt: member.invitedAt ?? null,
       invitedBy: member.invitedBy ?? null,
     }));
-  }, [activeScope, workspaceMembers, projectMembers]);
+  }, [projectMembers]);
 
-  const isLoading = useMemo(() => {
-    if (activeScope === 'workspace') {
-      return isLoadingWorkspaceMembers;
-    }
-    return isLoadingProjectMembers;
-  }, [activeScope, isLoadingWorkspaceMembers, isLoadingProjectMembers]);
+  const isLoading = isLoadingProjectMembers;
 
   const isMutating = useMemo(() => {
     return (
-      inviteWorkspaceMemberMutation.isPending ||
       inviteProjectMemberMutation.isPending ||
-      updateWorkspaceMemberRoleMutation.isPending ||
       updateProjectMemberRoleMutation.isPending ||
-      removeWorkspaceMemberMutation.isPending ||
       removeProjectMemberMutation.isPending
     );
   }, [
-    inviteWorkspaceMemberMutation.isPending,
     inviteProjectMemberMutation.isPending,
-    updateWorkspaceMemberRoleMutation.isPending,
     updateProjectMemberRoleMutation.isPending,
-    removeWorkspaceMemberMutation.isPending,
     removeProjectMemberMutation.isPending,
   ]);
 
@@ -142,17 +89,13 @@ export const useUsersManagement = () => {
 
   const handleInvite = useCallback(
     async (data: InviteFormData) => {
-      if (activeScope === 'workspace') {
-        await inviteWorkspaceMemberMutation.mutateAsync(data);
-      } else if (selectedProjectId) {
+      if (selectedProject?.documentId) {
         await inviteProjectMemberMutation.mutateAsync(data);
       }
       handleCloseInviteModal();
     },
     [
-      activeScope,
-      selectedProjectId,
-      inviteWorkspaceMemberMutation,
+      selectedProject?.documentId,
       inviteProjectMemberMutation,
       handleCloseInviteModal,
     ],
@@ -162,12 +105,7 @@ export const useUsersManagement = () => {
     async (role: MemberRole) => {
       if (!selectedMember?.documentId) return;
 
-      if (activeScope === 'workspace') {
-        await updateWorkspaceMemberRoleMutation.mutateAsync({
-          memberId: selectedMember.documentId,
-          role,
-        });
-      } else if (selectedProjectId) {
+      if (selectedProject?.documentId) {
         await updateProjectMemberRoleMutation.mutateAsync({
           memberId: selectedMember.documentId,
           role,
@@ -176,10 +114,8 @@ export const useUsersManagement = () => {
       handleCloseEditRoleModal();
     },
     [
-      activeScope,
       selectedMember,
-      selectedProjectId,
-      updateWorkspaceMemberRoleMutation,
+      selectedProject?.documentId,
       updateProjectMemberRoleMutation,
       handleCloseEditRoleModal,
     ],
@@ -188,44 +124,26 @@ export const useUsersManagement = () => {
   const handleRemoveMember = useCallback(async () => {
     if (!selectedMember?.documentId) return;
 
-    if (activeScope === 'workspace') {
-      await removeWorkspaceMemberMutation.mutateAsync(
-        selectedMember.documentId,
-      );
-    } else if (selectedProjectId) {
+    if (selectedProject?.documentId) {
       await removeProjectMemberMutation.mutateAsync(selectedMember.documentId);
     }
     handleCloseRemoveModal();
   }, [
-    activeScope,
     selectedMember,
-    selectedProjectId,
-    removeWorkspaceMemberMutation,
+    selectedProject?.documentId,
     removeProjectMemberMutation,
     handleCloseRemoveModal,
   ]);
 
-  const handleScopeChange = useCallback((scope: MemberScope) => {
-    setActiveScope(scope);
-  }, []);
-
-  const handleProjectChange = useCallback((projectId: string) => {
-    setSelectedProjectId(projectId);
-  }, []);
-
   return {
     // State
-    activeScope,
-    selectedProjectId,
+    selectedProjectId: selectedProject?.documentId,
     workspaceId,
-    workspaceOwnerId,
     selectedWorkspace: selectedOrg,
 
     // Data
     currentMembers,
-    projects,
     isLoading,
-    isLoadingProjects,
     isMutating,
 
     // Modal states
@@ -244,7 +162,5 @@ export const useUsersManagement = () => {
     handleInvite,
     handleUpdateRole,
     handleRemoveMember,
-    handleScopeChange,
-    handleProjectChange,
   };
 };

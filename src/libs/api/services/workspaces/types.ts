@@ -34,7 +34,7 @@ export interface Workspace {
     username: string;
     email: string;
   } | null;
-  members: WorkspaceMember[] | null;
+  workspaceMembers: WorkspaceMember[] | null;
   projects: StrapiProject[] | null;
 }
 

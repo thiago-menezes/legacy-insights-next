@@ -6,9 +6,8 @@ import {
 } from './types';
 
 export const list = async (): Promise<StrapiWorkspaceListResponse> => {
-  const { data } = await apiClient.get<StrapiWorkspaceListResponse>(
-    '/api/workspaces?populate=*',
-  );
+  const { data } =
+    await apiClient.get<StrapiWorkspaceListResponse>('/api/workspaces');
   return data;
 };
 

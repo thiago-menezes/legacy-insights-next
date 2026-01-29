@@ -1,0 +1,23 @@
+.container {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: var(--rs-unit-x2);
+  border: 1px solid var(--rs-color-border-default);
+  border-radius: var(--rs-radius-medium);
+}
+
+.selectAll {
+  padding-bottom: var(--rs-unit-x2);
+  border-bottom: 1px solid var(--rs-color-border-default);
+  margin-bottom: var(--rs-unit-x2);
+}
+
+.projectItem {
+  padding: var(--rs-unit-x1) 0;
+}
+
+.empty {
+  padding: var(--rs-unit-x4);
+  text-align: center;
+  color: var(--rs-color-foreground-faded);
+}

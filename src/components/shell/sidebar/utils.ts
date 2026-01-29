@@ -5,6 +5,7 @@ export const buildNavigationSections = (
   projectSlug?: string,
   hasWorkspaces?: boolean,
   hasProjects?: boolean,
+  canManage?: boolean,
 ): NavSection[] => {
   const sections: NavSection[] = [
     {
@@ -23,7 +24,11 @@ export const buildNavigationSections = (
         },
       ],
     },
-    {
+  ];
+
+  // Only show management section if user has management permissions
+  if (canManage) {
+    sections.push({
       title: 'Gestão',
       items: [
         {
@@ -33,41 +38,31 @@ export const buildNavigationSections = (
           expandable: false,
         },
       ],
-    },
-  ];
-
-  const gestaoSection = sections.find((s) => s.title === 'Gestão');
-
-  if (gestaoSection) {
-    gestaoSection.items.push({
-      label: 'Projetos',
-      href: `/workspaces/${workspaceSlug}`,
-      icon: 'folders',
-      disabled: !hasWorkspaces,
-      disabledTooltip: !hasWorkspaces
-        ? 'Você ainda não possui workspaces'
-        : undefined,
     });
 
-    gestaoSection.items.push({
-      label: 'Integrações',
-      href: `/workspaces/${workspaceSlug}/${projectSlug}`,
-      icon: 'arrows-exchange',
-      disabled: !hasProjects,
-      disabledTooltip: !hasProjects
-        ? 'Você ainda não possui projetos cadastrados nesse workspace'
-        : undefined,
-    });
+    const gestaoSection = sections.find((s) => s.title === 'Gestão');
 
-    gestaoSection.items.push({
-      label: 'Usuários',
-      href: '/usuarios',
-      icon: 'users',
-      disabled: !hasWorkspaces,
-      disabledTooltip: !hasWorkspaces
-        ? 'Você ainda não possui workspaces'
-        : undefined,
-    });
+    if (gestaoSection) {
+      gestaoSection.items.push({
+        label: 'Projetos',
+        href: `/workspaces/${workspaceSlug}`,
+        icon: 'folders',
+        disabled: !hasWorkspaces,
+        disabledTooltip: !hasWorkspaces
+          ? 'Você ainda não possui workspaces'
+          : undefined,
+      });
+
+      gestaoSection.items.push({
+        label: 'Integrações',
+        href: `/workspaces/${workspaceSlug}/${projectSlug}`,
+        icon: 'arrows-exchange',
+        disabled: !hasProjects,
+        disabledTooltip: !hasProjects
+          ? 'Você ainda não possui projetos cadastrados nesse workspace'
+          : undefined,
+      });
+    }
   }
 
   return sections;
