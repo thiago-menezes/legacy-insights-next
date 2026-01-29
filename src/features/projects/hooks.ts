@@ -7,7 +7,10 @@ import {
 } from '@/libs/api/services/projects';
 import { useSelectedWorkspace } from '../workspaces/context';
 import { useWorkspaces } from '../workspaces/hooks';
-import { useCreateProjectMutation } from './api/mutation';
+import {
+  useCreateProjectMutation,
+  useDeleteProjectMutation,
+} from './api/mutation';
 import { useProjectBySlugQuery, useProjectsQuery } from './api/query';
 
 export const useProjects = () => {
@@ -29,8 +32,13 @@ export const useProjects = () => {
   const project = projectBySlugQuery.data || null;
 
   const createMutation = useCreateProjectMutation(workspace?.documentId);
+  const deleteMutation = useDeleteProjectMutation(workspace?.documentId);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState<
+    StrapiProject | undefined
+  >(undefined);
   const [isSwitchModalActive, setIsSwitchModalActive] = useState(false);
   const [pendingProject, setPendingProject] = useState<
     StrapiProject | undefined
@@ -82,6 +90,36 @@ export const useProjects = () => {
     setPendingProject(undefined);
   };
 
+  const handleOpenDelete = (project: StrapiProject) => {
+    setProjectToDelete(project);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseDelete = () => {
+    setIsDeleteModalOpen(false);
+    setProjectToDelete(undefined);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (projectToDelete) {
+      try {
+        await deleteMutation.mutateAsync(projectToDelete.documentId);
+        toast.show({
+          title: 'Projeto removido',
+          text: 'O projeto foi removido com sucesso.',
+          color: 'positive',
+        });
+        handleCloseDelete();
+      } catch {
+        toast.show({
+          title: 'Erro ao remover projeto',
+          text: 'Ocorreu um erro ao tentar remover o projeto.',
+          color: 'critical',
+        });
+      }
+    }
+  };
+
   const isLoading = projectsQuery.isLoading;
 
   return {
@@ -109,5 +147,11 @@ export const useProjects = () => {
     handleConfirmSwitch,
     handleCloseSwitchModal,
     selectedProject,
+    isDeleteModalOpen,
+    projectToDelete,
+    handleOpenDelete,
+    handleCloseDelete,
+    handleConfirmDelete,
+    isDeleting: deleteMutation.isPending,
   };
 };

@@ -27,6 +27,12 @@ export const WorkspaceDetail = () => {
     handleConfirmSwitch,
     handleCloseSwitchModal,
     selectedProject,
+    isDeleteModalOpen,
+    projectToDelete,
+    handleOpenDelete,
+    handleCloseDelete,
+    handleConfirmDelete,
+    isDeleting,
   } = useProjects();
 
   const { selectWorkspace } = useSelectedWorkspace();
@@ -129,6 +135,17 @@ export const WorkspaceDetail = () => {
                       /{project.slug}
                     </Text>
                   </View>
+                  {project.integrations?.length === 0 && (
+                    <Button
+                      icon={<Icon name="trash" size={16} />}
+                      variant="ghost"
+                      color="critical"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleOpenDelete(project);
+                      }}
+                    />
+                  )}
                 </View>
               </Card>
             ))}
@@ -165,6 +182,31 @@ export const WorkspaceDetail = () => {
         currentProject={selectedProject}
         pendingProject={pendingProject}
       />
+
+      <Modal active={isDeleteModalOpen} onClose={handleCloseDelete} size="s">
+        <Modal.Title>Remover Projeto</Modal.Title>
+        <View gap={4}>
+          <Text>
+            Tem certeza que deseja remover o projeto{' '}
+            <Text as="span" weight="bold">
+              {projectToDelete?.name}
+            </Text>
+            ? Esta ação não pode ser desfeita.
+          </Text>
+          <View direction="row" justify="end" gap={2}>
+            <Button onClick={handleCloseDelete} disabled={isDeleting}>
+              Cancelar
+            </Button>
+            <Button
+              color="critical"
+              onClick={handleConfirmDelete}
+              loading={isDeleting}
+            >
+              Remover
+            </Button>
+          </View>
+        </View>
+      </Modal>
     </>
   );
 };
