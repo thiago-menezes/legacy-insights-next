@@ -42,6 +42,7 @@
     "remark-gfm": "^4.0.1",
     "reshaped": "^3.9.0",
     "sass": "^1.97.3",
+    "socket.io-client": "^4.8.3",
     "use-local-storage": "^3.0.0",
     "use-mask-input": "^3.6.0",
     "zod": "^4.3.5"

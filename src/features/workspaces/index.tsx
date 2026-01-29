@@ -6,6 +6,7 @@ import { Icon } from '@/components/icon';
 import { PageTitle } from '@/components/page-title';
 import { WorkspaceCard } from './card';
 import { useSelectedWorkspace } from './context';
+import { DeleteWorkspaceModal } from './delete-modal';
 import { WorkspaceForm } from './form';
 import { useWorkspaces } from './hooks';
 import { SwitchWorkspaceModal } from './switch-modal';
@@ -21,6 +22,10 @@ export const Workspaces = () => {
     handleCloseModal,
     handleSubmit,
     handleDelete,
+    isDeleteModalActive,
+    workspaceToDelete,
+    handleConfirmDelete,
+    handleCloseDeleteModal,
     isSwitchModalActive,
     pendingWorkspace,
     handleWorkspaceClick,
@@ -117,6 +122,13 @@ export const Workspaces = () => {
         onConfirm={() => handleConfirmSwitch(selectWorkspace)}
         currentWorkspace={selectedOrg}
         pendingWorkspace={pendingWorkspace}
+      />
+      <DeleteWorkspaceModal
+        active={isDeleteModalActive}
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleConfirmDelete}
+        workspace={workspaceToDelete}
+        isPending={isLoading}
       />
     </>
   );

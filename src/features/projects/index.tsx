@@ -1,16 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import {
-  View,
-  Text,
-  Loader,
-  Button,
-  Modal,
-  Card,
-  Grid,
-  ActionBar,
-} from 'reshaped';
+import { View, Text, Loader, Button, Modal, Card, Grid } from 'reshaped';
 import { EmptyState } from '@/components/empty-state';
 import { Icon } from '@/components/icon';
 import { PageTitle } from '@/components/page-title';
@@ -96,11 +87,9 @@ export const WorkspaceDetail = () => {
         </Button>
       </PageTitle>
 
-      <ActionBar>
-        <Text variant="featured-3">Projetos</Text>
-      </ActionBar>
-
       <View gap={4} paddingTop={4}>
+        <Text variant="featured-3">Projetos</Text>
+
         {projects.length === 0 ? (
           <EmptyState
             icon="file-text"

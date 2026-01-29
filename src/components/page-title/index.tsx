@@ -18,7 +18,7 @@ export const PageTitle = ({
   breadcrumbs,
 }: PageTitle) => {
   return (
-    <View>
+    <View width="100%">
       <Breadcrumb items={breadcrumbs} />
 
       <View

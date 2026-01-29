@@ -59,10 +59,7 @@ $tablet: 1024px;
   background-color: var(--rs-color-background-neutral-faded);
   border-radius: var(--rs-radius-medium);
   gap: var(--rs-unit-x3);
-
-  @media (max-width: $mobile) {
-    flex-wrap: wrap;
-  }
+  flex-wrap: wrap;
 }
 
 .profileName {

@@ -2,7 +2,7 @@
 
 import { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { useMemo } from 'react';
-import { View, Button, Loader, Badge, Select, Tabs, ActionBar } from 'reshaped';
+import { View, Button, Loader, Badge, Select, Tabs } from 'reshaped';
 import { EmptyState } from '@/components/empty-state';
 import { Icon } from '@/components/icon';
 import { PageTitle } from '@/components/page-title';
@@ -170,43 +170,41 @@ export const UsersManagement = () => {
       </PageTitle>
 
       <View className={styles.container}>
-        <ActionBar>
-          <View
-            direction="row"
-            align="center"
-            justify="space-between"
-            width="100%"
-            gap={4}
+        <View
+          direction="row"
+          align="center"
+          justify="space-between"
+          width="100%"
+          gap={4}
+        >
+          <Tabs
+            value={activeScope}
+            onChange={({ value }) =>
+              handleScopeChange(value as 'workspace' | 'project')
+            }
           >
-            <Tabs
-              value={activeScope}
-              onChange={({ value }) =>
-                handleScopeChange(value as 'workspace' | 'project')
-              }
-            >
-              <Tabs.List>
-                <Tabs.Item value="workspace">Workspace</Tabs.Item>
-                <Tabs.Item value="project">Projeto</Tabs.Item>
-              </Tabs.List>
-            </Tabs>
+            <Tabs.List>
+              <Tabs.Item value="workspace">Workspace</Tabs.Item>
+              <Tabs.Item value="project">Projeto</Tabs.Item>
+            </Tabs.List>
+          </Tabs>
 
-            {activeScope === 'project' && (
-              <View className={styles.projectSelector}>
-                {isLoadingProjects ? (
-                  <Loader size="small" />
-                ) : (
-                  <Select
-                    name="project"
-                    value={selectedProjectId || ''}
-                    onChange={({ value }) => handleProjectChange(value)}
-                    options={projectOptions}
-                    placeholder="Selecione um projeto"
-                  />
-                )}
-              </View>
-            )}
-          </View>
-        </ActionBar>
+          {activeScope === 'project' && (
+            <View className={styles.projectSelector}>
+              {isLoadingProjects ? (
+                <Loader size="small" />
+              ) : (
+                <Select
+                  name="project"
+                  value={selectedProjectId || ''}
+                  onChange={({ value }) => handleProjectChange(value)}
+                  options={projectOptions}
+                  placeholder="Selecione um projeto"
+                />
+              )}
+            </View>
+          )}
+        </View>
 
         {isLoading ? (
           <View align="center" padding={4}>

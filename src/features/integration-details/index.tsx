@@ -168,7 +168,7 @@ export const IntegrationDetails = () => {
             direction="row"
             justify="space-between"
           >
-            <Text>Platforma</Text>
+            <Text>Plataforma</Text>
             <Text weight="medium">{integration.type}</Text>
           </View>
           <View

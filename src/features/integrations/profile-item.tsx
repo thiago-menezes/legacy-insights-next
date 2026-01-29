@@ -53,7 +53,10 @@ export const ProfileItem = ({
               }
             >
               {(props) => (
-                <View {...props}>
+                <View {...props} direction="row" align="center" gap={2}>
+                  <Text variant="body-3" color="neutral-faded">
+                    Processamento:
+                  </Text>
                   <Badge variant="outline" color={processStatusConfig.color}>
                     {processStatusConfig.label}
                   </Badge>

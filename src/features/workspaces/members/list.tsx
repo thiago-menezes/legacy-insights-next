@@ -1,6 +1,6 @@
 import { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { useMemo, useState } from 'react';
-import { View, Text, Button, Loader, Badge, ActionBar } from 'reshaped';
+import { View, Text, Button, Loader, Badge } from 'reshaped';
 import { EmptyState } from '@/components/empty-state';
 import { Icon } from '@/components/icon';
 import { Table } from '@/components/table';
@@ -92,27 +92,20 @@ export const WorkspaceMembersList = ({
   }
 
   return (
-    <>
-      <ActionBar>
-        <View
-          direction="row"
-          align="center"
-          justify="space-between"
-          width="100%"
+    <View gap={4}>
+      <View direction="row" align="center" justify="space-between" width="100%">
+        <Text variant="featured-3">Membros do Workspace</Text>
+        <Button
+          color="primary"
+          icon={<Icon name="plus" size={18} />}
+          onClick={() => setIsInviteModalActive(true)}
         >
-          <Text variant="featured-3">Membros do Workspace</Text>
-          <Button
-            color="primary"
-            icon={<Icon name="plus" size={18} />}
-            onClick={() => setIsInviteModalActive(true)}
-          >
-            Convidar Membro
-          </Button>
-        </View>
-      </ActionBar>
+          Convidar Membro
+        </Button>
+      </View>
 
       {members && members.length > 0 ? (
-        <View height="240px" paddingStart={2} paddingEnd={2}>
+        <View height="400px">
           <Table<WorkspaceMember>
             rowData={members}
             columnDefs={columnDefs}
@@ -129,6 +122,6 @@ export const WorkspaceMembersList = ({
         onClose={() => setIsInviteModalActive(false)}
         workspaceId={workspaceId}
       />
-    </>
+    </View>
   );
 };

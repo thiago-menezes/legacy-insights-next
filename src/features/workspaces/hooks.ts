@@ -8,7 +8,6 @@ import {
   useDeleteWorkspaceMutation,
 } from './api/mutation';
 import { useWorkspacesQuery } from './api/query';
-import { WORKSPACE_MESSAGES } from './constants';
 import { WorkspaceFormValues } from './types';
 
 export const useWorkspaces = () => {
@@ -34,6 +33,11 @@ export const useWorkspaces = () => {
 
   const [isSwitchModalActive, setIsSwitchModalActive] = useState(false);
   const [pendingWorkspace, setPendingWorkspace] = useState<Workspace | null>(
+    null,
+  );
+
+  const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
+  const [workspaceToDelete, setWorkspaceToDelete] = useState<Workspace | null>(
     null,
   );
 
@@ -72,11 +76,26 @@ export const useWorkspaces = () => {
     handleCloseModal();
   };
 
-  const handleDelete = (id: string) => {
-    if (confirm(WORKSPACE_MESSAGES.DELETE_CONFIRM)) {
-      deleteWorkspace.mutate(id);
-      getWorkspaces.refetch();
+  const handleDelete = (workspace: Workspace) => {
+    setWorkspaceToDelete(workspace);
+    setIsDeleteModalActive(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (workspaceToDelete) {
+      deleteWorkspace.mutate(workspaceToDelete.documentId, {
+        onSuccess: () => {
+          getWorkspaces.refetch();
+          setIsDeleteModalActive(false);
+          setWorkspaceToDelete(null);
+        },
+      });
     }
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalActive(false);
+    setWorkspaceToDelete(null);
   };
 
   const handleWorkspaceClick = (
@@ -126,6 +145,10 @@ export const useWorkspaces = () => {
     handleCloseModal,
     handleSubmit,
     handleDelete,
+    isDeleteModalActive,
+    workspaceToDelete,
+    handleConfirmDelete,
+    handleCloseDeleteModal,
     isSwitchModalActive,
     pendingWorkspace,
     handleWorkspaceClick,

@@ -72,7 +72,7 @@ export const WorkspaceCard = ({
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  onDelete(workspace.documentId);
+                  onDelete(workspace);
                 }}
               />
             </View>

@@ -1,9 +1,12 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useState, useMemo } from 'react';
+import { useToast } from 'reshaped';
 import {
   IntegrationCreateInput,
   IntegrationType,
   StrapiIntegration,
 } from '@/libs/api/services/integrations';
+import { useProjectRealTime } from '@/libs/real-time/use-integration-real-time';
 import {
   useCreateIntegrationMutation,
   useDeleteIntegrationMutation,
@@ -31,17 +34,68 @@ export const useIntegrations = (projectId?: string) => {
   >(undefined);
 
   const { data: integrationsData, isLoading } = useIntegrationsQuery(projectId);
+  const queryClient = useQueryClient();
+  const { show } = useToast();
+
+  const integrations = useMemo(
+    () => integrationsData?.data || [],
+    [integrationsData?.data],
+  );
+
+  useProjectRealTime(projectId || null, (data) => {
+    // eslint-disable-next-line no-console
+    console.log('[RealTime] Received update:', data);
+
+    const integration = integrations.find(
+      (i) => i.documentId === data.integrationId,
+    );
+    const integrationName = integration?.name || 'Integração';
+
+    if (data.processStatus === 'finalizado com sucesso') {
+      show({
+        title: 'Sucesso',
+        text: `${integrationName} processada com sucesso!`,
+        color: 'positive',
+      });
+    } else if (data.processStatus === 'erro') {
+      show({
+        title: 'Erro no Processamento',
+        text: `Falha ao processar ${integrationName}: ${data.errorMessage || 'Erro desconhecido'}`,
+        color: 'critical',
+      });
+    }
+
+    // Update query cache manually for instant feedback
+    queryClient.setQueryData(
+      ['integrations', 'list', projectId],
+      (oldData: { data: StrapiIntegration[] } | undefined) => {
+        if (!oldData?.data) return oldData;
+        return {
+          ...oldData,
+          data: oldData.data.map((i: StrapiIntegration) =>
+            i.documentId === data.integrationId
+              ? {
+                  ...i,
+                  processStatus: data.processStatus,
+                  errorMessage: data.errorMessage || i.errorMessage,
+                }
+              : i,
+          ),
+        };
+      },
+    );
+
+    // Also trigger refetch to be safe and get all fresh data
+    queryClient.invalidateQueries({
+      queryKey: ['integrations', 'list', projectId],
+    });
+  });
 
   const createMutation = useCreateIntegrationMutation(projectId);
   const updateMutation = useUpdateIntegrationMutation(projectId);
   const deleteMutation = useDeleteIntegrationMutation(projectId);
   const validateMutation = useValidateIntegrationMutation(projectId);
   const processMutation = useProcessIntegrationMutation(projectId);
-
-  const integrations = useMemo(
-    () => integrationsData?.data || [],
-    [integrationsData?.data],
-  );
 
   const platforms = useMemo(() => {
     return PLATFORM_METADATA.map((platform) => ({
@@ -98,25 +152,45 @@ export const useIntegrations = (projectId?: string) => {
     try {
       const result = await validateMutation.mutateAsync(id);
       if (result.valid) {
-        alert('Integração validada com sucesso!');
+        show({
+          title: 'Sucesso',
+          text: 'Integração validada com sucesso!',
+          color: 'positive',
+        });
       } else {
-        alert(`Erro na validação: ${result.message}`);
+        show({
+          title: 'Erro na Validação',
+          text: `Erro na validação: ${result.message}`,
+          color: 'critical',
+        });
       }
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
-      alert('Falha ao validar integração.');
+      show({
+        title: 'Erro',
+        text: 'Falha ao validar integração.',
+        color: 'critical',
+      });
     }
   };
 
   const handleProcess = async (id: string) => {
     try {
       await processMutation.mutateAsync(id);
-      alert('Processamento iniciado!');
+      show({
+        title: 'Processamento',
+        text: 'O Processamento foi iniciado com sucesso. Aguarde o término do processamento para continuar!',
+        color: 'neutral',
+      });
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
-      alert('Falha ao iniciar processamento.');
+      show({
+        title: 'Erro',
+        text: 'Falha ao iniciar processamento.',
+        color: 'critical',
+      });
     }
   };
 

@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { View, Text, Tabs, Loader, Modal, ActionBar } from 'reshaped';
+import { View, Text, Tabs, Loader, Modal } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { PageTitle } from '@/components/page-title';
 import { useProjects } from '../projects/hooks';
@@ -86,8 +86,8 @@ export const Integrations = () => {
         }))}
       />
 
-      <View gap={2} paddingTop={4}>
-        <Text variant="title-6" weight="medium">
+      <View paddingTop={4} gap={4}>
+        <Text variant="featured-2" weight="medium">
           Integrações
         </Text>
 
@@ -106,11 +106,9 @@ export const Integrations = () => {
       </View>
 
       <View gap={4} paddingTop={4}>
-        <ActionBar>
-          <Text variant="featured-2" weight="medium">
-            Anúncios
-          </Text>
-        </ActionBar>
+        <Text variant="featured-2" weight="medium">
+          Anúncios
+        </Text>
 
         <div className={styles.platformsGrid}>
           {platforms
