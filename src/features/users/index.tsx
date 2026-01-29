@@ -2,10 +2,9 @@
 
 import { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { useMemo } from 'react';
-import { View, Button, Loader, Badge } from 'reshaped';
+import { View, Button, Loader, Badge, Text } from 'reshaped';
 import { EmptyState } from '@/components/empty-state';
 import { Icon } from '@/components/icon';
-import { PageTitle } from '@/components/page-title';
 import { Table } from '@/components/table';
 import { EditRoleModal } from './edit-role-modal';
 import { useUsersManagement } from './hooks';
@@ -117,12 +116,17 @@ export const ProjectMembers = () => {
   }
 
   return (
-    <View paddingBottom={10}>
-      <PageTitle
-        icon={<Icon name="users" size={24} />}
-        title="Membros do projeto"
-        description="Gerencie as pessoas que possuem acesso a este projeto"
-      >
+    <View paddingTop={4}>
+      <View gap={4} direction="row" justify="space-between" align="center">
+        <View paddingBottom={4}>
+          <Text variant="featured-2" weight="medium">
+            Membros do projeto
+          </Text>
+          <Text variant="body-2">
+            Gerencie as pessoas que possuem acesso a este projeto
+          </Text>
+        </View>
+
         <Button
           color="primary"
           icon={<Icon name="plus" size={18} />}
@@ -130,7 +134,7 @@ export const ProjectMembers = () => {
         >
           Convidar
         </Button>
-      </PageTitle>
+      </View>
 
       <View className={styles.container}>
         {isLoading ? (
