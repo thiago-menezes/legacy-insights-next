@@ -25,7 +25,12 @@ const Providers = ({ children }: PropsWithChildren) => {
   if (delayToRender) return <></>;
 
   return (
-    <Reshaped theme="legacy" defaultColorMode="light">
+    <Reshaped
+      theme="legacy"
+      defaultColorMode={
+        (localStorage.getItem('theme-mode') as 'light' | 'dark') || 'light'
+      }
+    >
       <ToastProvider>
         <QueryClientProvider client={queryClient}>
           <SessionProvider>

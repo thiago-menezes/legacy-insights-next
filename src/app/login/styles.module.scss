@@ -1,0 +1,211 @@
+.section {
+  display: flex;
+  flex-direction: column-reverse;
+  width: 100%;
+  flex-grow: 1;
+  @media screen and (min-width: 1024px) {
+    height: 100dvh;
+    flex-direction: row;
+  }
+}
+
+.leftContainer {
+  padding: 32px 16px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.backgroundPattern {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url('/login-bg.png');
+  background-size: cover;
+  height: 100%;
+  padding: 40px;
+}
+
+.backgroundGlow {
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  width: 16rem;
+  height: 16rem;
+  background-color: var(--rs-color-background-primary);
+  opacity: 0.2;
+  filter: blur(100px);
+  border-radius: 9999px;
+  pointer-events: none;
+}
+
+.metricsCard {
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--rs-color-border-neutral);
+  background-color: rgba(from var(--rs-color-background-neutral) r g b / 0.12);
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.cardHeader {
+  border-bottom: 1px solid var(--rs-color-background-neutral);
+}
+
+.pingWrapper {
+  position: relative;
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.pingAnimation {
+  position: absolute;
+  display: inline-flex;
+  height: 100%;
+  width: 100%;
+  border-radius: 9999px;
+  background-color: var(--rs-color-background-positive);
+  opacity: 0.75;
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.pingDot {
+  position: relative;
+  display: inline-flex;
+  border-radius: 9999px;
+  height: 0.5rem;
+  width: 0.5rem;
+  background-color: var(--rs-color-background-positive);
+}
+
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.iconContainer {
+  background-color: rgb(from var(--rs-color-white) r g b / 0.9);
+}
+
+.iconBlue {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.separator {
+  height: 1px;
+  width: 2rem;
+  background-color: var(--rs-color-background-neutral);
+}
+
+.roiBadge {
+  color: var(--rs-color-foreground-positive);
+  background-color: rgba(var(--rs-color-rgb-background-positive), 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.chartBar {
+  width: calc(100% / 9);
+  background-color: var(--rs-color-background-primary);
+  border-top-left-radius: 0.125rem;
+  border-top-right-radius: 0.125rem;
+  height: 100%;
+}
+
+.chartBarFull {
+  width: calc(100% / 9);
+  background-color: var(--rs-color-background-primary);
+  border-top-left-radius: 0.125rem;
+  border-top-right-radius: 0.125rem;
+  height: 100%;
+}
+
+.textCenter {
+  margin: 3rem auto;
+  color: var(--rs-color-white);
+  gap: var(--rs-unit-x2);
+  max-width: 440px;
+}
+
+.titleContainer {
+  margin-top: 1rem;
+}
+
+.loginSection {
+  width: 100%;
+  background-color: var(--rs-color-background-page);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  @media screen and (min-width: 1024px) {
+    max-width: 880px;
+    padding: 24px;
+  }
+}
+
+.mobileLogo {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}
+
+.formContainer {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.headerText {
+  margin-bottom: 0.75rem;
+}
+
+.errorBox {
+  margin-bottom: 1.5rem;
+  background-color: rgba(var(--rs-color-rgb-background-critical), 0.1);
+  border: 1px solid rgba(var(--rs-color-rgb-background-critical), 0.2);
+}
+
+.errorMessage {
+  margin-top: 0.25rem;
+}
+
+.dividerText {
+  background-color: var(--rs-color-background-page);
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.footer {
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  width: 100%;
+  text-align: center;
+
+  @media (min-width: 1024px) {
+    text-align: left;
+    padding-left: 4rem;
+  }
+}
+
+.themeToggleContainer {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+}

@@ -63,30 +63,18 @@ export const buildNavigationSections = (
           : undefined,
       });
 
-      gestaoSection.items.push({
-        label: 'Produtos',
-        href: `/workspaces/${workspaceSlug}/${projectSlug}/products`,
-        icon: 'package',
-        disabled: !hasProjects,
-        disabledTooltip: !hasProjects
-          ? 'Você ainda não possui projetos cadastrados nesse workspace'
-          : undefined,
-      });
+      // TODO: Add products when implemented
+      // gestaoSection.items.push({
+      //   label: 'Produtos',
+      //   href: `/workspaces/${workspaceSlug}/${projectSlug}/products`,
+      //   icon: 'package',
+      //   disabled: !hasProjects,
+      //   disabledTooltip: !hasProjects
+      //     ? 'Você ainda não possui projetos cadastrados nesse workspace'
+      //     : undefined,
+      // });
     }
   }
-
-  // Add Settings section at the bottom
-  sections.push({
-    title: '',
-    items: [
-      {
-        label: 'Configurações',
-        href: '/settings',
-        icon: 'settings',
-        expandable: false,
-      },
-    ],
-  });
 
   return sections;
 };

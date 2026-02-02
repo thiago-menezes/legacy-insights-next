@@ -3,7 +3,7 @@ import { generateThemeColors } from 'reshaped/themes';
 const config = {
   themes: {
     legacy: {
-      color: generateThemeColors({ primary: '#6714CD' }),
+      color: generateThemeColors({ primary: '#1C43F4' }),
       fontFamily: {
         body: {
           family: 'Montserrat, sans-serif',

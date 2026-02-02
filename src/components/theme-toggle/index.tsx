@@ -2,12 +2,19 @@
 
 import clsx from 'clsx';
 import { useTheme } from 'reshaped';
+import { useEffect } from 'react';
 import { Icon } from '../icon';
 import styles from './styles.module.scss';
 
 export const ThemeToggle = () => {
   const { colorMode, invertColorMode } = useTheme();
   const isDark = colorMode === 'dark';
+
+  useEffect(() => {
+    if (colorMode) {
+      localStorage.setItem('theme-mode', colorMode);
+    }
+  }, [colorMode]);
 
   return (
     <button

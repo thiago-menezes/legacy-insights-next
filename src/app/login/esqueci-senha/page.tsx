@@ -12,7 +12,7 @@ const ForgotPasswordPage = () => {
   if (success) {
     return (
       <>
-        <View align="center" paddingBottom={6}>
+        <View paddingBottom={6}>
           <Text variant="featured-2" weight="bold">
             Verifique seu e-mail
           </Text>
@@ -60,7 +60,7 @@ const ForgotPasswordPage = () => {
         Voltar para o login
       </Link>
 
-      <View align="center" paddingBottom={6}>
+      <View paddingBottom={6}>
         <Text variant="featured-2" weight="bold">
           Esqueceu sua senha?
         </Text>

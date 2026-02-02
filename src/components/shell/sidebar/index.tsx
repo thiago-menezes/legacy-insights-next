@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -33,6 +33,12 @@ export const Sidebar = ({ isVisible, onToggle, isMobile }: SidebarProps) => {
         : [...prev, itemLabel],
     );
   };
+
+  useEffect(() => {
+    if (isMobile) {
+      onToggle();
+    }
+  }, []);
 
   if (!isVisible) return;
 

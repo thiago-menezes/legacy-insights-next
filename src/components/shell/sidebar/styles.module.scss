@@ -17,7 +17,7 @@ $mobile: 1080px;
       position: fixed;
       top: 0;
       left: 0;
-      width: 280px !important;
+      width: 32 0px !important;
       z-index: 1000;
       box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
     }
@@ -40,6 +40,7 @@ $mobile: 1080px;
   flex-grow: 1;
   background-position: top;
   width: 100%;
+  max-width: 200px;
 }
 
 .logoContainer {

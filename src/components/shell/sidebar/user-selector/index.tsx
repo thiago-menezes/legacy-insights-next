@@ -4,6 +4,7 @@ import { Avatar, Divider, DropdownMenu, Text, View } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { useAuth } from '@/features/auth/context';
 import styles from './styles.module.scss';
+import Link from 'next/link';
 
 export const UserSelector = () => {
   const { user, logout } = useAuth();
@@ -67,24 +68,14 @@ export const UserSelector = () => {
           <Divider />
 
           <DropdownMenu.Section>
-            <DropdownMenu.Item
-              className={styles.menuItem}
-              startSlot={<Icon name="user" size={20} />}
-            >
-              Minha conta
-            </DropdownMenu.Item>
-            <DropdownMenu.Item
-              className={styles.menuItem}
-              startSlot={<Icon name="headphones" size={20} />}
-            >
-              Suporte
-            </DropdownMenu.Item>
-            <DropdownMenu.Item
-              className={styles.menuItem}
-              startSlot={<Icon name="settings" size={20} />}
-            >
-              Configurações
-            </DropdownMenu.Item>
+            <Link href="/settings" passHref>
+              <DropdownMenu.Item
+                className={styles.menuItem}
+                startSlot={<Icon name="settings" size={20} />}
+              >
+                Configurações
+              </DropdownMenu.Item>
+            </Link>
           </DropdownMenu.Section>
 
           <Divider />

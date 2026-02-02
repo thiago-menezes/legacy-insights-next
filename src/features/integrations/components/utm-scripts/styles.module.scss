@@ -1,23 +1,23 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: var(--rs-space-4);
+  gap: var(--rs-unit-x4);
 }
 
 .platformTabs {
-  margin-bottom: var(--rs-space-4);
+  margin-bottom: var(--rs-unit-x4);
 }
 
 .scriptSection {
   display: flex;
   flex-direction: column;
-  gap: var(--rs-space-3);
+  gap: var(--rs-unit-x3);
 }
 
 .scriptBlock {
   position: relative;
   background-color: var(--rs-color-background-neutral-faded);
-  padding: var(--rs-space-4);
+  padding: var(--rs-unit-x4);
   border-radius: var(--rs-border-radius-medium);
   font-family:
     'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
@@ -34,13 +34,13 @@
 
 .copyButton {
   position: absolute;
-  top: var(--rs-space-2);
-  right: var(--rs-space-2);
+  top: var(--rs-unit-x2);
+  right: var(--rs-unit-x2);
 }
 
 .instructionsBox {
   background-color: var(--rs-color-background-primary);
-  padding: var(--rs-space-3);
+  padding: var(--rs-unit-x3);
   border-left: 3px solid var(--rs-color-border-accent-faded);
   border-radius: var(--rs-border-radius-small);
 }
@@ -48,15 +48,15 @@
 .customFormGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--rs-space-3);
+  gap: var(--rs-unit-x3);
 }
 
 .previewUrl {
   background-color: var(--rs-color-background-neutral-faded);
-  padding: var(--rs-space-3);
+  padding: var(--rs-unit-x3);
   border-radius: var(--rs-border-radius-medium);
   font-family: monospace;
   font-size: 0.875rem;
   word-break: break-all;
-  margin-top: var(--rs-space-2);
+  margin-top: var(--rs-unit-x2);
 }

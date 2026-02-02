@@ -1,4 +1,4 @@
-import { STORAGE_KEY } from './constants';
+import { MOBILE_BREAKPOINT, STORAGE_KEY } from './constants';
 import { ShellPreferences } from './types';
 
 export const loadPreferences = (): ShellPreferences => {
@@ -8,6 +8,14 @@ export const loadPreferences = (): ShellPreferences => {
       if (stored) {
         return JSON.parse(stored);
       }
+
+      // Default behavior if no preferences found:
+      // Mobile: closed by default
+      // Desktop: open by default
+      return {
+        sidebarVisible: window.innerWidth > MOBILE_BREAKPOINT,
+        headerVisible: true,
+      };
     }
   } catch (e) {
     // eslint-disable-next-line no-console

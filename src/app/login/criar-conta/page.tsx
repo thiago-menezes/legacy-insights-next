@@ -10,7 +10,7 @@ const CreateAccountPage = () => {
 
   return (
     <>
-      <View align="center" paddingBottom={6}>
+      <View paddingBottom={6}>
         <Text variant="featured-2" weight="bold">
           Criar sua conta
         </Text>

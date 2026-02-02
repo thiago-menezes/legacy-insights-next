@@ -50,7 +50,6 @@ export type RegisterFormData = z.infer<typeof registerSchema>;
 export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 
-// Login hook
 export function useLoginForm() {
   const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
