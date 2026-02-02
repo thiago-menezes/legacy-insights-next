@@ -1,8 +1,8 @@
 'use client';
 
-import { useParams, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
-import { View, Button, Tabs, Grid } from 'reshaped';
+import { useParams, useSearchParams } from 'next/navigation';
+import { Button, Grid, Tabs, View } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { MetricCard } from '@/components/metric-card';
 import { useDataAccessStatus } from '@/hooks';
@@ -176,6 +176,7 @@ export const Campaigns = () => {
           pageSize={filters.pageSize || 10}
           onPageChange={handlePageChange}
           onPageSizeChange={handlePageSizeChange}
+          platform={platformParam}
         />
       )}
 

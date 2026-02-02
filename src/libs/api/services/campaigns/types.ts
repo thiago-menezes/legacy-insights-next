@@ -56,3 +56,34 @@ export interface CampaignListParams {
   page?: number;
   pageSize?: number;
 }
+
+export interface MatchedWebhookEvent {
+  id: number;
+  documentId: string;
+  source: 'hotmart' | 'kiwify' | 'kirvano' | 'custom';
+  eventType: string;
+  amount?: number;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  processedAt: string;
+  product?: {
+    id: number;
+    name: string;
+  } | null;
+}
+
+export interface CampaignAttribution {
+  campaignId: number;
+  campaignName: string;
+  campaignDocumentId: string;
+  totalSpend: number;
+  totalRevenue: number;
+  roas: number;
+  salesCount: number;
+  matchedEvents: MatchedWebhookEvent[];
+}
+
+export interface CampaignAttributionResponse {
+  data: CampaignAttribution;
+}

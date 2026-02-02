@@ -1,4 +1,4 @@
-import { View, Skeleton } from 'reshaped';
+import { Skeleton, View } from 'reshaped';
 
 export const WorkspaceFormSkeleton = () => {
   return (

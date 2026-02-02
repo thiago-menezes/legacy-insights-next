@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import {
-  workspacesService,
   CreateWorkspacePayload,
+  workspacesService,
 } from '@/libs/api/services/workspaces';
 import { useWorkspacesQuery } from './query';
 import { UpdateWorkspaceParams } from './types';

@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation';
 import { PropsWithChildren } from 'react';
+import { redirect } from 'next/navigation';
 import { Shell } from '@/components/shell';
 import { auth } from '@/libs/auth';
 

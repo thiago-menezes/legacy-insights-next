@@ -1,4 +1,4 @@
-import { View, Badge } from 'reshaped';
+import { Badge, View } from 'reshaped';
 import { Icon } from '@/components/icon';
 import styles from '../styles.module.scss';
 import { CellWithChangeProps } from './types';

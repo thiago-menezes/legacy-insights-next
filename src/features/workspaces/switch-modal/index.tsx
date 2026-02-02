@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Modal, View, Text, Button } from 'reshaped';
+import { Button, Modal, Text, View } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { Workspace } from '@/libs/api/services/workspaces';
 import { getMediaUrl } from '@/libs/api/strapi';

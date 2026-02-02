@@ -7,6 +7,7 @@ export const TABS: { id: IntegrationTab; label: string; icon?: IconNames }[] = [
   { id: 'all', label: 'Todos' },
   { id: 'ads', label: 'Anúncios', icon: 'speakerphone' },
   { id: 'webhooks', label: 'Webhooks', icon: 'webhook' },
+  { id: 'utms', label: 'UTMs & Scripts', icon: 'code' },
 ];
 
 export const PLATFORM_METADATA = [
@@ -23,6 +24,34 @@ export const PLATFORM_METADATA = [
     description: 'Conecte seus perfis do Google Ads',
     icon: '/icon-google.png',
     category: 'ads',
+  },
+  {
+    id: 'hotmart',
+    name: 'Hotmart',
+    description: 'Receba eventos de vendas do Hotmart',
+    icon: '/icon-hotmart.png',
+    category: 'webhooks',
+  },
+  {
+    id: 'kiwify',
+    name: 'Kiwify',
+    description: 'Receba eventos de vendas do Kiwify',
+    icon: '/icon-kiwify.png',
+    category: 'webhooks',
+  },
+  {
+    id: 'kirvano',
+    name: 'Kirvano',
+    description: 'Receba eventos de vendas do Kirvano',
+    icon: '/icon-kirvano.png',
+    category: 'webhooks',
+  },
+  {
+    id: 'custom_webhook',
+    name: 'Webhook Personalizado',
+    description: 'Configure um webhook customizado',
+    icon: 'webhook',
+    category: 'webhooks',
   },
 ] as const;
 
@@ -76,6 +105,10 @@ export const PROCESS_STATUS_CONFIG: Record<
 export const INTEGRATION_TYPES: { label: string; value: IntegrationType }[] = [
   { label: 'Meta Ads', value: 'meta_ads' },
   { label: 'Google Ads', value: 'google_ads' },
+  { label: 'Hotmart', value: 'hotmart' },
+  { label: 'Kiwify', value: 'kiwify' },
+  { label: 'Kirvano', value: 'kirvano' },
+  { label: 'Webhook Personalizado', value: 'custom_webhook' },
 ];
 
 export const BREADCRUMBS: {

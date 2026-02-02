@@ -1,5 +1,5 @@
+import { useMemo, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useState, useMemo } from 'react';
 import { useToast } from 'reshaped';
 import {
   IntegrationCreateInput,
@@ -10,8 +10,8 @@ import { useProjectRealTime } from '@/libs/real-time/use-integration-real-time';
 import {
   useCreateIntegrationMutation,
   useDeleteIntegrationMutation,
-  useUpdateIntegrationMutation,
   useProcessIntegrationMutation,
+  useUpdateIntegrationMutation,
 } from './api/mutation';
 import { useIntegrationsQuery } from './api/query';
 import { PLATFORM_METADATA } from './constants';

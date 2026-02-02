@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button, Modal, TextField } from 'reshaped';
+import { Button, Modal, Text, TextField, View } from 'reshaped';
 
 interface DeleteModalProps {
   active: boolean;

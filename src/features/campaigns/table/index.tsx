@@ -6,10 +6,10 @@ import {
   PaginationModule,
   ValidationModule,
 } from 'ag-grid-community';
-import { View, Pagination, Text, Select } from 'reshaped';
+import { Pagination, Select, Text, View } from 'reshaped';
 import { Table } from '@/components/table';
 import styles from '../styles.module.scss';
-import { CampaignsTableProps, CampaignRow } from '../types';
+import { CampaignRow, CampaignsTableProps } from '../types';
 import { COLUMN_DEFS, PAGE_SIZE_OPTIONS } from './constants';
 
 ModuleRegistry.registerModules([
@@ -26,6 +26,7 @@ export const CampaignsTable = ({
   totalPages = 10,
   onPageChange,
   onPageSizeChange,
+  platform = 'meta',
 }: CampaignsTableProps) => {
   const startItem = (currentPage - 1) * pageSize + 1;
   const endItem = Math.min(currentPage * pageSize, totalItems);
@@ -34,7 +35,7 @@ export const CampaignsTable = ({
     <View className={styles.tableContainer}>
       <Table<CampaignRow>
         rowData={data}
-        columnDefs={COLUMN_DEFS}
+        columnDefs={COLUMN_DEFS(platform)}
         defaultColDef={{
           resizable: true,
           suppressMovable: true,

@@ -1,7 +1,7 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useSelectedWorkspace } from '@/features/workspaces/context';
 import { DEFAULT_ORG_ICON } from './constants';
-import type { WorkspaceSelectorState, WorkspaceSelectorActions } from './types';
+import type { WorkspaceSelectorActions, WorkspaceSelectorState } from './types';
 
 interface UseWorkspaceSelectorReturn
   extends WorkspaceSelectorState, WorkspaceSelectorActions {}

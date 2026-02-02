@@ -1,6 +1,6 @@
-import { QueryClient } from '@tanstack/react-query';
-import { render, RenderOptions } from '@testing-library/react';
 import { ReactElement, ReactNode } from 'react';
+import { QueryClient } from '@tanstack/react-query';
+import { RenderOptions, render } from '@testing-library/react';
 import Providers from '@/app/providers';
 
 interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {

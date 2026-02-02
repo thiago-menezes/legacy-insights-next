@@ -4,7 +4,7 @@ import {
   StrapiIntegration,
 } from '@/libs/api/services/integrations';
 
-export type IntegrationTab = 'all' | 'ads' | 'webhooks';
+export type IntegrationTab = 'all' | 'ads' | 'webhooks' | 'utms';
 
 export type ConnectionStatus =
   | 'connected'

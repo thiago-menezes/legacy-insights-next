@@ -1,4 +1,4 @@
-import { View, Grid, Skeleton } from 'reshaped';
+import { Grid, Skeleton, View } from 'reshaped';
 
 export const DashboardSkeleton = () => {
   return (

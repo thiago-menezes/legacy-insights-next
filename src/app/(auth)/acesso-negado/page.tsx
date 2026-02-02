@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { View, Text, Button } from 'reshaped';
+import { Button, Text, View } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { useSelectedWorkspace } from '@/features/workspaces/context';
 import { useUserRole } from '@/features/workspaces/use-user-role';

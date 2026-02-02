@@ -1,8 +1,8 @@
 'use client';
 
-import Image from 'next/image';
 import { PropsWithChildren } from 'react';
-import { useTheme, View } from 'reshaped';
+import Image from 'next/image';
+import { View, useTheme } from 'reshaped';
 import styles from '@/features/auth/styles.module.scss';
 
 const AuthLayout = ({ children }: PropsWithChildren) => {

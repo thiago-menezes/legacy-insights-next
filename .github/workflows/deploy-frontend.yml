@@ -1,0 +1,59 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches: ['main']
+    paths:
+      - 'legacy-insights-next/**'
+      - '.github/workflows/deploy-frontend.yml'
+
+env:
+  PROJECT_ID: perfect-embassy-485121-b8
+  GCE_INSTANCE: instance-20260202-003037
+  GCE_ZONE: us-central1-c
+  IMAGE_NAME: legacy-insights-next
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: '${{ secrets.WIF_PROVIDER }}'
+          service_account: '${{ secrets.WIF_SERVICE_ACCOUNT }}'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker
+
+      - name: Build and Push Docker Image
+        working-directory: ./legacy-insights-next
+        run: |
+          docker build \
+            --build-arg STRAPI_URL="${{ vars.STRAPI_URL }}" \
+            -t gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest .
+          docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest
+
+      - name: Deploy to VM
+        run: |
+          gcloud compute ssh ${{ env.GCE_INSTANCE }} --zone=${{ env.GCE_ZONE }} --command="
+            sudo docker pull gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest && \
+            if [ -f docker-compose.prod.yml ]; then \
+              sudo docker compose -f docker-compose.prod.yml up -d --no-deps legacy-insights-next; \
+            else \
+              echo 'docker-compose.prod.yml not found, cannot restart service via compose'; \
+            fi
+          "

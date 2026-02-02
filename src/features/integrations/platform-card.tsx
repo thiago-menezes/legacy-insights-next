@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Text, Button } from 'reshaped';
+import { Button, Text } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { IntegrationType } from '@/libs/api/services/integrations';
 import { ProfileItem } from './profile-item';

@@ -1,6 +1,6 @@
 'use client';
 
-import { View, Button, Grid } from 'reshaped';
+import { Button, Grid, View } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { MetricCard } from '@/components/metric-card';
 import { PageTitle } from '@/components/page-title';

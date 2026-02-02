@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { View, Text, DropdownMenu, Button } from 'reshaped';
+import { Button, DropdownMenu, Text, View } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { useWorkspaces } from '@/features/workspaces/hooks';
 import { getMediaUrl } from '@/libs/api/strapi';

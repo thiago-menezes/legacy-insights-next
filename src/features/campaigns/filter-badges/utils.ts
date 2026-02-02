@@ -1,4 +1,4 @@
-import { CampaignsFilters, CampaignStatus } from '../types';
+import { CampaignStatus, CampaignsFilters } from '../types';
 import { ActiveFilter } from './types';
 
 const STATUS_LABELS: Record<string, string> = {

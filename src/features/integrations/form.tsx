@@ -1,6 +1,6 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, TextField, View, Select, FormControl } from 'reshaped';
+import { Button, FormControl, Select, TextField, View } from 'reshaped';
 import {
   IntegrationCreateInput,
   IntegrationType,

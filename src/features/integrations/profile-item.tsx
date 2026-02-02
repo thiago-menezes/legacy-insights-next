@@ -1,6 +1,6 @@
-import { Text, Button, View, Tooltip, Badge } from 'reshaped';
+import { Badge, Button, Text, Tooltip, View } from 'reshaped';
 import { Icon } from '@/components/icon';
-import { STATUS_CONFIG, PROCESS_STATUS_CONFIG } from './constants';
+import { PROCESS_STATUS_CONFIG, STATUS_CONFIG } from './constants';
 import styles from './styles.module.scss';
 import { ProfileItemProps } from './types';
 

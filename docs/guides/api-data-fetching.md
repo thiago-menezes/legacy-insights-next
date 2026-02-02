@@ -47,9 +47,9 @@ The structure consists of:
 ```tsx
 import { apiClient } from '../../axios';
 import {
+  ProductCreateInput,
   ProductsResponse,
   SingleProductResponse,
-  ProductCreateInput,
 } from './types';
 
 export const productHandler = {
@@ -288,15 +288,15 @@ Wrap API hooks in business logic hooks for features:
 
 ```tsx
 // features/products/hooks.ts
-import { useState, useCallback } from 'react';
-import { useProductsQuery, useProductQuery } from './api/query';
+import { useCallback, useState } from 'react';
 import {
   useCreateProductMutation,
-  useUpdateProductMutation,
   useDeleteProductMutation,
+  useUpdateProductMutation,
 } from './api/mutation';
-import { transformStrapiProduct } from './utils';
+import { useProductQuery, useProductsQuery } from './api/query';
 import { Product, UseProductsResult } from './types';
+import { transformStrapiProduct } from './utils';
 
 // Read hook
 export const useProducts = (categoryId?: string): UseProductsResult => {
@@ -394,7 +394,7 @@ export const useProductActions = () => {
 // libs/api/client.ts
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+const API_URL = process.env.STRAPI_URL || 'http://localhost:1337';
 
 export const apiClient: AxiosInstance = axios.create({
   baseURL: API_URL,

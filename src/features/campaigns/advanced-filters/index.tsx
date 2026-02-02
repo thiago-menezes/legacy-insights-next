@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Button, FormControl, Modal, View, Checkbox } from 'reshaped';
+import { Button, Checkbox, FormControl, Modal, View } from 'reshaped';
 import { STATUS_OPTIONS } from './constants';
 import {
   AdvancedFiltersProps,

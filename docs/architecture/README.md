@@ -164,7 +164,6 @@ This pattern applies to:
 ```tsx
 // app/(features)/workspaces/page.tsx
 // 'use server' is default
-
 import { Workspaces } from '@/features/workspaces';
 
 export default function WorkspacesPage() {

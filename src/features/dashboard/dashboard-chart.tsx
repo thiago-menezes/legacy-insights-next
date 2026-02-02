@@ -1,15 +1,15 @@
 'use client';
 
 import {
-  AreaChart,
   Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
 } from 'recharts';
-import { Card, View, Text, Button } from 'reshaped';
+import { Button, Card, Text, View } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { CHART_COLORS } from './constants';
 import styles from './styles.module.scss';

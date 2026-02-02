@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { loadEnv } from 'vite';
 import '@testing-library/jest-dom';
+import { loadEnv } from 'vite';
 import { vi } from 'vitest';
 
 // Carrega variáveis do .env

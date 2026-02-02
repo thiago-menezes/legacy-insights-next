@@ -1,4 +1,4 @@
-import { Card, View, Text, Badge } from 'reshaped';
+import { Badge, Card, Text, View } from 'reshaped';
 import { Icon } from '@/components/icon';
 import styles from './styles.module.scss';
 import { MetricCardProps } from './types';

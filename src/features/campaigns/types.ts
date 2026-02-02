@@ -74,6 +74,7 @@ export interface CampaignsTableProps {
   totalPages?: number;
   pageSize?: number;
   totalItems?: number;
+  platform?: 'meta' | 'google';
 }
 
 export interface StatusBadgeProps {

@@ -314,8 +314,8 @@ export interface CreateProductParams {
 // features/products/api/query.ts
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/libs/api/client';
-import { ProductsResponse, StrapiProduct } from './types';
 import { productService } from './service';
+import { ProductsResponse, StrapiProduct } from './types';
 
 export const useProductsQuery = (categoryId?: string) => {
   return useQuery({
@@ -418,13 +418,13 @@ export const useDeleteProductMutation = () => {
 
 ```tsx
 // features/products/hooks.ts
-import { useState, useCallback } from 'react';
-import { useProductsQuery, useProductQuery } from './api/query';
+import { useCallback, useState } from 'react';
 import {
   useCreateProductMutation,
-  useUpdateProductMutation,
   useDeleteProductMutation,
+  useUpdateProductMutation,
 } from './api/mutation';
+import { useProductQuery, useProductsQuery } from './api/query';
 import { Product, UseProductsResult } from './types';
 import { transformStrapiProduct } from './utils';
 
@@ -601,11 +601,11 @@ export const formatPrice = (price: number): string => {
 
 ```tsx
 // features/products/card.tsx
-import { View, Text, Button } from 'reshaped';
+import { Button, Text, View } from 'reshaped';
 import { Icon } from '@/components/icon';
+import styles from './styles.module.scss';
 import { ProductCardProps } from './types';
 import { formatPrice } from './utils';
-import styles from './styles.module.scss';
 
 export const ProductCard = ({
   product,
@@ -668,10 +668,10 @@ export const ProductCard = ({
 
 ```tsx
 // features/products/form.tsx
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { View, Button, TextField } from 'reshaped';
-import { productFormSchema, ProductFormSchema } from './schema';
+import { useForm } from 'react-hook-form';
+import { Button, TextField, View } from 'reshaped';
+import { ProductFormSchema, productFormSchema } from './schema';
 import { ProductFormProps } from './types';
 import { buildSlugFromName } from './utils';
 
@@ -771,14 +771,14 @@ export const ProductForm = ({
 'use client';
 
 import { useState } from 'react';
-import { View, Text, Button, Loader, Modal } from 'reshaped';
+import { Button, Loader, Modal, Text, View } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { PageTitle } from '@/components/page-title';
 import { ProductCard } from './card';
 import { ProductForm } from './form';
-import { useProducts, useProductActions } from './hooks';
-import { Product, ProductFormValues, ProductListProps } from './types';
+import { useProductActions, useProducts } from './hooks';
 import styles from './styles.module.scss';
+import { Product, ProductFormValues, ProductListProps } from './types';
 
 export const ProductList = ({ categoryId }: ProductListProps) => {
   // 1. Hooks first

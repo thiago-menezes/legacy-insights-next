@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
-  projectsService,
   ProjectCreateInput,
+  projectsService,
 } from '@/libs/api/services/projects';
 import { useProjectsQuery } from './query';
 import { UpdateProjectParams } from './types';

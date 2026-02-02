@@ -1,7 +1,7 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { InviteModalProps } from '.';
 import { useSearchUser, useWorkspaceProjects } from '../api/query';
 import { MemberRole } from '../types';
-import { InviteModalProps } from '.';
 
 export const useInviteModal = ({
   scope,

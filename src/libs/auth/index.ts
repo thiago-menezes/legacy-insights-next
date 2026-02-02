@@ -1,6 +1,6 @@
 import NextAuth, { NextAuthConfig, User } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import { strapiLogin, StrapiAuthResponse } from '../api/strapi';
+import { StrapiAuthResponse, strapiLogin } from '../api/strapi';
 import { SessionUser } from '../api/types';
 
 const config: NextAuthConfig = {

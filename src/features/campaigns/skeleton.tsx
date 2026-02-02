@@ -1,4 +1,4 @@
-import { View, Skeleton } from 'reshaped';
+import { Skeleton, View } from 'reshaped';
 import styles from './styles.module.scss';
 
 export const CampaignsSkeleton = () => {

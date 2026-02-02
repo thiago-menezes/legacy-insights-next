@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { View, Text, Loader, Button, Modal, Card, Grid } from 'reshaped';
+import { Button, Card, Grid, Loader, Modal, Text, View } from 'reshaped';
 import { EmptyState } from '@/components/empty-state';
 import { Icon } from '@/components/icon';
 import { PageTitle } from '@/components/page-title';

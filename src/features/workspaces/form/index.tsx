@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import {
+  Actionable,
   Button,
+  FormControl,
+  Text,
   TextField,
   View,
-  Text,
-  Actionable,
-  FormControl,
 } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { FORM_PLACEHOLDERS } from '../constants';

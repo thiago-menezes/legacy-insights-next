@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import {
-  integrationsService,
   IntegrationCreateInput,
+  integrationsService,
 } from '@/libs/api/services/integrations';
 import { useIntegrationsQuery } from './query';
 

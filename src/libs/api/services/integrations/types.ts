@@ -1,4 +1,10 @@
-export type IntegrationType = 'meta_ads' | 'google_ads';
+export type IntegrationType =
+  | 'meta_ads'
+  | 'google_ads'
+  | 'hotmart'
+  | 'kiwify'
+  | 'kirvano'
+  | 'custom_webhook';
 
 export type IntegrationStatus = 'connected' | 'disconnected' | 'token_expired';
 export type ProcessStatus =
@@ -30,6 +36,10 @@ export interface StrapiIntegration {
     documentId: string;
     name: string;
   };
+  webhookSecret?: string;
+  webhookUrl?: string;
+  lastNotificationAt?: string | null;
+  eventCount?: number;
 }
 
 export interface IntegrationResponse {
@@ -65,6 +75,11 @@ export interface IntegrationCreateInput {
     developerToken?: string;
     customerIds?: string[];
     loginCustomerId?: string;
+    // Webhooks
+    webhookSecret?: string;
+    signatureValidation?: boolean;
+    allowedOrigins?: string[];
+    eventTypes?: string[];
   };
   status?: IntegrationStatus;
 }

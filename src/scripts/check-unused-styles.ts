@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
-import { readFileSync, readdirSync } from 'node:fs';
-import { resolve, join, relative, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { parse } from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/typescript-estree';
+import { readFileSync, readdirSync } from 'node:fs';
+import { dirname, join, relative, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 type ASTNode = TSESTree.Node;
 

@@ -1,18 +1,18 @@
 'use client';
 
-import { signIn, signOut, useSession } from 'next-auth/react';
 import {
-  createContext,
   PropsWithChildren,
+  createContext,
   useCallback,
   useContext,
   useEffect,
   useMemo,
 } from 'react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import {
+  StrapiUser,
   getStrapiErrorMessage,
   strapiRegister,
-  StrapiUser,
 } from '@/libs/api/strapi';
 
 const AUTH_TOKEN_KEY = 'legacy_auth_token';

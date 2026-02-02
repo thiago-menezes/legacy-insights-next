@@ -1,9 +1,9 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useSelectedWorkspace } from '@/features/workspaces/context';
 import {
   useInviteProjectMember,
-  useUpdateProjectMemberRole,
   useRemoveProjectMember,
+  useUpdateProjectMemberRole,
 } from './api/mutation';
 import { useProjectMembers } from './api/query';
 import { InviteFormData, MemberRole, WorkspaceMemberItem } from './types';

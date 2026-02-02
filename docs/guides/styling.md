@@ -21,7 +21,7 @@ This project uses a layered approach to styling:
 Reshaped provides the foundation for all UI components:
 
 ```tsx
-import { View, Text, Button, Card, Badge } from 'reshaped';
+import { Badge, Button, Card, Text, View } from 'reshaped';
 
 export const ProductCard = ({ product }: ProductCardProps) => {
   return (

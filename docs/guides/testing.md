@@ -36,9 +36,10 @@ Tests live alongside their source files:
 
 ```tsx
 // features/products/spec.tsx
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { useProductActions, useProducts } from './hooks';
 import { ProductList } from './index';
 
 // Mock hooks
@@ -46,8 +47,6 @@ vi.mock('./hooks', () => ({
   useProducts: vi.fn(),
   useProductActions: vi.fn(),
 }));
-
-import { useProducts, useProductActions } from './hooks';
 
 const createWrapper = () => {
   const queryClient = new QueryClient({
@@ -143,17 +142,16 @@ describe('ProductList', () => {
 
 ```tsx
 // features/products/hooks.spec.tsx
-import { renderHook, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { renderHook, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { useProductsQuery } from './api/query';
 import { useProducts } from './hooks';
 
 // Mock API layer
 vi.mock('./api/query', () => ({
   useProductsQuery: vi.fn(),
 }));
-
-import { useProductsQuery } from './api/query';
 
 const wrapper = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient({
@@ -245,11 +243,11 @@ describe('useProducts', () => {
 
 ```tsx
 // features/products/utils.spec.tsx
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
-  transformStrapiProduct,
   buildSlugFromName,
   formatPrice,
+  transformStrapiProduct,
 } from './utils';
 
 describe('transformStrapiProduct', () => {

@@ -1,5 +1,5 @@
 import { Fragment, useEffect } from 'react';
-import { View, Text, Button, TextField } from 'reshaped';
+import { Button, Text, TextField, View } from 'reshaped';
 import { useAuth } from '@/features/auth/context';
 import { Icon } from '../../icon';
 import { ThemeToggle } from '../../theme-toggle';

@@ -1,0 +1,83 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-space-4);
+}
+
+.eventsTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableHeader {
+  background-color: var(--rs-color-background-neutral-faded);
+  border-bottom: 1px solid var(--rs-color-border-neutral);
+}
+
+.tableHeaderCell {
+  padding: var(--rs-space-3);
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.tableRow {
+  border-bottom: 1px solid var(--rs-color-border-neutral-faded);
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: var(--rs-color-background-neutral-faded);
+  }
+}
+
+.tableCell {
+  padding: var(--rs-space-3);
+  font-size: 0.875rem;
+}
+
+.eventTypeBadge {
+  display: inline-block;
+  padding: var(--rs-space-1) var(--rs-space-2);
+  border-radius: var(--rs-border-radius-small);
+  background-color: var(--rs-color-background-accent-faded);
+  color: var(--rs-color-foreground-accent);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.utmParams {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-space-1);
+  font-size: 0.75rem;
+  color: var(--rs-color-foreground-neutral-faded);
+}
+
+.jsonViewer {
+  background-color: var(--rs-color-background-neutral-faded);
+  padding: var(--rs-space-4);
+  border-radius: var(--rs-border-radius-medium);
+  max-height: 500px;
+  overflow: auto;
+}
+
+.jsonContent {
+  font-family:
+    'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.emptyState {
+  text-align: center;
+  padding: var(--rs-space-8);
+}
+
+.filters {
+  display: flex;
+  gap: var(--rs-space-3);
+  flex-wrap: wrap;
+}

@@ -1,8 +1,8 @@
 import { apiClient } from '../../axios';
 import { ServiceConfig } from '../types';
 import {
-  IntegrationResponse,
   IntegrationCreateInput,
+  IntegrationResponse,
   SingleIntegrationResponse,
 } from './types';
 

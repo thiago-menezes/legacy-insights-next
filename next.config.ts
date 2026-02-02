@@ -50,6 +50,13 @@ const nextConfig: NextConfig = {
         port: '1337',
         pathname: '/uploads/**',
       },
+      // Development: Custom Host Strapi
+      {
+        protocol: 'http',
+        hostname: 'dev.api.legacy',
+        port: '1337',
+        pathname: '/uploads/**',
+      },
       // Production: CDN for media assets
       {
         protocol: 'https',

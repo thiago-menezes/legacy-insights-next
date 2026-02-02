@@ -1,6 +1,6 @@
 'use client';
 
-import { View, Badge, Button } from 'reshaped';
+import { Badge, Button, View } from 'reshaped';
 import { Icon } from '@/components/icon';
 import styles from './styles.module.scss';
 import { FilterBadgesProps } from './types';

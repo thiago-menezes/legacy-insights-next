@@ -1,7 +1,7 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { PropsWithChildren, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useUserRole } from '@/features/workspaces/use-user-role';
 
 interface RoleGuardProps extends PropsWithChildren {

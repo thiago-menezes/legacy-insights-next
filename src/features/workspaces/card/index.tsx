@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { View, Text, Button, Card } from 'reshaped';
+import { Button, Card, Text, View } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { getMediaUrl } from '@/libs/api/strapi';
 import styles from './styles.module.scss';

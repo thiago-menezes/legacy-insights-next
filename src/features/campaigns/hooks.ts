@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useCampaignsQuery } from './api/query';
 import { CampaignsFilters } from './types';
 import { mapStrapiToCampaignsData } from './utils';

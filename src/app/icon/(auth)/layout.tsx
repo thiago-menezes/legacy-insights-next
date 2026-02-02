@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation';
 import { PropsWithChildren } from 'react';
+import { redirect } from 'next/navigation';
 import { auth } from '@/libs/auth';
 
 export default async function AuthLayout({ children }: PropsWithChildren) {

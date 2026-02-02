@@ -1,6 +1,6 @@
 import { existsSync } from 'fs';
-import path from 'path';
 import process from 'node:process';
+import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);

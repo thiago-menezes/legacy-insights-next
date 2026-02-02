@@ -1,6 +1,6 @@
 'use client';
 
-import { Modal, View, Text, Button } from 'reshaped';
+import { Button, Modal, Text, View } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { StrapiProject } from '@/libs/api/services/projects';
 import styles from '../../workspaces/styles.module.scss';

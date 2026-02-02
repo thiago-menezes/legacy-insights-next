@@ -2,7 +2,7 @@
 
 import { Button, DropdownMenu } from 'reshaped';
 import { Icon } from '@/components/icon';
-import { DateRangeFilterProps, DateOption } from './types';
+import { DateOption, DateRangeFilterProps } from './types';
 
 const DATE_OPTIONS: DateOption[] = [
   { label: 'Últimos 7 dias', value: 7 },

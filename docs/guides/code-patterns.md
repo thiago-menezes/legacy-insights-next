@@ -150,27 +150,23 @@ Follow this order in all files:
 
 ```tsx
 // 1. React imports
-import { useState, useEffect, useCallback } from 'react';
-
-// 2. Next.js imports
-import { useRouter, useParams } from 'next/navigation';
-import Link from 'next/link';
-
-// 3. External library imports
-import { View, Text, Button } from 'reshaped';
+import { useCallback, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
+// 2. Next.js imports
+import { useParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-
+// 3. External library imports
+import { Button, Text, View } from 'reshaped';
+import { PageTitle } from '@/components/page-title';
 // 4. Internal absolute imports (@/)
 import { apiClient } from '@/libs/api/client';
-import { PageTitle } from '@/components/page-title';
 import { formatDate } from '@/utils/format';
-
+import { ProductCard } from './card';
 // 5. Relative imports (same feature/component)
 import { useProducts } from './hooks';
-import { ProductCard } from './card';
-import { ProductProps } from './types';
 import styles from './styles.module.scss';
+import { ProductProps } from './types';
 ```
 
 ---
@@ -288,9 +284,9 @@ export const ProductList = () => {
 
 ```tsx
 // hooks.ts
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { UseProductsResult, UseProductProps } from './types';
+import { UseProductProps, UseProductsResult } from './types';
 
 export const useProducts = (categoryId?: string): UseProductsResult => {
   // Data fetching with React Query

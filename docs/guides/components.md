@@ -29,9 +29,9 @@ Every component follows this standard structure:
 
 ```tsx
 // components/page-title/index.tsx
-import { View, Text } from 'reshaped';
-import { PageTitleProps } from './types';
+import { Text, View } from 'reshaped';
 import styles from './styles.module.scss';
+import { PageTitleProps } from './types';
 
 export const PageTitle = ({ title, description, children }: PageTitleProps) => {
   return (
@@ -54,13 +54,13 @@ export const PageTitle = ({ title, description, children }: PageTitleProps) => {
 
 ```tsx
 // components/metric-card/index.tsx
-import { View, Text } from 'reshaped';
 import { useParams } from 'next/navigation';
+import { Text, View } from 'reshaped';
+import { DEFAULT_PRECISION } from './constants';
 import { useMetricData } from './hooks';
+import styles from './styles.module.scss';
 import { MetricCardProps } from './types';
 import { formatValue } from './utils';
-import { DEFAULT_PRECISION } from './constants';
-import styles from './styles.module.scss';
 
 export const MetricCard = ({ metricId, label }: MetricCardProps) => {
   // 1. Import hooks first
@@ -279,7 +279,7 @@ export const CHART_COLORS = ['#3366CC', '#DC3912', '#FF9900', '#109618'];
 
 ```tsx
 // components/metric-card/skeleton.tsx
-import { View, Skeleton } from 'reshaped';
+import { Skeleton, View } from 'reshaped';
 import styles from './styles.module.scss';
 
 export const MetricCardSkeleton = () => {
@@ -301,7 +301,7 @@ export const MetricCardSkeleton = () => {
 ```tsx
 // components/metric-card/spec.tsx
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { MetricCard } from './index';
 
 describe('MetricCard', () => {
@@ -327,7 +327,7 @@ describe('MetricCard', () => {
 
 ```tsx
 // components/metric-card/utils.spec.tsx
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { formatValue, isValidMetric } from './utils';
 
 describe('formatValue', () => {

@@ -2,8 +2,8 @@ import clsx from 'clsx';
 import { Montserrat } from 'next/font/google';
 import localFont from 'next/font/local';
 import 'reshaped/bundle.css';
-import './icon/tabler-300.css';
 import '@/styles/global.scss';
+import './icon/tabler-300.css';
 import Providers from './providers';
 
 const montserrat = Montserrat({

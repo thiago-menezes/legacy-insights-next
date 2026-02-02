@@ -1,9 +1,16 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { View, Text, Button, Loader, Badge, Divider } from 'reshaped';
+import { Badge, Button, Divider, Loader, Text, View } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { PageTitle } from '@/components/page-title';
+import {
+  HotmartConfig,
+  KirvanoConfig,
+  KiwifyConfig,
+} from '@/features/integrations/components/webhook-configs';
+import { WebhookEvents } from '@/features/integrations/components/webhook-events';
+import { WebhookTester } from '@/features/integrations/components/webhook-tester';
 import { useIntegrationDetails } from './hooks';
 import styles from './styles.module.scss';
 
@@ -16,6 +23,7 @@ export const IntegrationDetails = () => {
     data: integration,
     isLoading,
     error,
+    updateIntegration,
   } = useIntegrationDetails(integrationId);
 
   if (isLoading) {
@@ -53,6 +61,13 @@ export const IntegrationDetails = () => {
         return 'neutral';
     }
   };
+
+  const isWebhookIntegration = [
+    'hotmart',
+    'kiwify',
+    'kirvano',
+    'custom_webhook',
+  ].includes(integration.type);
 
   return (
     <View gap={6}>
@@ -181,8 +196,104 @@ export const IntegrationDetails = () => {
               {integration.documentId}
             </Text>
           </View>
+
+          {isWebhookIntegration && (
+            <View className={styles.logItem} gap={2}>
+              <Text weight="medium">Webhook URL</Text>
+              <View
+                padding={2}
+                borderRadius="small"
+                backgroundColor="neutral-faded"
+              >
+                <Text variant="caption-1" color="neutral">
+                  {`${process.env.STRAPI_URL}/api/webhooks/${integration.type}/${integrationId}`}
+                </Text>
+              </View>
+            </View>
+          )}
         </View>
       </View>
+
+      {/* Platform-Specific Webhook Configuration */}
+      {isWebhookIntegration && (
+        <View maxWidth="100%">
+          <Divider />
+          <View paddingTop={6} gap={6}>
+            {integration.type === 'kiwify' && (
+              <KiwifyConfig
+                webhookUrl={`${process.env.STRAPI_URL}/api/webhooks/kiwify/${integrationId}`}
+                onUpdateSecret={(secret) =>
+                  updateIntegration({
+                    id: integrationId,
+                    webhookSecret: secret,
+                  })
+                }
+                initialSecret={integration.webhookSecret}
+              />
+            )}
+            {integration.type === 'hotmart' && (
+              <HotmartConfig
+                webhookUrl={`${process.env.STRAPI_URL}/api/webhooks/hotmart/${integrationId}`}
+                onUpdateSecret={(secret) =>
+                  updateIntegration({
+                    id: integrationId,
+                    webhookSecret: secret,
+                  })
+                }
+                initialSecret={integration.webhookSecret}
+              />
+            )}
+            {integration.type === 'kirvano' && (
+              <KirvanoConfig
+                webhookUrl={`${process.env.STRAPI_URL}/api/webhooks/kirvano/${integrationId}`}
+                onUpdateSecret={(secret) =>
+                  updateIntegration({
+                    id: integrationId,
+                    webhookSecret: secret,
+                  })
+                }
+                initialSecret={integration.webhookSecret}
+              />
+            )}
+            {integration.type === 'custom_webhook' && (
+              <View className={styles.logItem} gap={2}>
+                <Text weight="medium">Webhook URL</Text>
+                <View
+                  padding={2}
+                  borderRadius="small"
+                  backgroundColor="neutral-faded"
+                >
+                  <Text variant="caption-1" color="neutral">
+                    {`${process.env.STRAPI_URL}/api/webhooks/custom/${integrationId}`}
+                  </Text>
+                </View>
+              </View>
+            )}
+
+            <Divider />
+
+            <WebhookTester
+              webhookUrl={`${process.env.STRAPI_URL}/api/webhooks/${integration.type === 'custom_webhook' ? 'custom' : integration.type}/${integrationId}`}
+              source={
+                integration.type === 'custom_webhook'
+                  ? 'custom'
+                  : integration.type
+              }
+              secret={integration.webhookSecret}
+            />
+          </View>
+        </View>
+      )}
+
+      {/* Webhook Events Section */}
+      {isWebhookIntegration && (
+        <View maxWidth="100%">
+          <Divider />
+          <View paddingTop={6}>
+            <WebhookEvents integrationId={integrationId} />
+          </View>
+        </View>
+      )}
     </View>
   );
 };

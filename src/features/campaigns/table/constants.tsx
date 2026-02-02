@@ -13,7 +13,9 @@ export const PAGE_SIZE_OPTIONS = [10, 20, 50, 100].map((size) => ({
   value: String(size),
 }));
 
-export const COLUMN_DEFS: ColDef<CampaignRow>[] = [
+export const COLUMN_DEFS = (
+  platform: 'meta' | 'google',
+): ColDef<CampaignRow>[] => [
   {
     headerName: 'Nome da campanha',
     field: 'name',
@@ -21,11 +23,17 @@ export const COLUMN_DEFS: ColDef<CampaignRow>[] = [
     headerCheckboxSelection: true,
     minWidth: 320,
     sortable: false,
-    cellRenderer: (params: ICellRendererParams<CampaignRow>) => (
-      <Link href="#" className={styles.campaignName}>
-        {params.value}
-      </Link>
-    ),
+    cellRenderer: (params: ICellRendererParams<CampaignRow>) => {
+      const row = params.data as CampaignRow;
+      return (
+        <Link
+          href={`/campanhas/${platform}/${row.id}`}
+          className={styles.campaignName}
+        >
+          {params.value}
+        </Link>
+      );
+    },
   },
   {
     headerName: 'Veiculação',

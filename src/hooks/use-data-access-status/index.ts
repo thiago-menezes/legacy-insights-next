@@ -4,8 +4,8 @@ import { useMemo } from 'react';
 import { useIntegrationsQuery } from '@/features/integrations/api/query';
 import { useSelectedWorkspace } from '@/features/workspaces/context';
 import {
-  DataAccessStatus,
   DataAccessState,
+  DataAccessStatus,
   UseDataAccessStatusOptions,
 } from './types';
 

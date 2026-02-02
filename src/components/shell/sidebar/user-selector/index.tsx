@@ -1,6 +1,6 @@
 'use client';
 
-import { View, Text, DropdownMenu, Avatar, Divider } from 'reshaped';
+import { Avatar, Divider, DropdownMenu, Text, View } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { useAuth } from '@/features/auth/context';
 import styles from './styles.module.scss';

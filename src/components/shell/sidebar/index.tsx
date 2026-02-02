@@ -1,8 +1,8 @@
+import { useState } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
-import { View, Text, Button, useTheme } from 'reshaped';
+import { Button, Text, View, useTheme } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { useSelectedWorkspace } from '@/features/workspaces/context';
 import { useUserRole } from '@/features/workspaces/use-user-role';

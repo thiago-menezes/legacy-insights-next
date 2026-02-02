@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { io, Socket } from 'socket.io-client';
+import { Socket, io } from 'socket.io-client';
 
 let socket: Socket | null = null;
 
@@ -7,8 +7,7 @@ const getSocket = () => {
   if (typeof window === 'undefined') return null;
 
   if (!socket) {
-    const backendUrl =
-      process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+    const backendUrl = process.env.STRAPI_URL || 'http://localhost:1337';
     socket = io(backendUrl, {
       withCredentials: true,
       transports: ['websocket', 'polling'],

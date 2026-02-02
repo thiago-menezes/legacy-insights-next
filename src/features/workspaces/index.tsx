@@ -1,6 +1,6 @@
 'use client';
 
-import { View, Button, Loader, Modal } from 'reshaped';
+import { Button, Loader, Modal, View } from 'reshaped';
 import { EmptyState } from '@/components/empty-state';
 import { Icon } from '@/components/icon';
 import { PageTitle } from '@/components/page-title';

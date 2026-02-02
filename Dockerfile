@@ -24,6 +24,12 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Receive build arguments
+ARG STRAPI_URL
+
+# Set environment variables for build
+ENV STRAPI_URL=$STRAPI_URL
+
 # Set environment variables for build
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production

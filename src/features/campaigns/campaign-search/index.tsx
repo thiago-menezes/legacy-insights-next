@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { TextField, View } from 'reshaped';
 import { Icon } from '@/components/icon';
 import { CampaignSearchProps } from './types';

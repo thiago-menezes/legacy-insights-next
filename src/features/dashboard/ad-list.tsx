@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Card, View, Text } from 'reshaped';
+import { Card, Text, View } from 'reshaped';
 import { Icon } from '@/components/icon';
 import styles from './styles.module.scss';
 import { AdListProps } from './types';

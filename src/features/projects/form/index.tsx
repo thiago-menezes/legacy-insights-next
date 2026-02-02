@@ -1,4 +1,4 @@
-import { Button, TextField, View, FormControl, TextArea } from 'reshaped';
+import { Button, FormControl, TextArea, TextField, View } from 'reshaped';
 import { ProjectFormProps } from '../types';
 import { useProjectForm } from './hooks';
 

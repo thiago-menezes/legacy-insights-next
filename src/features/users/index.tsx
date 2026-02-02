@@ -1,8 +1,8 @@
 'use client';
 
-import { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { useMemo } from 'react';
-import { View, Button, Loader, Badge, Text } from 'reshaped';
+import { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { Badge, Button, Loader, Text, View } from 'reshaped';
 import { EmptyState } from '@/components/empty-state';
 import { Icon } from '@/components/icon';
 import { Table } from '@/components/table';

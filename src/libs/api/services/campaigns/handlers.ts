@@ -1,5 +1,9 @@
 import { apiClient } from '../../axios';
-import { CampaignListParams, StrapiCampaignListResponse } from './types';
+import {
+  CampaignAttributionResponse,
+  CampaignListParams,
+  StrapiCampaignListResponse,
+} from './types';
 
 export const list = async (
   params: CampaignListParams = {},
@@ -63,6 +67,16 @@ export const list = async (
 
   const { data } = await apiClient.get<StrapiCampaignListResponse>(
     `/api/campaigns?${query.toString()}`,
+  );
+
+  return data;
+};
+
+export const getAttribution = async (
+  campaignId: string,
+): Promise<CampaignAttributionResponse> => {
+  const { data } = await apiClient.get<CampaignAttributionResponse>(
+    `/api/campaigns/${campaignId}/attribution`,
   );
 
   return data;

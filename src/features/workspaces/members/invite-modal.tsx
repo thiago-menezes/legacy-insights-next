@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, FormControl, Modal, TextField, Select, View } from 'reshaped';
+import { Button, FormControl, Modal, Select, TextField, View } from 'reshaped';
 import { WorkspaceRole } from '@/libs/api/services/workspaces/types';
 import { useInviteMember } from './api/mutation';
 

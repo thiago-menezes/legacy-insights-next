@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-space-4);
+}
+
+.platformTabs {
+  margin-bottom: var(--rs-space-4);
+}
+
+.scriptSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-space-3);
+}
+
+.scriptBlock {
+  position: relative;
+  background-color: var(--rs-color-background-neutral-faded);
+  padding: var(--rs-space-4);
+  border-radius: var(--rs-border-radius-medium);
+  font-family:
+    'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  overflow-x: auto;
+}
+
+.scriptContent {
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--rs-color-foreground-primary);
+}
+
+.copyButton {
+  position: absolute;
+  top: var(--rs-space-2);
+  right: var(--rs-space-2);
+}
+
+.instructionsBox {
+  background-color: var(--rs-color-background-primary);
+  padding: var(--rs-space-3);
+  border-left: 3px solid var(--rs-color-border-accent-faded);
+  border-radius: var(--rs-border-radius-small);
+}
+
+.customFormGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--rs-space-3);
+}
+
+.previewUrl {
+  background-color: var(--rs-color-background-neutral-faded);
+  padding: var(--rs-space-3);
+  border-radius: var(--rs-border-radius-medium);
+  font-family: monospace;
+  font-size: 0.875rem;
+  word-break: break-all;
+  margin-top: var(--rs-space-2);
+}

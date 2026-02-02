@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, View, Text, Button, Tooltip } from 'reshaped';
+import { Button, Card, Text, Tooltip, View } from 'reshaped';
 import { Icon } from '@/components/icon';
 import styles from './styles.module.scss';
 import { FunnelChartProps } from './types';

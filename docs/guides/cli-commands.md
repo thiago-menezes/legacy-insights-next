@@ -78,9 +78,9 @@ npm run format
 
 ## 🔧 Environment Variables
 
-| Variable                 | Description    | Default                 |
-| ------------------------ | -------------- | ----------------------- |
-| `NEXT_PUBLIC_STRAPI_URL` | Strapi API URL | `http://localhost:1337` |
+| Variable     | Description    | Default                 |
+| ------------ | -------------- | ----------------------- |
+| `STRAPI_URL` | Strapi API URL | `http://localhost:1337` |
 
 ---
 
