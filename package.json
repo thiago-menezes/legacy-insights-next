@@ -11,11 +11,11 @@
     "lint": "eslint . --cache --cache-location ./node_modules/.cache/eslint/",
     "lint:fix": "eslint . --fix --cache --cache-location ./node_modules/.cache/eslint/",
     "lint:styles": "tsx src/scripts/check-unused-styles.ts",
-    "format": "prettier --write . && bun run lint:fix",
+    "format": "prettier --write . && npm run lint:fix",
     "clean": "rm -rf .next node_modules/.cache",
     "semantic-release": "semantic-release",
     "prepare": "husky",
-    "generate:theme": "bun x reshaped theming --output src/themes",
+    "generate:theme": "npx reshaped theming --output src/themes",
     "test": "vitest",
     "test:watch": "vitest watch"
   },

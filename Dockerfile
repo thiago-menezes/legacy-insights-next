@@ -4,20 +4,23 @@
 # ===================================
 # Stage 1: Install dependencies
 # ===================================
-FROM oven/bun:1.2-alpine AS deps
+# ===================================
+# Stage 1: Install dependencies
+# ===================================
+FROM node:20-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Copy package manager files
-COPY package.json bun.lock ./
+COPY package.json package-lock.json ./
 
-# Install dependencies using bun install --frozen-lockfile for reproducible builds
-RUN bun install --frozen-lockfile
+# Install dependencies using npm ci for reproducible builds
+RUN npm ci
 
 # ===================================
 # Stage 2: Build application
 # ===================================
-FROM oven/bun:1.2-alpine AS builder
+FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Copy dependencies from previous stage
@@ -36,12 +39,12 @@ ENV NODE_ENV=production
 
 # Build Next.js application
 # The standalone output will be in .next/standalone
-RUN bun run build
+RUN npm run build
 
 # ===================================
 # Stage 3: Production runtime
 # ===================================
-FROM oven/bun:1.2-alpine AS runner
+FROM node:20-alpine AS runner
 WORKDIR /app
 
 # Set production environment
@@ -49,19 +52,19 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Create non-root user for security
-RUN addgroup --system --gid 1001 bunjs && \
-    adduser --system --uid 1001 bunjs
+RUN addgroup --system --gid 1001 nextjs && \
+    adduser --system --uid 1001 nextjs
 
 # Copy public assets
-COPY --from=builder --chown=bunjs:bunjs /app/public ./public
+COPY --from=builder --chown=nextjs:nextjs /app/public ./public
 
 # Copy standalone build output
 # Next.js standalone mode includes all necessary files
-COPY --from=builder --chown=bunjs:bunjs /app/.next/standalone ./
-COPY --from=builder --chown=bunjs:bunjs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nextjs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nextjs /app/.next/static ./.next/static
 
 # Switch to non-root user
-USER bunjs
+USER nextjs
 
 # Expose port 3000
 EXPOSE 3000
@@ -70,5 +73,5 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# Start the Next.js server using bun
-CMD ["bun", "server.js"]
+# Start the Next.js server using node
+CMD ["node", "server.js"]
