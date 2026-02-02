@@ -170,3 +170,8 @@ Commonly used helpers are located in `src/utils`. Always check if a utility exis
 ## 🚀 Deployment
 
 The project follows a semantic release workflow. Merging to `main` triggers an automatic version bump and changelog generation via **Semantic Release**.
+
+### 🌐 Published URL
+
+The frontend is currently deployed at:
+[http://34.135.235.80:3000](http://34.135.235.80:3000)
