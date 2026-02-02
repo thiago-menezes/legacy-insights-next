@@ -1,0 +1,10 @@
+services:
+  legacy-insights-next:
+    image: us-central1-docker.pkg.dev/${PROJECT_ID}/legacy-insights/legacy-insights-next:latest
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - STRAPI_URL=${STRAPI_URL}
+    restart: always

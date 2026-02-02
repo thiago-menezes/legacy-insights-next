@@ -49,11 +49,28 @@ jobs:
 
       - name: Deploy to VM
         run: |
+          # Copy docker-compose.prod.yml to the VM
+          gcloud compute scp docker-compose.prod.yml ${{ env.GCE_INSTANCE }}:~/docker-compose.prod.yml --zone=${{ env.GCE_ZONE }}
+
           gcloud compute ssh ${{ env.GCE_INSTANCE }} --zone=${{ env.GCE_ZONE }} --command="
-            sudo docker pull us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/legacy-insights/${{ env.IMAGE_NAME }}:latest && \
-            if [ -f docker-compose.prod.yml ]; then \
-              sudo docker compose -f docker-compose.prod.yml up -d --no-deps legacy-insights-next; \
-            else \
-              echo 'docker-compose.prod.yml not found, cannot restart service via compose'; \
+            # Install Docker and Docker Compose if not found
+            if ! command -v docker &> /dev/null; then
+              echo 'Docker not found. Installing...'
+              curl -fsSL https://get.docker.com -o get-docker.sh
+              sudo sh get-docker.sh
+              sudo usermod -aG docker \$USER
+              # Restarting docker service to ensure it is running
+              sudo systemctl enable docker
+              sudo systemctl start docker
             fi
+
+            # Authenticate Docker to Artifact Registry on the VM
+            sudo gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+
+            # Deployment using Docker Compose
+            export PROJECT_ID=${{ env.PROJECT_ID }}
+            export STRAPI_URL=${{ vars.STRAPI_URL }}
+            
+            sudo docker pull us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/legacy-insights/${{ env.IMAGE_NAME }}:latest
+            sudo docker compose -f ~/docker-compose.prod.yml up -d --force-recreate legacy-insights-next
           "
