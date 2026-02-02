@@ -1,7 +1,6 @@
 'use client';
 
 import { Button, Checkbox, FormControl, Text, TextField, View } from 'reshaped';
-import { Icon } from '@/components/icon';
 import { PLATFORM_EVENT_TYPES, useWebhookForm } from './hooks';
 import styles from './styles.module.scss';
 import { WebhookFormProps } from './types';
@@ -13,17 +12,19 @@ export const WebhookForm = ({
   isLoading,
   projectId,
 }: WebhookFormProps) => {
-  const { form, handleSubmit, generateNewSecret } = useWebhookForm({
+  const { form, handleSubmit } = useWebhookForm({
     initialValues,
     onSubmit,
     projectId,
   });
 
+  const location = document.location;
+
   const { setValue, watch } = form;
 
   const selectedType = watch('type');
   const nameValue = watch('name');
-  const secretValue = watch('webhookSecret');
+
   const eventTypesValue = watch('eventTypes');
   const signatureValidationValue = watch('signatureValidation');
 
@@ -37,6 +38,8 @@ export const WebhookForm = ({
     setValue('eventTypes', newEvents);
   };
 
+  const url = `${location.protocol}//${location.host}/api/webhooks/${selectedType}/[integrationId]`;
+
   return (
     <form onSubmit={handleSubmit} className={styles.formContainer}>
       <View gap={4}>
@@ -49,34 +52,6 @@ export const WebhookForm = ({
             value={nameValue || ''}
             onChange={(e) => setValue('name', e.value)}
           />
-        </FormControl>
-
-        {/* Webhook Secret */}
-        <FormControl>
-          <FormControl.Label>Webhook Secret</FormControl.Label>
-          <div className={styles.secretField}>
-            <TextField
-              name="webhookSecret"
-              placeholder="Secret gerado automaticamente"
-              value={secretValue || ''}
-              onChange={(e) => setValue('webhookSecret', e.value)}
-              inputAttributes={{
-                readOnly: true,
-                type: 'password',
-              }}
-            />
-            <Button
-              type="button"
-              onClick={generateNewSecret}
-              variant="ghost"
-              icon={<Icon name="refresh" />}
-            >
-              Gerar Novo
-            </Button>
-          </div>
-          <FormControl.Helper>
-            Este secret será usado para validar as requisições do webhook
-          </FormControl.Helper>
         </FormControl>
 
         {/* Event Types */}
@@ -117,8 +92,7 @@ export const WebhookForm = ({
           <FormControl.Label>URL do Webhook</FormControl.Label>
           <div className={styles.webhookUrlDisplay}>
             <Text variant="caption-1">
-              https://api.legacyinsights.com/api/webhooks/{selectedType}/
-              [integration-id]
+              <View>{url}</View>
             </Text>
           </div>
           <FormControl.Helper>

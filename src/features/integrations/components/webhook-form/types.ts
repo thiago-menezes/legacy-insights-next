@@ -7,7 +7,7 @@ import {
 export interface WebhookFormValues {
   name: string;
   type: IntegrationType;
-  webhookSecret: string;
+
   eventTypes: string[];
   signatureValidation: boolean;
   allowedOrigins?: string[];

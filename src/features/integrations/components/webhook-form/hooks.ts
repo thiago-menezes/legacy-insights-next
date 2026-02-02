@@ -28,7 +28,7 @@ export const useWebhookForm = ({
     defaultValues: {
       name: initialValues?.name || '',
       type: webhookType,
-      webhookSecret: (config.webhookSecret as string) || generateSecret(),
+
       eventTypes: (config.eventTypes as string[]) || [],
       signatureValidation: (config.signatureValidation as boolean) ?? true,
       allowedOrigins: (config.allowedOrigins as string[]) || [],
@@ -42,7 +42,6 @@ export const useWebhookForm = ({
       type: data.type,
       project: projectId as string,
       config: {
-        webhookSecret: data.webhookSecret,
         eventTypes: data.eventTypes,
         signatureValidation: data.signatureValidation,
         allowedOrigins: data.allowedOrigins,
@@ -52,28 +51,11 @@ export const useWebhookForm = ({
     onSubmit(payload);
   });
 
-  const generateNewSecret = () => {
-    const newSecret = generateSecret();
-    form.setValue('webhookSecret', newSecret);
-  };
-
   return {
     form,
     handleSubmit,
-    generateNewSecret,
   };
 };
-
-// Utility function to generate a secure random secret
-function generateSecret(): string {
-  const chars =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
-  let secret = '';
-  for (let i = 0; i < 32; i++) {
-    secret += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return secret;
-}
 
 // Event types for each platform
 export const PLATFORM_EVENT_TYPES: Record<
