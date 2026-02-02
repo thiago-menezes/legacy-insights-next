@@ -105,13 +105,15 @@ export function AuthProvider({ children }: PropsWithChildren) {
           redirect: false,
         });
 
-        if (result?.error) {
-          if (result.error === 'CredentialsSignin') {
+        if (result?.error || !result?.ok) {
+          if (result?.error === 'CredentialsSignin') {
             return {
               error: 'Credenciais inválidas. Verifique seu email e senha.',
             };
           }
-          return { error: result.error };
+          return {
+            error: result?.error || 'Falha ao autenticar. Tente novamente.',
+          };
         }
 
         // We don't need to manually redirect if we use router.push,
