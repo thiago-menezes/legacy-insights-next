@@ -71,6 +71,10 @@ jobs:
             export PROJECT_ID=${{ env.PROJECT_ID }}
             export STRAPI_URL=${{ vars.STRAPI_URL }}
             
-            sudo docker pull us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/legacy-insights/${{ env.IMAGE_NAME }}:latest
-            sudo docker compose -f ~/docker-compose.prod.yml up -d --force-recreate legacy-insights-next
+            # Pull image with explicit env vars for the registry path
+            sudo PROJECT_ID=$PROJECT_ID docker pull us-central1-docker.pkg.dev/$PROJECT_ID/legacy-insights/${{ env.IMAGE_NAME }}:latest
+            
+            # Run docker compose with explicit env vars
+            sudo PROJECT_ID=$PROJECT_ID STRAPI_URL=$STRAPI_URL \
+              docker compose -f ~/docker-compose.prod.yml up -d --force-recreate legacy-insights-next
           "
