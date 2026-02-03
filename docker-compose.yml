@@ -1,6 +1,6 @@
 services:
   legacy-insights-next:
-    image: us-central1-docker.pkg.dev/${PROJECT_ID}/legacy-insights/legacy-insights-next:latest
+    image: ${GCP_REGISTRY}/${PROJECT_ID}/${REPO_NAME}/${IMAGE_NAME}:latest
     ports:
       - '3000:3000'
     environment:

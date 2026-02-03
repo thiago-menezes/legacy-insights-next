@@ -32,14 +32,14 @@ jobs:
           project_id: ${{ vars.PROJECT_ID }}
 
       - name: Configure Docker
-        run: gcloud auth configure-docker us-central1-docker.pkg.dev
+        run: gcloud auth configure-docker ${{ vars.GCP_REGISTRY }}
 
       - name: Build and Push Docker Image
         run: |
           docker build \
             --build-arg STRAPI_URL="${{ vars.STRAPI_URL }}" \
-            -t us-central1-docker.pkg.dev/${{ vars.PROJECT_ID }}/legacy-insights/${{ vars.IMAGE_NAME }}:latest .
-          docker push us-central1-docker.pkg.dev/${{ vars.PROJECT_ID }}/legacy-insights/${{ vars.IMAGE_NAME }}:latest
+            -t ${{ vars.GCP_REGISTRY }}/${{ vars.PROJECT_ID }}/${{ vars.ARTIFACT_REPO }}/${{ vars.IMAGE_NAME }}:latest .
+          docker push ${{ vars.GCP_REGISTRY }}/${{ vars.PROJECT_ID }}/${{ vars.ARTIFACT_REPO }}/${{ vars.IMAGE_NAME }}:latest
 
       - name: Deploy to VM
         run: |
@@ -59,9 +59,12 @@ jobs:
             fi
 
             # Authenticate Docker to Artifact Registry on the VM
-            sudo gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+            sudo gcloud auth configure-docker ${{ vars.GCP_REGISTRY }} --quiet
 
             # Deployment using Docker Compose
+            export GCP_REGISTRY=${{ vars.GCP_REGISTRY }}
+            export REPO_NAME=${{ vars.ARTIFACT_REPO }}
+            export IMAGE_NAME=${{ vars.IMAGE_NAME }}
             export PROJECT_ID=${{ vars.PROJECT_ID }}
             export STRAPI_URL=${{ vars.STRAPI_URL }}
             export AUTH_SECRET='${{ secrets.AUTH_SECRET }}'
@@ -69,9 +72,9 @@ jobs:
             export AUTH_URL=${{ vars.AUTH_URL }}
             
             # Pull image with explicit env vars for the registry path
-            sudo PROJECT_ID=\$PROJECT_ID docker pull us-central1-docker.pkg.dev/\$PROJECT_ID/legacy-insights/${{ vars.IMAGE_NAME }}:latest
+            sudo GCP_REGISTRY=\$GCP_REGISTRY PROJECT_ID=\$PROJECT_ID REPO_NAME=\$REPO_NAME IMAGE_NAME=\$IMAGE_NAME docker pull \$GCP_REGISTRY/\$PROJECT_ID/\$REPO_NAME/\$IMAGE_NAME:latest
             
             # Run docker compose with explicit env vars
-            sudo PROJECT_ID=\$PROJECT_ID STRAPI_URL=\$STRAPI_URL AUTH_SECRET=\$AUTH_SECRET STRAPI_API_KEY=\$STRAPI_API_KEY AUTH_URL=\$AUTH_URL \
+            sudo GCP_REGISTRY=\$GCP_REGISTRY REPO_NAME=\$REPO_NAME IMAGE_NAME=\$IMAGE_NAME PROJECT_ID=\$PROJECT_ID STRAPI_URL=\$STRAPI_URL AUTH_SECRET=\$AUTH_SECRET STRAPI_API_KEY=\$STRAPI_API_KEY AUTH_URL=\$AUTH_URL \
               docker compose -f ~/docker-compose.yml up -d --force-recreate legacy-insights-next
           "
