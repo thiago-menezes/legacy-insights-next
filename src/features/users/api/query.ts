@@ -22,7 +22,7 @@ export const useSearchUser = (email: string, isValidEmail: boolean) => {
     queryFn: async () => {
       const { data } = await apiClient.get<
         { id: number; email: string; username: string }[]
-      >(`/api/users?filters[email][$eq]=${email}`);
+      >(`/api/workspaces/users/find?email=${email}`);
       return data;
     },
     enabled: !!email && isValidEmail,

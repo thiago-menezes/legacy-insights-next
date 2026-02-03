@@ -24,10 +24,8 @@ const loginSchema = z.object({
 
 const registerSchema = z
   .object({
-    username: z
-      .string()
-      .min(3, 'Nome de usuário deve ter no mínimo 3 caracteres'),
-    email: z.string().email('Email inválido'),
+    username: z.string().min(1, 'Nome de usuário é obrigatório'),
+    email: z.string(),
     password: z
       .string()
       .min(8, 'A senha deve ter no mínimo 8 caracteres')
@@ -123,6 +121,7 @@ export function useRegisterForm() {
   const [error, setError] = useState<string | null>(null);
 
   const form = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       username: '',
       email: '',

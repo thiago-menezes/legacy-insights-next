@@ -16,7 +16,6 @@ export const useInviteModal = ({
   const [email, setEmail] = useState('');
   const [debouncedEmail, setDebouncedEmail] = useState('');
   const [role, setRole] = useState<MemberRole>('member');
-  const [password, setPassword] = useState('');
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
 
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -61,7 +60,6 @@ export const useInviteModal = ({
     setEmail('');
     setDebouncedEmail('');
     setRole('member');
-    setPassword('');
     setSelectedProjects([]);
   };
 
@@ -69,8 +67,6 @@ export const useInviteModal = ({
     await onSubmit({
       email,
       role,
-      password: shouldCreateUser ? password : undefined,
-      createUser: shouldCreateUser,
       projects: scope === 'workspace' ? selectedProjects : undefined,
     });
     resetForm();
@@ -89,7 +85,7 @@ export const useInviteModal = ({
       return `Este usuário já é membro deste ${scopeLabel.toLowerCase()}.`;
     if (isError) return 'Erro ao verificar usuário. Verifique permissões.';
     if (isSearchComplete && !userExists) {
-      return 'Usuário não encontrado. Digite uma senha para criar a conta.';
+      return 'O usuário ainda não existe. Envie o link de criação de conta abaixo.';
     }
     if (isSearchComplete && userExists) {
       return `Usuário encontrado. Este usuário será convidado para o ${scopeLabel.toLowerCase()}.`;
@@ -104,8 +100,6 @@ export const useInviteModal = ({
     setDebouncedEmail,
     role,
     setRole,
-    password,
-    setPassword,
     selectedProjects,
     setSelectedProjects,
     isValidEmail,

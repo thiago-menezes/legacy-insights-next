@@ -1,4 +1,12 @@
-import { Button, FormControl, Modal, Select, TextField, View } from 'reshaped';
+import {
+  Button,
+  FormControl,
+  Modal,
+  Select,
+  Text,
+  TextField,
+  View,
+} from 'reshaped';
 import { ProjectSelector } from '../project-selector';
 import { InviteFormData, MemberRole, WorkspaceMemberItem } from '../types';
 import { useInviteModal } from './hooks';
@@ -33,12 +41,10 @@ export const InviteModal = ({
     projects,
     setSelectedProjects,
     isLoadingProjects,
-    setPassword,
     handleClose,
     handleSubmit,
     isSearchComplete,
     selectedProjects,
-    password,
     shouldCreateUser,
     isAlreadyMember,
   } = useInviteModal({
@@ -100,39 +106,54 @@ export const InviteModal = ({
         )}
 
         {shouldCreateUser && (
-          <View paddingTop={2}>
-            <FormControl>
-              <FormControl.Label>Senha *</FormControl.Label>
-              <TextField
-                name="password"
-                value={password}
-                onChange={({ value }) => setPassword(value)}
-                placeholder="Senha para o novo usuário"
-                inputAttributes={{ type: 'password', required: true }}
-              />
-              <FormControl.Helper>
-                Digite a senha que será passada ao novo usuário
-              </FormControl.Helper>
-            </FormControl>
+          <View paddingTop={2} gap={2}>
+            <Text variant="body-3" color="neutral-faded">
+              Envie este link para a pessoa criar a conta e ter acesso ao
+              portal:
+            </Text>
+            <View
+              padding={3}
+              backgroundColor="neutral-faded"
+              borderRadius="medium"
+            >
+              <Text variant="body-3" weight="medium">
+                {typeof window !== 'undefined'
+                  ? `${window.location.origin}/login/criar-conta?email=${encodeURIComponent(email)}`
+                  : ''}
+              </Text>
+            </View>
+            <Button
+              variant="outline"
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  navigator.clipboard.writeText(
+                    `${window.location.origin}/login/criar-conta?email=${encodeURIComponent(email)}`,
+                  );
+                }
+              }}
+            >
+              Copiar Link
+            </Button>
           </View>
         )}
       </View>
 
       <View gap={3} direction="row" justify="end">
         <Button onClick={handleClose}>Cancelar</Button>
-        <Button
-          color="primary"
-          onClick={handleSubmit}
-          loading={isPending}
-          disabled={
-            !isSearchComplete ||
-            isAlreadyMember ||
-            (scope === 'workspace' && selectedProjects.length === 0) ||
-            (shouldCreateUser && !password.trim())
-          }
-        >
-          {shouldCreateUser ? 'Criar e Convidar' : 'Enviar Convite'}
-        </Button>
+        {!shouldCreateUser && (
+          <Button
+            color="primary"
+            onClick={handleSubmit}
+            loading={isPending}
+            disabled={
+              !isSearchComplete ||
+              isAlreadyMember ||
+              (scope === 'workspace' && selectedProjects.length === 0)
+            }
+          >
+            Enviar Convite
+          </Button>
+        )}
       </View>
     </Modal>
   );

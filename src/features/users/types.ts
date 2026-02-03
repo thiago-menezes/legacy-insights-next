@@ -25,8 +25,6 @@ export interface ProjectMemberItem {
 export interface InviteFormData {
   email: string;
   role: MemberRole;
-  password?: string;
-  createUser?: boolean;
   projects?: string[]; // For workspace scope: array of project IDs
 }
 

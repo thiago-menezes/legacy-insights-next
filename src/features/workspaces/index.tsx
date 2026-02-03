@@ -82,13 +82,18 @@ export const Workspaces = () => {
       ) : (
         <View gap={4} paddingTop={4} wrap direction={{ s: 'column', l: 'row' }}>
           {workspaces?.data.map((workspace) => (
-            <WorkspaceCard
+            <View
               key={workspace.id}
-              workspace={workspace}
-              onEdit={handleOpenEdit}
-              onDelete={handleDelete}
-              onClick={(w) => handleWorkspaceClick(w, selectedOrgId)}
-            />
+              width="100%"
+              maxWidth={{ s: '100%', l: 'calc(50% - 8px)' }}
+            >
+              <WorkspaceCard
+                workspace={workspace}
+                onEdit={handleOpenEdit}
+                onDelete={handleDelete}
+                onClick={(w) => handleWorkspaceClick(w, selectedOrgId)}
+              />
+            </View>
           ))}
         </View>
       )}

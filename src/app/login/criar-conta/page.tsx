@@ -7,11 +7,14 @@ import styles from '@/features/auth/styles.module.scss';
 import { Icon } from '@/components/icon';
 
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 const CreateAccountPage = () => {
   const { form, isLoading, error, onSubmit } = useRegisterForm();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const searchParams = useSearchParams();
+  const emailFromUrl = searchParams.get('email');
 
   const {
     formState: { errors, isSubmitted },
@@ -27,6 +30,12 @@ const CreateAccountPage = () => {
     register('passwordConfirmation');
     register('terms');
   }, [register]);
+
+  useEffect(() => {
+    if (emailFromUrl) {
+      setValue('email', emailFromUrl);
+    }
+  }, [emailFromUrl, setValue]);
 
   return (
     <>
@@ -87,6 +96,7 @@ const CreateAccountPage = () => {
               }}
               inputAttributes={{
                 type: 'email',
+                readOnly: !!emailFromUrl,
               }}
             />
             {errors.email?.message && (
@@ -248,22 +258,30 @@ const CreateAccountPage = () => {
         </div>
 
         <div className={styles.termsCheckbox}>
-          <Checkbox
-            name="terms"
-            checked={form.watch('terms')}
-            onChange={(e) => form.setValue('terms', e.checked)}
-          >
-            <Text className={styles.termsText}>
-              Eu concordo com os{' '}
-              <Link href="/termos" className={styles.termsLink}>
-                Termos de Uso
-              </Link>{' '}
-              e a{' '}
-              <Link href="/privacidade" className={styles.termsLink}>
-                Política de Privacidade
-              </Link>
-            </Text>
-          </Checkbox>
+          <FormControl hasError={!!errors.terms}>
+            <Checkbox
+              name="terms"
+              checked={form.watch('terms')}
+              onChange={(e) => {
+                form.setValue('terms', e.checked);
+                if (isSubmitted) trigger('terms');
+              }}
+            >
+              <Text className={styles.termsText}>
+                Eu concordo com os{' '}
+                <Link href="/termos" className={styles.termsLink}>
+                  Termos de Uso
+                </Link>{' '}
+                e a{' '}
+                <Link href="/privacidade" className={styles.termsLink}>
+                  Política de Privacidade
+                </Link>
+              </Text>
+            </Checkbox>
+            {errors.terms?.message && (
+              <FormControl.Error>{errors.terms.message}</FormControl.Error>
+            )}
+          </FormControl>
         </div>
 
         <div className={styles.submitButton}>
