@@ -24,7 +24,7 @@ const CreateAccountPage = () => {
   } = form;
 
   useEffect(() => {
-    register('username');
+    register('name');
     register('email');
     register('password');
     register('passwordConfirmation');
@@ -62,23 +62,23 @@ const CreateAccountPage = () => {
 
       <form className={styles.form} onSubmit={onSubmit}>
         <div className={styles.inputGroup}>
-          <FormControl hasError={!!errors.username}>
+          <FormControl hasError={!!errors.name}>
             <TextField
-              name="username"
-              placeholder="Seu nome de usuário"
+              name="name"
+              placeholder="Seu nome completo"
               size="large"
-              value={form.watch('username')}
+              value={form.watch('name')}
               onChange={({ value }) => {
-                setValue('username', value);
-                if (isSubmitted) trigger('username');
+                setValue('name', value);
+                if (isSubmitted) trigger('name');
               }}
               inputAttributes={{
                 type: 'text',
-                autoComplete: 'username',
+                autoComplete: 'name',
               }}
             />
-            {errors.username?.message && (
-              <FormControl.Error>{errors.username.message}</FormControl.Error>
+            {errors.name?.message && (
+              <FormControl.Error>{errors.name.message}</FormControl.Error>
             )}
           </FormControl>
         </div>

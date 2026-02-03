@@ -3,7 +3,7 @@ import { Workspaces } from '@/features/workspaces';
 
 const WorkspacesPage = () => {
   return (
-    <RoleGuard requireManagement>
+    <RoleGuard>
       <Workspaces />
     </RoleGuard>
   );

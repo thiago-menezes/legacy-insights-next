@@ -5,21 +5,31 @@ export type MemberRole = 'admin' | 'member' | 'viewer';
 export interface WorkspaceMemberItem {
   id: number;
   documentId: string | null;
-  username: string;
-  email: string;
+  username?: string;
+  email?: string;
   role: WorkspaceRole;
   invitedAt: string | null;
   invitedBy: { id: number; username: string } | null;
+  user?: {
+    id: number;
+    username: string;
+    email: string;
+  } | null;
 }
 
 export interface ProjectMemberItem {
   id: number;
   documentId: string | null;
-  username: string;
-  email: string;
+  username?: string;
+  email?: string;
   role: MemberRole;
   invitedAt: string | null;
   invitedBy: { id: number; username: string } | null;
+  user?: {
+    id: number;
+    username: string;
+    email: string;
+  } | null;
 }
 
 export interface InviteFormData {

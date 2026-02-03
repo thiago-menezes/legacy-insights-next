@@ -25,7 +25,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (identifier: string, password: string) => Promise<{ error?: string }>;
   register: (
-    username: string,
+    name: string,
     email: string,
     password: string,
   ) => Promise<{ error?: string }>;
@@ -129,12 +129,14 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   const register = useCallback(
     async (
-      username: string,
+      name: string,
       email: string,
       password: string,
     ): Promise<{ error?: string }> => {
       try {
-        await strapiRegister(username, email, password);
+        // We use email as the username to ensure uniqueness and avoid "username taken" errors
+        // for display names. The actual name is sent as a separate field.
+        await strapiRegister(email, email, password, name);
 
         // After registration, log in automatically with NextAuth
         const result = await signIn('strapi', {

@@ -31,7 +31,9 @@ export function useUserRole(): UseUserRoleResult {
     }
 
     // Find user in workspace members list
-    const member = selectedOrg.workspaceMembers?.find((m) => m.id === user.id);
+    const member = selectedOrg.workspaceMembers?.find(
+      (m) => m.user?.id === user.id,
+    );
     return member?.role || null;
   }, [user, selectedOrg]);
 

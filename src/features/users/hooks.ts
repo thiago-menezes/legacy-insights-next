@@ -39,6 +39,9 @@ export const useUsersManagement = () => {
   const currentMembers = useMemo((): WorkspaceMemberItem[] => {
     return (projectMembers || []).map((member) => ({
       ...member,
+      // Handle both flattened and nested user data structure
+      username: member.username || member.user?.username,
+      email: member.email || member.user?.email,
       invitedAt: member.invitedAt ?? null,
       invitedBy: member.invitedBy ?? null,
     }));

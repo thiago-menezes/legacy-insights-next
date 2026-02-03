@@ -24,7 +24,7 @@ const loginSchema = z.object({
 
 const registerSchema = z
   .object({
-    username: z.string().min(1, 'Nome de usuário é obrigatório'),
+    name: z.string().min(1, 'Nome completo é obrigatório'),
     email: z.string(),
     password: z
       .string()
@@ -123,7 +123,7 @@ export function useRegisterForm() {
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      username: '',
+      name: '',
       email: '',
       password: '',
       passwordConfirmation: '',
@@ -135,7 +135,7 @@ export function useRegisterForm() {
     setIsLoading(true);
     setError(null);
 
-    const result = await authRegister(data.username, data.email, data.password);
+    const result = await authRegister(data.name, data.email, data.password);
 
     if (result.error) {
       setError(result.error);

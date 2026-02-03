@@ -52,7 +52,7 @@ export const useInviteModal = ({
   const isAlreadyMember = useMemo(() => {
     if (!email || !isValidEmail) return false;
     return currentMembers.some(
-      (member) => member.email.toLowerCase() === email.toLowerCase(),
+      (member) => member.email?.toLowerCase() === email.toLowerCase(),
     );
   }, [email, isValidEmail, currentMembers]);
 

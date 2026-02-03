@@ -57,10 +57,11 @@ export async function strapiRegister(
   username: string,
   email: string,
   password: string,
+  name?: string,
 ): Promise<StrapiAuthResponse> {
   const { data } = await strapiClient.post<StrapiAuthResponse>(
     '/api/auth/local/register',
-    { username, email, password },
+    { username, email, password, name },
   );
   return data;
 }
