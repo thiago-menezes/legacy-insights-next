@@ -3,7 +3,10 @@ import { signOut } from 'next-auth/react';
 import { getAccessToken } from './token';
 
 export const createApiClient = (addAuthInterceptor: boolean = false) => {
-  const baseURL = process.env.STRAPI_URL || 'http://localhost:1337';
+  const baseURL =
+    process.env.NEXT_PUBLIC_STRAPI_URL ||
+    process.env.STRAPI_URL ||
+    'http://localhost:1337';
 
   const client = axios.create({
     baseURL,

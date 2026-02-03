@@ -7,7 +7,10 @@ const getSocket = () => {
   if (typeof window === 'undefined') return null;
 
   if (!socket) {
-    const backendUrl = process.env.STRAPI_URL || 'http://localhost:1337';
+    const backendUrl =
+      process.env.NEXT_PUBLIC_STRAPI_URL ||
+      process.env.STRAPI_URL ||
+      'http://localhost:1337';
     socket = io(backendUrl, {
       withCredentials: true,
       transports: ['websocket', 'polling'],

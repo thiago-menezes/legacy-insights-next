@@ -29,9 +29,11 @@ COPY . .
 
 # Receive build arguments
 ARG STRAPI_URL
+ARG NEXT_PUBLIC_STRAPI_URL
 
 # Set environment variables for build
 ENV STRAPI_URL=$STRAPI_URL
+ENV NEXT_PUBLIC_STRAPI_URL=$NEXT_PUBLIC_STRAPI_URL
 
 # Set environment variables for build
 ENV NEXT_TELEMETRY_DISABLED=1
