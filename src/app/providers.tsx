@@ -28,7 +28,7 @@ const Providers = ({ children }: PropsWithChildren) => {
     <Reshaped
       theme="legacy"
       defaultColorMode={
-        (localStorage.getItem('theme-mode') as 'light' | 'dark') || 'light'
+        (localStorage.getItem('theme-mode') as 'light' | 'dark') || 'dark'
       }
     >
       <ToastProvider>
