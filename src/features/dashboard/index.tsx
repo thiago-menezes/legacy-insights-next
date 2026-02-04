@@ -31,7 +31,7 @@ export const Dashboard = () => {
     return <DashboardSkeleton />;
   }
 
-  if (accessState === 'no-project') {
+  if (accessState === 'no-project' && !data) {
     return (
       <DashboardEmptyState
         state="no-project"
@@ -41,7 +41,7 @@ export const Dashboard = () => {
     );
   }
 
-  if (accessState === 'no-integration') {
+  if (accessState === 'no-integration' && !data) {
     return (
       <DashboardEmptyState
         state="no-integration"

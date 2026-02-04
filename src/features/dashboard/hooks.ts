@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { MOCK_DASHBOARD_DATA } from './mock-data';
 import { DashboardData } from './types';
 
 interface UseDashboardDataResult {
@@ -22,7 +23,10 @@ export const useDashboardData = (_filters?: {
     setError(null);
 
     try {
-      setData(null);
+      // Simulating API call
+      // TODO: remove this after creating the API
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setData(MOCK_DASHBOARD_DATA);
     } catch (err) {
       setError(
         err instanceof Error

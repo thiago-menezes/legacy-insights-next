@@ -139,105 +139,55 @@ export const Integrations = () => {
         </Tabs>
       </View>
 
-      {activeTab !== 'utms' ? (
-        <View gap={4} paddingTop={4}>
-          {activeTab === 'all' && (
-            <>
-              <View gap={4}>
-                <Text variant="featured-2" weight="medium">
-                  Anúncios
-                </Text>
-                <div className={styles.platformsGrid}>
-                  {filteredPlatforms
-                    .filter((p) => p.category === 'ads')
-                    .map((platform) => (
-                      <PlatformCard
-                        key={platform.id}
-                        platform={platform}
-                        onDelete={handleDelete}
-                        onAdd={handleAdd}
-                        onEdit={handleEdit}
-                        onProcess={handleProcess}
-                        onDetails={handleDetails}
-                        canManage={canCreateIntegration}
-                      />
-                    ))}
-                </div>
-              </View>
-
-              <View gap={4} paddingTop={4}>
-                <Text variant="featured-2" weight="medium">
-                  Webhooks
-                </Text>
-                <div className={styles.platformsGrid}>
-                  {filteredPlatforms
-                    .filter((p) => p.category === 'webhooks')
-                    .map((platform) => (
-                      <PlatformCard
-                        key={platform.id}
-                        platform={platform}
-                        onDelete={handleDelete}
-                        onAdd={handleAdd}
-                        onEdit={handleEdit}
-                        onProcess={handleProcess}
-                        onDetails={handleDetails}
-                        canManage={canCreateIntegration}
-                      />
-                    ))}
-                </div>
-              </View>
-            </>
-          )}
-
-          {activeTab === 'ads' && (
-            <>
-              <Text variant="featured-2" weight="medium">
-                Anúncios
-              </Text>
-              <div className={styles.platformsGrid}>
-                {filteredPlatforms.map((platform) => (
-                  <PlatformCard
-                    key={platform.id}
-                    platform={platform}
-                    onDelete={handleDelete}
-                    onAdd={handleAdd}
-                    onEdit={handleEdit}
-                    onProcess={handleProcess}
-                    onDetails={handleDetails}
-                    canManage={canCreateIntegration}
-                  />
-                ))}
-              </div>
-            </>
-          )}
-
-          {activeTab === 'webhooks' && (
-            <>
-              <Text variant="featured-2" weight="medium">
-                Webhooks
-              </Text>
-              <div className={styles.platformsGrid}>
-                {filteredPlatforms.map((platform) => (
-                  <PlatformCard
-                    key={platform.id}
-                    platform={platform}
-                    onDelete={handleDelete}
-                    onAdd={handleAdd}
-                    onEdit={handleEdit}
-                    onProcess={handleProcess}
-                    onDetails={handleDetails}
-                    canManage={canCreateIntegration}
-                  />
-                ))}
-              </div>
-            </>
-          )}
-        </View>
-      ) : (
-        <View gap={4} paddingTop={4}>
-          <UtmScripts projectId={project.documentId} />
+      {(activeTab === 'ads' || activeTab === 'all') && (
+        <View gap={4} paddingTop={6}>
+          <Text variant="featured-2" weight="medium">
+            Anúncios
+          </Text>
+          <div className={styles.platformsGrid}>
+            {filteredPlatforms
+              .filter((p) => p.category === 'ads')
+              .map((platform) => (
+                <PlatformCard
+                  key={platform.id}
+                  platform={platform}
+                  onDelete={handleDelete}
+                  onAdd={handleAdd}
+                  onEdit={handleEdit}
+                  onProcess={handleProcess}
+                  onDetails={handleDetails}
+                  canManage={canCreateIntegration}
+                />
+              ))}
+          </div>
         </View>
       )}
+
+      {(activeTab === 'webhooks' || activeTab === 'all') && (
+        <View gap={4} paddingTop={6}>
+          <Text variant="featured-2" weight="medium">
+            Webhooks
+          </Text>
+          <div className={styles.platformsGrid}>
+            {filteredPlatforms
+              .filter((p) => p.category === 'webhooks')
+              .map((platform) => (
+                <PlatformCard
+                  key={platform.id}
+                  platform={platform}
+                  onDelete={handleDelete}
+                  onAdd={handleAdd}
+                  onEdit={handleEdit}
+                  onProcess={handleProcess}
+                  onDetails={handleDetails}
+                  canManage={canCreateIntegration}
+                />
+              ))}
+          </div>
+        </View>
+      )}
+
+      {activeTab === 'utms' && <UtmScripts projectId={project.documentId} />}
 
       <Modal active={isModalOpen} onClose={handleModalClose} size="m">
         <Modal.Title>
