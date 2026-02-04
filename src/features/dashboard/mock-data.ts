@@ -33,7 +33,7 @@ export const MOCK_DASHBOARD_DATA: DashboardData = {
   ],
   investmentRevenueData: [
     { name: 'Jan', investment: 4000, revenue: 12000 },
-    { name: 'Fev', investment: 3000, revenue: 9000 },
+    { name: 'Fev', investment: 4000, revenue: 9000 },
     { name: 'Mar', investment: 2000, revenue: 11000 },
     { name: 'Abr', investment: 2780, revenue: 8000 },
     { name: 'Mai', investment: 1890, revenue: 7500 },

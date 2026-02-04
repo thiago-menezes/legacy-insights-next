@@ -174,4 +174,4 @@ The project follows a semantic release workflow. Merging to `main` triggers an a
 ### 🌐 Published URL
 
 The frontend is currently deployed at:
-[http://34.135.235.80:3000](http://34.135.235.80:3000)
+[http://34.135.235.80:4000](http://34.135.235.80:4000)

@@ -68,11 +68,11 @@ COPY --from=builder --chown=nextjs:nextjs /app/.next/static ./.next/static
 # Switch to non-root user
 USER nextjs
 
-# Expose port 3000
-EXPOSE 3000
+# Expose port 4000
+EXPOSE 4000
 
 # Set environment variables for Next.js server
-ENV PORT=3000
+ENV PORT=4000
 ENV HOSTNAME="0.0.0.0"
 
 # Start the Next.js server using node

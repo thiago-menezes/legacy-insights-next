@@ -2,10 +2,10 @@ services:
   legacy-insights-next:
     image: ${GCP_REGISTRY}/${PROJECT_ID}/${REPO_NAME}/${IMAGE_NAME}:latest
     ports:
-      - '3000:3000'
+      - '4000:4000'
     environment:
       - NODE_ENV=production
-      - PORT=3000
+      - PORT=4000
       - STRAPI_URL=${STRAPI_URL}
       - AUTH_SECRET=${AUTH_SECRET}
       - STRAPI_API_KEY=${STRAPI_API_KEY}
