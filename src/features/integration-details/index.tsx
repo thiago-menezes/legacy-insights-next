@@ -206,7 +206,7 @@ export const IntegrationDetails = () => {
                 backgroundColor="neutral-faded"
               >
                 <Text variant="caption-1" color="neutral">
-                  {`${process.env.STRAPI_URL}/api/webhooks/${integration.type}/${integrationId}`}
+                  {`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/webhooks/${integration.type}/${integrationId}`}
                 </Text>
               </View>
             </View>
@@ -221,7 +221,7 @@ export const IntegrationDetails = () => {
           <View paddingTop={6} gap={6}>
             {integration.type === 'kiwify' && (
               <KiwifyConfig
-                webhookUrl={`${process.env.STRAPI_URL}/api/webhooks/kiwify/${integrationId}`}
+                webhookUrl={`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/webhooks/kiwify/${integrationId}`}
                 onUpdateSecret={(secret) =>
                   updateIntegration({
                     id: integrationId,
@@ -233,7 +233,7 @@ export const IntegrationDetails = () => {
             )}
             {integration.type === 'hotmart' && (
               <HotmartConfig
-                webhookUrl={`${process.env.STRAPI_URL}/api/webhooks/hotmart/${integrationId}`}
+                webhookUrl={`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/webhooks/hotmart/${integrationId}`}
                 onUpdateSecret={(secret) =>
                   updateIntegration({
                     id: integrationId,
@@ -245,7 +245,7 @@ export const IntegrationDetails = () => {
             )}
             {integration.type === 'kirvano' && (
               <KirvanoConfig
-                webhookUrl={`${process.env.STRAPI_URL}/api/webhooks/kirvano/${integrationId}`}
+                webhookUrl={`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/webhooks/kirvano/${integrationId}`}
                 onUpdateSecret={(secret) =>
                   updateIntegration({
                     id: integrationId,
@@ -264,7 +264,7 @@ export const IntegrationDetails = () => {
                   backgroundColor="neutral-faded"
                 >
                   <Text variant="caption-1" color="neutral">
-                    {`${process.env.STRAPI_URL}/api/webhooks/custom/${integrationId}`}
+                    {`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/webhooks/custom/${integrationId}`}
                   </Text>
                 </View>
               </View>
@@ -273,7 +273,7 @@ export const IntegrationDetails = () => {
             <Divider />
 
             <WebhookTester
-              webhookUrl={`${process.env.STRAPI_URL}/api/webhooks/${integration.type === 'custom_webhook' ? 'custom' : integration.type}/${integrationId}`}
+              webhookUrl={`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/webhooks/${integration.type === 'custom_webhook' ? 'custom' : integration.type}/${integrationId}`}
               source={
                 integration.type === 'custom_webhook'
                   ? 'custom'
