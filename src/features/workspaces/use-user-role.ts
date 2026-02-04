@@ -40,29 +40,18 @@ export function useUserRole(): UseUserRoleResult {
       (m) => String(m.user?.id) === String(user.id),
     );
     if (workspaceMember) {
-      console.log('Found workspace member:', workspaceMember);
       return workspaceMember.role;
     }
 
     // 3. Fallback: Find user in project members list
     // Check all projects in the workspace and take the highest role
     const roles: WorkspaceRole[] = [];
-    console.log('useUserRole Debug:', {
-      userId: user.id,
-      orgName: selectedOrg.name,
-      workspaceMembers: selectedOrg.workspaceMembers,
-      projects: selectedOrg.projects?.map((p) => ({
-        name: p.name,
-        members: p.projectMembers,
-      })),
-    });
 
     selectedOrg.projects?.forEach((project) => {
       const projectMember = project.projectMembers?.find(
         (pm) => String(pm.user?.id) === String(user.id),
       );
       if (projectMember) {
-        console.log(`Found member in project ${project.name}:`, projectMember);
         roles.push(projectMember.role as WorkspaceRole);
       }
     });
@@ -71,13 +60,10 @@ export function useUserRole(): UseUserRoleResult {
       const hierarchy: WorkspaceRole[] = ['admin', 'editor', 'viewer'];
       for (const r of hierarchy) {
         if (roles.includes(r)) {
-          console.log('Final calculated role from projects:', r);
           return r;
         }
       }
     }
-
-    console.log('No role found for user');
     return null;
   }, [user, selectedOrg]);
 

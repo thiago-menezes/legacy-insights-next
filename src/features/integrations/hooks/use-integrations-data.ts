@@ -23,9 +23,6 @@ export const useIntegrationsData = (projectId?: string) => {
   );
 
   useProjectRealTime(projectId || null, (data) => {
-    // eslint-disable-next-line no-console
-    console.log('[RealTime] Received update:', data);
-
     const integration = integrations.find(
       (i) => i.documentId === data.integrationId,
     );
